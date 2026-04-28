@@ -22,6 +22,7 @@ function App() {
   const [simulating, setSimulating] = useState(false);
   const [simStep, setSimStep] = useState(0);
   const [simSpeed, setSimSpeed] = useState(1);
+  const [exportLevelNumber, setExportLevelNumber] = useState(1);
   const [history, setHistory] = useState([]); // log of generation events
   const [activePreset, setActivePreset] = useState("STANDARD");
   const fileInputRef = useRef(null);
@@ -106,12 +107,13 @@ function App() {
   // ---- Export JSON ----
   const exportJSON = () => {
     if (!level) return;
+    const fileLevelNumber = Math.min(1000, Math.max(1, Math.round(Number(exportLevelNumber) || 1)));
     const { _internal, ...clean } = level;
     const blob = new Blob([JSON.stringify(clean, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `level_${level.level_metadata.id}.json`;
+    a.download = `${fileLevelNumber}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -344,6 +346,32 @@ function App() {
 
         <footer className="abs-footer">
           <div className="abs-footer-left">
+            <div className="abs-export-level">
+              <span className="abs-export-level-label abs-mono">
+                <BiText en="LEVEL #" ar="رقم المستوى" />
+              </span>
+              <input
+                type="number"
+                min="1"
+                max="1000"
+                value={exportLevelNumber}
+                onChange={(e) => {
+                  const raw = e.target.value;
+                  if (raw === "") {
+                    setExportLevelNumber("");
+                    return;
+                  }
+                  const n = Math.min(1000, Math.max(1, Number(raw)));
+                  setExportLevelNumber(n);
+                }}
+                onBlur={() => {
+                  const n = Math.min(1000, Math.max(1, Math.round(Number(exportLevelNumber) || 1)));
+                  setExportLevelNumber(n);
+                }}
+                className="abs-input abs-export-level-input"
+                aria-label="Export level number"
+              />
+            </div>
             <button
               className="abs-btn abs-btn-ghost"
               onClick={simulate}

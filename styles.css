@@ -469,6 +469,22 @@ input, button { color: inherit; }
   flex-shrink: 0;
 }
 .abs-footer-left { display: flex; gap: 6px; }
+.abs-export-level {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.abs-export-level-label {
+  font-size: 10px;
+  color: var(--text-2);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.abs-export-level-input {
+  width: 86px;
+  padding: 7px 8px;
+  text-align: center;
+}
 .abs-sim-speed {
   display: flex;
   align-items: center;
