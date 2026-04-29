@@ -190,20 +190,47 @@ function injectHazards(level, opts, rng) {
   }
 
   if (opts.moving) {
+    const occupied = new Set(tilesByKey.keys());
     const candidates = [...tilesByKey.values()].filter(t =>
       t.type === "normal" && `${t.x},${t.z}` !== goalKey && !startCells.includes(`${t.x},${t.z}`)
     );
-    const count = Math.min(3, Math.floor(candidates.length / 30));
-    for (let i = 0; i < count; i++) {
-      const idx = Math.floor(rng() * candidates.length);
-      const c = candidates.splice(idx, 1)[0];
-      if (!c) break;
-      c.type = "moving";
-      const axis = rng() < 0.5 ? "x" : "z";
-      const range = axis === "x"
-        ? [c.x, c.x + 1 + Math.floor(rng() * 2)]
-        : [c.z, c.z + 1 + Math.floor(rng() * 2)];
-      c.params = { axis, range, speed: +(0.8 + rng() * 1.5).toFixed(2) };
+    // shuffle so selection is random, not positional
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+    const needed = Math.min(3, Math.floor(candidates.length / 30));
+    let placed = 0;
+    for (const c of candidates) {
+      if (placed >= needed) break;
+      const moveLen = 1 + Math.floor(rng() * 2); // 1–2 cells
+      // try all 4 directions in random order; pick first with clear void
+      const dirs = [
+        { axis: "x", dir:  1 },
+        { axis: "x", dir: -1 },
+        { axis: "z", dir:  1 },
+        { axis: "z", dir: -1 },
+      ].sort(() => rng() - 0.5);
+      for (const { axis, dir } of dirs) {
+        // every destination cell must be void (not in tilesByKey)
+        let clear = true;
+        for (let s = 1; s <= moveLen; s++) {
+          const nx = c.x + (axis === "x" ? dir * s : 0);
+          const nz = c.z + (axis === "z" ? dir * s : 0);
+          if (occupied.has(`${nx},${nz}`)) { clear = false; break; }
+        }
+        if (!clear) continue;
+        c.type = "moving";
+        const base = axis === "x" ? c.x : c.z;
+        const end  = base + dir * moveLen;
+        c.params = {
+          axis,
+          range: dir > 0 ? [base, end] : [end, base],
+          speed: +(0.8 + rng() * 1.5).toFixed(2),
+        };
+        placed++;
+        break;
+      }
     }
   }
 
@@ -269,7 +296,14 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
     return { pathStates, solution: path.solution, visitedCells };
   }
 
-  const islands = rawPaths.map((p, i) => translatePath(p, offsets[i]));
+  const islands = rawPaths.map((p, i) => {
+    const tr = translatePath(p, offsets[i]);
+    const firstV = tr.pathStates.findIndex(s => s.o === 'V');
+    if (firstV > 0) {
+      return { ...tr, pathStates: tr.pathStates.slice(firstV), solution: tr.solution.slice(firstV) };
+    }
+    return tr;
+  });
 
   // Inject hazards per island (no portals yet)
   const allTiles = new Map();
