@@ -10,6 +10,7 @@
     "gen:wave1": "node scripts/generate-wave.mjs 1",
     "gen:wave2": "node scripts/generate-wave.mjs 2",
     "gen:wave3": "node scripts/generate-wave.mjs 3",
-    "gen:all": "npm run gen:wave1 && npm run gen:wave2 && npm run gen:wave3"
+    "gen:all": "npm run gen:wave1 && npm run gen:wave2 && npm run gen:wave3",
+    "gen:50": "node scripts/generate-all.mjs"
   }
 }

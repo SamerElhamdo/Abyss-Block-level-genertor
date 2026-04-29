@@ -1,21 +1,16 @@
 {
   "level_metadata": {
     "id": "lvl_1",
-    "difficulty": 2,
-    "seed": 3414213987,
-    "steps_to_solve": 20,
-    "generator": {
-      "wave": 1,
-      "wave_label": "wave1_plain",
-      "slot_in_set": 1,
-      "slot_global": 1,
-      "base_seed": 4747,
-      "mechanics": {
-        "fragile": false,
-        "crumbling": false,
-        "moving": false,
-        "portal": false
-      }
+    "difficulty": 1,
+    "seed": 3425075887,
+    "steps_to_solve": 14,
+    "slot": 1,
+    "phase": "tutorial",
+    "mechanics": {
+      "fragile": false,
+      "crumbling": false,
+      "moving": false,
+      "portal": false
     }
   },
   "world_settings": {
@@ -24,10 +19,10 @@
   },
   "start_state": {
     "pos": {
-      "x": 3,
-      "z": 0
+      "x": -5,
+      "z": 3
     },
-    "orientation": "horizontal-z"
+    "orientation": "horizontal-x"
   },
   "hole_pos": {
     "x": 0,
@@ -35,68 +30,48 @@
   },
   "tiles": [
     {
-      "x": 3,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 2,
+      "x": -5,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -4,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -6,
       "z": 4,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -6,
       "z": 5,
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": 5,
+      "x": -6,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": 5,
+      "x": -5,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": 4,
+      "x": -4,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 4,
+      "x": -3,
+      "z": 6,
       "type": "normal"
     },
     {
@@ -105,8 +80,8 @@
       "type": "normal"
     },
     {
-      "x": -2,
-      "z": 4,
+      "x": -3,
+      "z": 5,
       "type": "normal"
     },
     {
@@ -125,8 +100,8 @@
       "type": "normal"
     },
     {
-      "x": -1,
-      "z": 1,
+      "x": -2,
+      "z": 2,
       "type": "normal"
     },
     {
@@ -135,67 +110,37 @@
       "type": "normal"
     },
     {
+      "x": -2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
       "x": -1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 1,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": -1,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": -3,
-      "type": "normal"
-    },
-    {
       "x": 2,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 1,
       "z": 0,
       "type": "normal"
     },
@@ -209,22 +154,16 @@
     "left",
     "down",
     "down",
-    "down",
-    "left",
+    "right",
+    "right",
     "up",
-    "left",
-    "left",
     "up",
     "right",
     "up",
     "up",
-    "up",
+    "right",
     "right",
     "up",
-    "right",
-    "down",
-    "down",
-    "down",
     "left"
   ]
 }

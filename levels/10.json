@@ -1,21 +1,16 @@
 {
   "level_metadata": {
     "id": "lvl_10",
-    "difficulty": 4,
-    "seed": 1389251803,
-    "steps_to_solve": 32,
-    "generator": {
-      "wave": 1,
-      "wave_label": "wave1_plain",
-      "slot_in_set": 10,
-      "slot_global": 10,
-      "base_seed": 4747,
-      "mechanics": {
-        "fragile": false,
-        "crumbling": false,
-        "moving": false,
-        "portal": false
-      }
+    "difficulty": 3,
+    "seed": 3059337102,
+    "steps_to_solve": 26,
+    "slot": 10,
+    "phase": "tutorial",
+    "mechanics": {
+      "fragile": false,
+      "crumbling": false,
+      "moving": false,
+      "portal": false
     }
   },
   "world_settings": {
@@ -24,8 +19,8 @@
   },
   "start_state": {
     "pos": {
-      "x": -7,
-      "z": -2
+      "x": 3,
+      "z": 8
     },
     "orientation": "horizontal-x"
   },
@@ -35,247 +30,192 @@
   },
   "tiles": [
     {
-      "x": -7,
-      "z": -2,
+      "x": 3,
+      "z": 8,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -2,
+      "x": 4,
+      "z": 8,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -2,
+      "x": 3,
+      "z": 9,
       "type": "normal"
     },
     {
-      "x": -10,
-      "z": -2,
+      "x": 4,
+      "z": 9,
       "type": "normal"
     },
     {
-      "x": -9,
-      "z": -2,
+      "x": 5,
+      "z": 9,
       "type": "normal"
     },
     {
-      "x": -10,
-      "z": -3,
+      "x": 5,
+      "z": 10,
       "type": "normal"
     },
     {
-      "x": -9,
-      "z": -3,
+      "x": 5,
+      "z": 11,
       "type": "normal"
     },
     {
-      "x": -10,
-      "z": -4,
+      "x": 4,
+      "z": 10,
       "type": "normal"
     },
     {
-      "x": -9,
-      "z": -4,
+      "x": 4,
+      "z": 11,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -4,
+      "x": 4,
+      "z": 7,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -3,
+      "x": 3,
+      "z": 7,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": -3,
+      "x": 2,
+      "z": 7,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": -4,
+      "x": 2,
+      "z": 8,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": -6,
+      "x": 1,
+      "z": 7,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": -5,
+      "x": 1,
+      "z": 8,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -6,
+      "x": 1,
+      "z": 9,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -5,
+      "x": 2,
+      "z": 9,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": -7,
+      "x": 2,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": -7,
+      "x": 3,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -7,
+      "x": 4,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -6,
+      "x": 4,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -5,
+      "x": 4,
+      "z": 5,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -4,
+      "x": 5,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": -5,
-      "z": -4,
+      "x": 5,
+      "z": 5,
       "type": "normal"
     },
     {
-      "x": -5,
-      "z": -3,
+      "x": 6,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": -5,
-      "z": -2,
+      "x": 6,
+      "z": 5,
       "type": "normal"
     },
     {
-      "x": -4,
-      "z": -3,
+      "x": 6,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": -4,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": -2,
+      "x": 6,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": -3,
-      "z": 0,
+      "x": 6,
+      "z": 2,
       "type": "normal"
     },
     {
-      "x": -3,
+      "x": 5,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": -4,
-      "z": 0,
+      "x": 5,
+      "z": 2,
       "type": "normal"
     },
     {
-      "x": -4,
+      "x": 4,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": -5,
-      "z": 0,
+      "x": 4,
+      "z": 2,
       "type": "normal"
     },
     {
-      "x": -5,
+      "x": 3,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": -6,
+      "x": 3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 3,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": 1,
+      "x": 1,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -5,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": -1,
+      "x": 2,
       "z": 0,
       "type": "normal"
     },
@@ -286,37 +226,31 @@
     }
   ],
   "solution_data": [
-    "left",
-    "left",
-    "up",
-    "up",
-    "right",
     "down",
     "right",
+    "down",
+    "left",
     "up",
     "up",
     "left",
+    "left",
+    "left",
+    "down",
+    "right",
+    "up",
+    "up",
     "up",
     "right",
-    "down",
-    "down",
-    "down",
-    "right",
-    "down",
+    "up",
     "right",
     "right",
-    "right",
-    "down",
-    "down",
-    "left",
+    "up",
+    "up",
     "left",
     "left",
     "left",
     "up",
-    "right",
-    "right",
-    "right",
-    "down",
-    "right"
+    "left",
+    "left"
   ]
 }
