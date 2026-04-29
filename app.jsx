@@ -12,22 +12,37 @@ const PRESETS = [
   { name: "ABYSS",      seed: 9999, difficulty: 10, mech: { fragile: true, crumbling: true,  moving: true,  portal: true  } },
 ];
 
+const DIRS = ["north", "east", "south", "west"];
+const DIR_LABEL = { north: "N", east: "E", south: "S", west: "W" };
+const DIR_AR    = { north: "شمال", east: "شرق", south: "جنوب", west: "غرب" };
+
 function App() {
   const [difficulty, setDifficulty] = useState(5);
   const [seed, setSeed] = useState(4747);
   const [gridSize, setGridSize] = useState(40);
   const [mech, setMech] = useState({ fragile: true, crumbling: false, moving: false, portal: false });
+  // Directional expansion: up to 2 cardinal directions + spread angle (total cone width in degrees)
+  const [expansionDirs, setExpansionDirs] = useState([]);
+  const [spreadDeg, setSpreadDeg] = useState(90);
   const [level, setLevel] = useState(null);
   const [block, setBlock] = useState(null);
   const [simulating, setSimulating] = useState(false);
   const [simStep, setSimStep] = useState(0);
   const [simSpeed, setSimSpeed] = useState(1);
   const [exportLevelNumber, setExportLevelNumber] = useState(1);
-  const [history, setHistory] = useState([]); // log of generation events
+  const [history, setHistory] = useState([]);
   const [activePreset, setActivePreset] = useState("STANDARD");
   const fileInputRef = useRef(null);
   const simRafRef = useRef(0);
   const simSpeedRef = useRef(1);
+
+  const toggleDir = useCallback((d) => {
+    setExpansionDirs(prev => {
+      if (prev.includes(d)) return prev.filter(x => x !== d);
+      if (prev.length >= 2) return [prev[1], d]; // keep last + new
+      return [...prev, d];
+    });
+  }, []);
 
   useEffect(() => {
     simSpeedRef.current = simSpeed;
@@ -37,15 +52,20 @@ function App() {
   const generate = useCallback(() => {
     const log = [];
     const t0 = performance.now();
-    log.push({ t: 0, msg: `[INIT]   seed=${seed} difficulty=${difficulty} grid=${gridSize}` });
+    const dirStr = expansionDirs.length ? expansionDirs.join("+") : "free";
+    log.push({ t: 0, msg: `[INIT]   seed=${seed} difficulty=${difficulty} grid=${gridSize} dir=${dirStr} spread=${spreadDeg}°` });
     log.push({ t: 0, msg: `[STAGE A] Reverse random walk…` });
+    const expansionOpts = { directions: expansionDirs, spreadDeg };
     const lvl = window.AbyssEngine.buildLevel({
-      difficulty, seed, gridSize, mechanics: mech,
+      difficulty, seed, gridSize, mechanics: mech, expansionOpts,
     });
     const dt = (performance.now() - t0).toFixed(1);
     log.push({ t: dt, msg: `[STAGE A] golden path: ${lvl._internal.pathStates.length} states, ${lvl.solution_data.length} moves` });
     const counts = lvl.tiles.reduce((a, t) => (a[t.type] = (a[t.type] || 0) + 1, a), {});
     log.push({ t: dt, msg: `[STAGE B] tiles: ${Object.entries(counts).map(([k, v]) => `${k}=${v}`).join(" ")}` });
+    if (lvl.level_metadata.island_count) {
+      log.push({ t: dt, msg: `[ISLAND] ${lvl.level_metadata.island_count} islands generated` });
+    }
     log.push({ t: dt, msg: `[DONE]   ready in ${dt}ms` });
     setLevel(lvl);
     setHistory(log);
@@ -53,7 +73,7 @@ function App() {
     setSimStep(0);
     const s = lvl._internal.pathStates[0];
     setBlock({ x: s.x, z: s.z, o: s.o });
-  }, [difficulty, seed, gridSize, mech]);
+  }, [difficulty, seed, gridSize, mech, expansionDirs, spreadDeg]);
 
   // ---- Clear ----
   const clearAll = () => {
@@ -235,6 +255,44 @@ function App() {
               className="abs-slider"
             />
           </Field>
+
+          <Field label={<BiText en="EXPANSION DIR" ar="اتجاه التوسع" />}
+                 value={expansionDirs.length ? expansionDirs.map(d => DIR_LABEL[d]).join("+") : "FREE"}>
+            <div className="abs-dir-grid">
+              {DIRS.map(d => (
+                <button
+                  key={d}
+                  className={`abs-dir-btn ${expansionDirs.includes(d) ? "active" : ""}`}
+                  onClick={() => toggleDir(d)}
+                  title={DIR_AR[d]}
+                >
+                  <span className="abs-dir-en">{DIR_LABEL[d]}</span>
+                  <span className="abs-dir-ar">{DIR_AR[d]}</span>
+                </button>
+              ))}
+              <button
+                className={`abs-dir-btn abs-dir-clear ${expansionDirs.length === 0 ? "active" : ""}`}
+                onClick={() => setExpansionDirs([])}
+                title="حر / Free"
+              >
+                <span className="abs-dir-en">✕</span>
+                <span className="abs-dir-ar">حر</span>
+              </button>
+            </div>
+          </Field>
+
+          {expansionDirs.length > 0 && (
+            <Field label={<BiText en="SPREAD ANGLE" ar="زاوية الانتشار" />} value={`${spreadDeg}°`}>
+              <input
+                type="range" min="20" max="180" step="5" value={spreadDeg}
+                onChange={(e) => setSpreadDeg(+e.target.value)}
+                className="abs-slider"
+              />
+              <div className="abs-spread-hint abs-mono">
+                {spreadDeg <= 40 ? "▸ very narrow" : spreadDeg <= 80 ? "▸ focused" : spreadDeg <= 130 ? "▸ wide" : "▸ open"}
+              </div>
+            </Field>
+          )}
         </Section>
 
         <Section title={<BiText en="02 · MECHANICS" ar="الميكانيكيات" />}>
@@ -257,7 +315,7 @@ function App() {
             color="#b380ff"
           />
           <Toggle
-            label="Wormhole portals" labelAr="بوابات دودية" hint="Linked teleport pairs" hintAr="أزواج انتقال مترابطة"
+            label="Island portals" labelAr="جزر منفصلة" hint="2–4 islands via portals" hintAr="٢–٤ جزر مربوطة بالبوابات"
             checked={mech.portal}
             onChange={(v)=>setMech({...mech, portal: v})}
             color="#66e7f3"
@@ -434,6 +492,9 @@ function App() {
               <Stat k={<BiText en="CRUMBLING" ar="متداعي" />} v={stats.counts.crumbling || 0} dotColor="#ff5868" />
               <Stat k={<BiText en="MOVING" ar="متحرك" />}    v={stats.counts.moving || 0} dotColor="#b380ff" />
               <Stat k={<BiText en="PORTAL" ar="بوابة" />}    v={stats.counts.portal || 0} dotColor="#66e7f3" />
+              {level.level_metadata.island_count && (
+                <Stat k={<BiText en="ISLANDS" ar="الجزر" />} v={level.level_metadata.island_count} accent />
+              )}
             </>
           ) : (
             <div className="abs-empty-line">— no level <span className="abs-ar">لا يوجد مستوى</span> —</div>
