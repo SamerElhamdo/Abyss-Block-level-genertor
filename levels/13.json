@@ -2,7 +2,7 @@
   "level_metadata": {
     "id": "lvl_13",
     "difficulty": 4,
-    "seed": 325852363,
+    "seed": 2966365076,
     "steps_to_solve": 32,
     "slot": 13,
     "phase": "fragile",
@@ -20,8 +20,8 @@
   },
   "start_state": {
     "pos": {
-      "x": -2,
-      "z": 2
+      "x": -11,
+      "z": 7
     },
     "orientation": "vertical"
   },
@@ -31,43 +31,33 @@
   },
   "tiles": [
     {
-      "x": -2,
-      "z": 2,
+      "x": -11,
+      "z": 7,
       "type": "normal"
     },
     {
-      "x": -4,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": -3,
-      "z": 2,
+      "x": -11,
+      "z": 5,
       "type": "normal"
     },
     {
-      "x": -5,
-      "z": 2,
+      "x": -11,
+      "z": 6,
       "type": "normal"
     },
     {
-      "x": -7,
-      "z": 2,
+      "x": -11,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": -6,
-      "z": 2,
+      "x": -10,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": -8,
-      "z": 3,
+      "x": -9,
+      "z": 4,
       "type": "normal"
     },
     {
@@ -76,8 +66,13 @@
       "type": "normal"
     },
     {
-      "x": -8,
-      "z": 5,
+      "x": -7,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": 4,
       "type": "normal"
     },
     {
@@ -88,7 +83,7 @@
     {
       "x": -6,
       "z": 5,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": -5,
@@ -96,183 +91,168 @@
       "type": "normal"
     },
     {
-      "x": -4,
-      "z": 5,
+      "x": -5,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": -3,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": 6,
-      "type": "fragile"
-    },
-    {
-      "x": -3,
-      "z": 6,
+      "x": -5,
+      "z": 4,
       "type": "normal"
     },
     {
       "x": -4,
-      "z": 7,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 7,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": 8,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 8,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": 9,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 9,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 9,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 9,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 8,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 7,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 0,
       "z": 3,
       "type": "fragile"
     },
     {
-      "x": 0,
+      "x": -4,
       "z": 4,
       "type": "normal"
     },
     {
-      "x": -1,
+      "x": -4,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 6,
+      "type": "fragile"
+    },
+    {
+      "x": -10,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -9,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": -1,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": -2,
+      "x": -8,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": -2,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": -3,
+      "x": -7,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": -3,
-      "z": 4,
+      "x": -7,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": -1,
+      "x": -7,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": -6,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -6,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": -2,
+      "x": -5,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": -1,
-      "z": 1,
+      "x": -5,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": 0,
       "type": "normal"
     },
     {
@@ -283,7 +263,7 @@
     {
       "x": -1,
       "z": 0,
-      "type": "fragile"
+      "type": "normal"
     },
     {
       "x": 0,
@@ -292,30 +272,19 @@
     }
   ],
   "solution_data": [
-    "left",
-    "left",
-    "left",
-    "left",
-    "down",
-    "down",
+    "up",
+    "up",
     "right",
-    "right",
-    "right",
-    "down",
-    "down",
-    "down",
-    "down",
-    "down",
     "right",
     "right",
     "down",
     "right",
     "up",
+    "right",
+    "down",
     "left",
-    "up",
-    "up",
-    "up",
-    "up",
+    "left",
+    "down",
     "left",
     "left",
     "left",
@@ -323,6 +292,17 @@
     "right",
     "up",
     "up",
+    "right",
+    "up",
+    "right",
+    "right",
+    "up",
+    "up",
+    "left",
+    "down",
+    "right",
+    "right",
+    "right",
     "right"
   ]
 }

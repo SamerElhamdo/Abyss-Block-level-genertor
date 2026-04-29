@@ -2,9 +2,9 @@
   "level_metadata": {
     "id": "lvl_49",
     "difficulty": 10,
-    "seed": 2789528391,
-    "steps_to_solve": 49,
-    "island_count": 2,
+    "seed": 627914773,
+    "steps_to_solve": 47,
+    "island_count": 3,
     "slot": 49,
     "phase": "abyss",
     "mechanics": {
@@ -22,73 +22,18 @@
   },
   "start_state": {
     "pos": {
-      "x": 1,
-      "z": 6
+      "x": 2,
+      "z": 0
     },
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 21,
-    "z": -6
+    "x": 46,
+    "z": -3
   },
   "tiles": [
     {
-      "x": 1,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 4,
-      "type": "crumbling"
-    },
-    {
-      "x": 1,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 3,
-      "type": "normal"
-    },
-    {
       "x": 2,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 3,
-      "type": "crumbling"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
       "z": 0,
       "type": "normal"
     },
@@ -105,12 +50,12 @@
     {
       "x": 3,
       "z": -1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 4,
       "z": -1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 2,
@@ -118,373 +63,434 @@
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 3,
-      "type": "normal"
-    },
-    {
       "x": 2,
-      "z": 1,
+      "z": -3,
       "type": "fragile"
     },
     {
       "x": 2,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 2,
-      "z": 0,
+      "z": -2,
       "type": "normal"
     },
     {
       "x": 2,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": -4,
+      "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 1,
       "z": -2,
       "type": "fragile"
     },
     {
       "x": 2,
-      "z": -3,
+      "z": 1,
       "type": "normal"
     },
     {
       "x": 2,
-      "z": -5,
+      "z": 2,
       "type": "normal"
     },
     {
       "x": 2,
-      "z": -4,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": -5,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": -4,
+      "x": 1,
+      "z": 2,
       "type": "fragile"
     },
     {
-      "x": 4,
-      "z": -5,
+      "x": 1,
+      "z": 3,
       "type": "fragile"
     },
     {
-      "x": 4,
-      "z": -4,
-      "type": "normal"
+      "x": 0,
+      "z": 2,
+      "type": "fragile"
     },
     {
-      "x": 5,
-      "z": -5,
-      "type": "normal"
+      "x": 0,
+      "z": 3,
+      "type": "fragile"
     },
     {
-      "x": 5,
-      "z": -4,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": -6,
+      "x": 0,
+      "z": 1,
       "type": "portal",
       "target": {
-        "x": 28,
-        "z": 6
+        "x": 18,
+        "z": 2
       }
     },
     {
-      "x": 28,
-      "z": 6,
+      "x": 18,
+      "z": 2,
       "type": "portal",
       "target": {
-        "x": 5,
-        "z": -6
+        "x": 0,
+        "z": 1
       }
     },
     {
-      "x": 26,
-      "z": 6,
+      "x": 18,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 27,
-      "z": 6,
-      "type": "fragile"
-    },
-    {
-      "x": 26,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 27,
-      "z": 5,
+      "x": 18,
+      "z": 4,
       "type": "crumbling"
     },
     {
-      "x": 25,
-      "z": 5,
+      "x": 19,
+      "z": 3,
       "type": "normal"
     },
     {
+      "x": 19,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 20,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 20,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": 21,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 21,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 21,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
       "x": 23,
-      "z": 5,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 23,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 23,
+      "z": 0,
       "type": "normal"
     },
     {
       "x": 24,
-      "z": 5,
-      "type": "crumbling"
-    },
-    {
-      "x": 22,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": 4,
-      "type": "fragile"
-    },
-    {
-      "x": 21,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": 4,
-      "type": "fragile"
-    },
-    {
-      "x": 21,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 19,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 20,
-      "z": 5,
-      "type": "crumbling"
-    },
-    {
-      "x": 18,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 18,
-      "z": 3,
-      "type": "fragile"
-    },
-    {
-      "x": 18,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 18,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 19,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 20,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 19,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 20,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 18,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 16,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 17,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 16,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 17,
+      "x": 25,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 18,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 19,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 20,
+      "x": 26,
       "z": 0,
       "type": "fragile"
     },
     {
-      "x": 21,
-      "z": 0,
+      "x": 25,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 21,
+      "x": 26,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 25,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 21,
-      "z": -1,
+      "x": 26,
+      "z": -2,
       "type": "crumbling"
     },
     {
-      "x": 21,
+      "x": 25,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 26,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 21,
-      "z": -5,
+      "x": 25,
+      "z": -4,
       "type": "normal"
     },
     {
-      "x": 21,
+      "x": 26,
       "z": -4,
+      "type": "fragile"
+    },
+    {
+      "x": 27,
+      "z": -4,
+      "type": "portal",
+      "target": {
+        "x": 41,
+        "z": -2
+      }
+    },
+    {
+      "x": 41,
+      "z": -2,
+      "type": "portal",
+      "target": {
+        "x": 27,
+        "z": -4
+      }
+    },
+    {
+      "x": 39,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 40,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 39,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 40,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 41,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 41,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 41,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 42,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 43,
+      "z": 0,
       "type": "crumbling"
     },
     {
-      "x": 21,
-      "z": -6,
+      "x": 44,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 45,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 46,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 45,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 46,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 45,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 46,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 45,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 46,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 47,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 47,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 47,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 47,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 47,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 47,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 46,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 46,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 46,
+      "z": -3,
       "type": "normal"
     }
   ],
   "solution_data": [
-    "up",
-    "up",
-    "right",
-    "right",
-    "up",
     "right",
     "up",
     "left",
     "up",
-    "left",
+    "up",
     "left",
     "down",
     "down",
+    "right",
     "down",
     "down",
-    "right",
-    "up",
-    "up",
-    "up",
-    "up",
-    "up",
-    "right",
-    "right",
-    "right",
-    "up",
-    "left",
-    "up",
-    "left",
-    "left",
-    "left",
-    "up",
-    "left",
     "down",
     "left",
     "left",
     "up",
+    "down",
+    "right",
+    "right",
+    "right",
     "up",
     "right",
+    "up",
+    "up",
+    "right",
+    "right",
+    "up",
+    "up",
+    "up",
+    "up",
+    "right",
+    "left",
+    "up",
+    "right",
+    "down",
+    "down",
+    "right",
+    "right",
+    "right",
+    "down",
+    "down",
+    "down",
+    "right",
+    "up",
+    "up",
     "up",
     "left",
-    "left",
-    "up",
-    "right",
-    "right",
-    "right",
-    "up",
-    "up",
-    "up",
     "up"
   ]
 }

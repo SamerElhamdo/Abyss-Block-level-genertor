@@ -2,7 +2,7 @@
   "level_metadata": {
     "id": "lvl_36",
     "difficulty": 8,
-    "seed": 2118406163,
+    "seed": 983444173,
     "steps_to_solve": 56,
     "slot": 36,
     "phase": "moving",
@@ -21,10 +21,10 @@
   },
   "start_state": {
     "pos": {
-      "x": -15,
-      "z": 10
+      "x": -13,
+      "z": -6
     },
-    "orientation": "horizontal-x"
+    "orientation": "horizontal-z"
   },
   "hole_pos": {
     "x": 0,
@@ -32,397 +32,472 @@
   },
   "tiles": [
     {
-      "x": -15,
-      "z": 10,
+      "x": -13,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -6,
+      "type": "crumbling"
+    },
+    {
+      "x": -12,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -7,
       "type": "normal"
     },
     {
       "x": -14,
-      "z": 10,
+      "z": -7,
+      "type": "fragile"
+    },
+    {
+      "x": -13,
+      "z": -7,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": -7,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": -9,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": -8,
       "type": "normal"
     },
     {
       "x": -16,
-      "z": 10,
+      "z": -9,
       "type": "crumbling"
     },
     {
       "x": -16,
+      "z": -8,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": -7,
+      "type": "crumbling"
+    },
+    {
+      "x": -16,
+      "z": -6,
+      "type": "fragile"
+    },
+    {
+      "x": -16,
+      "z": -5,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": -5,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": -12,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": -13,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": -14,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": -16,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": -16,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": -16,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -15,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": -15,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": -14,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": -15,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": -14,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": -13,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": -13,
+      "z": 5,
+      "type": "fragile"
+    },
+    {
+      "x": -13,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": 6,
+      "type": "crumbling"
+    },
+    {
+      "x": -16,
+      "z": 7,
+      "type": "crumbling"
+    },
+    {
+      "x": -16,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": -16,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 10,
+      "type": "fragile"
+    },
+    {
+      "x": -13,
       "z": 11,
-      "type": "crumbling"
-    },
-    {
-      "x": -16,
-      "z": 12,
-      "type": "normal"
-    },
-    {
-      "x": -16,
-      "z": 13,
-      "type": "crumbling"
-    },
-    {
-      "x": -16,
-      "z": 14,
-      "type": "fragile"
-    },
-    {
-      "x": -16,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -16,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -15,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -14,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -15,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -14,
-      "z": 15,
-      "type": "normal"
-    },
-    {
-      "x": -15,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -14,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -13,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -13,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -13,
-      "z": 16,
-      "type": "fragile"
-    },
-    {
-      "x": -12,
-      "z": 15,
       "type": "normal"
     },
     {
       "x": -12,
-      "z": 14,
-      "type": "fragile"
-    },
-    {
-      "x": -13,
-      "z": 13,
+      "z": 10,
       "type": "fragile"
     },
     {
       "x": -12,
-      "z": 13,
+      "z": 11,
       "type": "normal"
     },
     {
-      "x": -13,
-      "z": 12,
-      "type": "fragile"
-    },
-    {
       "x": -12,
-      "z": 12,
-      "type": "fragile"
+      "z": 9,
+      "type": "normal"
     },
     {
       "x": -11,
-      "z": 12,
+      "z": 9,
       "type": "normal"
     },
     {
       "x": -10,
-      "z": 12,
-      "type": "fragile"
-    },
-    {
-      "x": -9,
-      "z": 12,
-      "type": "fragile"
-    },
-    {
-      "x": -10,
-      "z": 13,
+      "z": 9,
       "type": "normal"
     },
     {
       "x": -9,
-      "z": 13,
-      "type": "normal"
-    },
-    {
-      "x": -10,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -9,
-      "z": 14,
+      "z": 9,
       "type": "normal"
     },
     {
       "x": -8,
-      "z": 14,
-      "type": "normal"
+      "z": 9,
+      "type": "fragile"
     },
     {
       "x": -7,
-      "z": 14,
+      "z": 9,
       "type": "normal"
     },
     {
       "x": -6,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -7,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -6,
-      "z": 15,
-      "type": "normal"
-    },
-    {
-      "x": -7,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -6,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -8,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -8,
-      "z": 15,
-      "type": "normal"
-    },
-    {
-      "x": -5,
-      "z": 14,
-      "type": "crumbling"
-    },
-    {
-      "x": -5,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -4,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -4,
-      "z": 15,
-      "type": "crumbling"
-    },
-    {
-      "x": -4,
-      "z": 16,
-      "type": "crumbling"
-    },
-    {
-      "x": -3,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": 16,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 15,
-      "type": "fragile"
-    },
-    {
-      "x": -2,
-      "z": 15,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 14,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": 14,
-      "type": "fragile"
-    },
-    {
-      "x": -1,
-      "z": 14,
-      "type": "crumbling"
-    },
-    {
-      "x": -1,
-      "z": 12,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 13,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 11,
+      "z": 9,
       "type": "moving",
       "params": {
         "axis": "z",
         "range": [
           9,
-          11
+          10
         ],
-        "speed": 1.94
+        "speed": 1.73
       }
     },
     {
-      "x": -2,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": -3,
-      "z": 12,
+      "x": -5,
+      "z": 9,
       "type": "fragile"
     },
     {
-      "x": -2,
-      "z": 12,
-      "type": "normal"
+      "x": -4,
+      "z": 9,
+      "type": "fragile"
     },
     {
-      "x": -3,
-      "z": 13,
-      "type": "normal"
-    },
-    {
-      "x": -2,
-      "z": 13,
-      "type": "normal"
-    },
-    {
-      "x": -1,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": -1,
+      "x": -5,
       "z": 8,
       "type": "normal"
     },
     {
-      "x": -1,
-      "z": 9,
-      "type": "normal"
+      "x": -4,
+      "z": 8,
+      "type": "fragile"
     },
     {
-      "x": 0,
+      "x": -6,
       "z": 8,
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": 9,
-      "type": "crumbling"
+      "x": -6,
+      "z": 6,
+      "type": "normal"
     },
     {
-      "x": 0,
+      "x": -6,
       "z": 7,
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 0,
+      "x": -5,
       "z": 6,
-      "type": "fragile"
-    },
-    {
-      "x": 0,
-      "z": 4,
       "type": "crumbling"
     },
     {
-      "x": 0,
-      "z": 2,
-      "type": "fragile"
+      "x": -5,
+      "z": 7,
+      "type": "normal"
     },
     {
-      "x": 0,
+      "x": -4,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -3,
       "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": -3,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": 0,
-      "z": 1,
+      "x": -3,
+      "z": 2,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": 1,
-      "type": "crumbling"
+      "x": -3,
+      "z": 0,
+      "type": "fragile"
     },
     {
-      "x": 2,
+      "x": -3,
       "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": -3,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 1,
+      "x": -2,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": -1,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": -2,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -1,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 0,
@@ -431,61 +506,61 @@
     }
   ],
   "solution_data": [
+    "right",
+    "up",
     "left",
-    "down",
-    "down",
-    "down",
-    "down",
-    "right",
-    "up",
-    "up",
-    "right",
-    "down",
     "left",
     "up",
     "left",
     "down",
+    "down",
     "right",
+    "down",
+    "right",
+    "right",
+    "down",
+    "left",
+    "left",
+    "left",
+    "left",
+    "down",
+    "down",
+    "down",
     "right",
     "up",
     "up",
+    "right",
+    "down",
+    "down",
+    "down",
+    "down",
+    "left",
+    "left",
+    "down",
+    "down",
+    "right",
+    "right",
+    "down",
+    "right",
     "up",
     "right",
     "right",
-    "down",
-    "down",
     "right",
     "right",
-    "down",
-    "down",
+    "right",
+    "up",
     "left",
     "up",
     "right",
     "right",
     "right",
+    "up",
+    "up",
+    "up",
+    "up",
+    "up",
     "right",
     "down",
-    "right",
-    "up",
-    "up",
-    "right",
-    "up",
-    "up",
-    "left",
-    "down",
-    "down",
-    "right",
-    "up",
-    "up",
-    "up",
-    "right",
-    "up",
-    "up",
-    "up",
-    "up",
-    "up",
-    "right",
-    "up",
-    "left"
+    "right"
   ]
 }
