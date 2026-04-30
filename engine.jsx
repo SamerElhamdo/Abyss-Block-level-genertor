@@ -301,13 +301,17 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
     return { minX, maxX, minZ, maxZ };
   }
 
-  // Lay islands out left-to-right with a guaranteed gap of 10–14 tiles
   const GAP = 3 + Math.floor(rng() * 3); // 3–5 tiles between islands
-  let curX = 0;
-  const offsets = rawPaths.map(p => {
-    const bb = pathBBox(p);
+
+  // Lay islands right-to-left: island 0 (first visited) = easternmost.
+  // Path flows east→west within each island, so portal jumps continue leftward.
+  const bboxes = rawPaths.map(pathBBox);
+  const totalW = bboxes.reduce((s, bb) => s + (bb.maxX - bb.minX + 1), 0) + GAP * (islandCount - 1);
+  let curX = totalW;
+  const offsets = bboxes.map(bb => {
+    curX -= (bb.maxX - bb.minX + 1);
     const off = { x: curX - bb.minX, z: -Math.round((bb.minZ + bb.maxZ) / 2) };
-    curX += (bb.maxX - bb.minX + 1) + GAP;
+    curX -= GAP;
     return off;
   });
 

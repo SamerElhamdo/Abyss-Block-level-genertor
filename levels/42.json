@@ -48,16 +48,202 @@
   },
   "start_state": {
     "pos": {
-      "x": 6,
+      "x": 30,
       "z": 2
     },
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 22,
+    "x": 0,
     "z": -2
   },
   "tiles": [
+    {
+      "x": 30,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 28,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 29,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 28,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 29,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 28,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 29,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 27,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 28,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 29,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 26,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 26,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": -2,
+      "type": "portal",
+      "target": {
+        "x": 15,
+        "z": -1
+      }
+    },
+    {
+      "x": 15,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 24,
+        "z": -2
+      }
+    },
+    {
+      "x": 16,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 16,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 13,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 14,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": -2,
+      "type": "portal",
+      "target": {
+        "x": 8,
+        "z": -1
+      }
+    },
+    {
+      "x": 8,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 12,
+        "z": -2
+      }
+    },
+    {
+      "x": 8,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 2,
+      "type": "normal"
+    },
     {
       "x": 6,
       "z": 2,
@@ -69,42 +255,27 @@
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
       "x": 4,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": 4,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 3,
       "z": 0,
       "type": "normal"
     },
     {
       "x": 3,
-      "z": -1,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 4,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 5,
+      "x": 3,
       "z": -1,
       "type": "normal"
     },
@@ -130,177 +301,6 @@
     },
     {
       "x": 0,
-      "z": -2,
-      "type": "portal",
-      "target": {
-        "x": 13,
-        "z": -1
-      }
-    },
-    {
-      "x": 13,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 0,
-        "z": -2
-      }
-    },
-    {
-      "x": 14,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 10,
-      "z": -2,
-      "type": "portal",
-      "target": {
-        "x": 30,
-        "z": -1
-      }
-    },
-    {
-      "x": 30,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 10,
-        "z": -2
-      }
-    },
-    {
-      "x": 30,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 27,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 28,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 22,
       "z": -2,
       "type": "normal"
     }

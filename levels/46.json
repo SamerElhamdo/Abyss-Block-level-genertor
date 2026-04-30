@@ -50,156 +50,156 @@
   },
   "start_state": {
     "pos": {
-      "x": 9,
+      "x": 19,
       "z": 3
     },
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 15,
+    "x": 2,
     "z": -3
   },
   "tiles": [
     {
-      "x": 9,
+      "x": 19,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": 9,
+      "x": 19,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 9,
+      "x": 19,
       "z": 2,
       "type": "fragile"
     },
     {
-      "x": 9,
+      "x": 19,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 7,
+      "x": 17,
       "z": 0,
       "type": "crumbling"
     },
     {
-      "x": 8,
+      "x": 18,
       "z": 0,
       "type": "fragile"
     },
     {
-      "x": 6,
+      "x": 16,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": 13,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": 13,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": 13,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": 13,
       "z": 0,
       "type": "crumbling"
     },
     {
-      "x": 4,
+      "x": 14,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": 15,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 1,
+      "x": 11,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": 12,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 0,
+      "x": 10,
       "z": -3,
       "type": "portal",
       "target": {
-        "x": 19,
+        "x": 6,
         "z": -2
       }
     },
     {
-      "x": 19,
+      "x": 6,
       "z": -2,
       "type": "portal",
       "target": {
-        "x": 0,
+        "x": 10,
         "z": -3
       }
     },
     {
-      "x": 17,
+      "x": 4,
       "z": -2,
       "type": "fragile"
     },
     {
-      "x": 18,
+      "x": 5,
       "z": -2,
       "type": "fragile"
     },
     {
-      "x": 17,
+      "x": 4,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 18,
+      "x": 5,
       "z": -3,
       "type": "fragile"
     },
     {
-      "x": 16,
+      "x": 3,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 16,
+      "x": 3,
       "z": -2,
       "type": "fragile"
     },
     {
-      "x": 16,
+      "x": 3,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 15,
+      "x": 2,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 15,
+      "x": 2,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 15,
+      "x": 2,
       "z": -3,
       "type": "normal"
     }

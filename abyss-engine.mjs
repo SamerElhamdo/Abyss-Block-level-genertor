@@ -322,11 +322,18 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
   }
 
   const GAP = 3 + Math.floor(rng() * 3); // 3–5 tiles between islands
-  let curX = 0;
-  const offsets = rawPaths.map(p => {
-    const bb = pathBBox(p);
+
+  // Lay islands right-to-left so the directional flow is consistent:
+  // island 0 (first visited) = easternmost, each next island to its west.
+  // Within each island the path flows east→west (start east, portal-exit at origin/west),
+  // so portal jumps always go leftward and the level reads as one continuous westward path.
+  const bboxes = rawPaths.map(pathBBox);
+  const totalW = bboxes.reduce((s, bb) => s + (bb.maxX - bb.minX + 1), 0) + GAP * (islandCount - 1);
+  let curX = totalW;
+  const offsets = bboxes.map(bb => {
+    curX -= (bb.maxX - bb.minX + 1);
     const off = { x: curX - bb.minX, z: -Math.round((bb.minZ + bb.maxZ) / 2) };
-    curX += (bb.maxX - bb.minX + 1) + GAP;
+    curX -= GAP;
     return off;
   });
 
