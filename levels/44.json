@@ -2,9 +2,18 @@
   "level_metadata": {
     "id": "lvl_44",
     "difficulty": 9,
-    "seed": 3377911382,
-    "steps_to_solve": 44,
-    "island_count": 3,
+    "seed": 311230825,
+    "steps_to_solve": 27,
+    "island_count": 4,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 60,
+      "minZ": -2,
+      "maxZ": 2,
+      "width": 61,
+      "length": 5
+    },
+    "layout_dir": "20deg",
     "slot": 44,
     "phase": "islands",
     "mechanics": {
@@ -12,7 +21,26 @@
       "crumbling": false,
       "moving": false,
       "portal": true
-    }
+    },
+    "generator": {
+      "base_seed": 4747,
+      "attempts": 2,
+      "verified": true,
+      "dir_angle_deg": 20,
+      "spreadDeg": 70,
+      "deviationPct": 0.15,
+      "crossAxisLimit": 4
+    },
+    "tile_stats": {
+      "normal": 37,
+      "fragile": 0,
+      "crumbling": 0,
+      "moving": 0,
+      "portal": 3,
+      "total": 40,
+      "trap_density": 0
+    },
+    "computed_difficulty": 2.54
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -20,417 +48,256 @@
   },
   "start_state": {
     "pos": {
-      "x": 0,
-      "z": -2
+      "x": 8,
+      "z": 0
     },
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 47,
-    "z": -2
+    "x": 55,
+    "z": -1
   },
   "tiles": [
     {
-      "x": 0,
-      "z": -2,
+      "x": 8,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": -2,
+      "x": 6,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": -2,
+      "x": 7,
+      "z": 0,
       "type": "normal"
     },
     {
       "x": 5,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 6,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 7,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 7,
+      "x": 3,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 7,
-      "z": -2,
+      "x": 4,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 8,
-      "z": -2,
+      "x": 3,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 9,
-      "z": -2,
+      "x": 4,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 8,
-      "z": -3,
+      "x": 2,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 9,
-      "z": -3,
+      "x": 2,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 7,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 7,
+      "x": 2,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 7,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 8,
+      "x": 3,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 8,
-      "z": 2,
+      "x": 1,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 8,
-      "z": 0,
-      "type": "portal",
-      "target": {
-        "x": 23,
-        "z": -1
-      }
-    },
-    {
-      "x": 23,
+      "x": 0,
       "z": -1,
       "type": "portal",
       "target": {
-        "x": 8,
+        "x": 21,
         "z": 0
       }
     },
     {
-      "x": 21,
+      "x": 22,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 23,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 22,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 22,
+      "x": 23,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 21,
       "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 20,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 20,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": -3,
       "type": "portal",
       "target": {
-        "x": 37,
-        "z": 1
+        "x": 42,
+        "z": -1
       }
     },
     {
-      "x": 37,
-      "z": 1,
-      "type": "portal",
-      "target": {
-        "x": 26,
-        "z": -3
-      }
+      "x": 40,
+      "z": -1,
+      "type": "normal"
     },
     {
-      "x": 38,
-      "z": 1,
+      "x": 41,
+      "z": -1,
       "type": "normal"
     },
     {
       "x": 39,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 40,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 40,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 40,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 41,
+      "x": 37,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 41,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 41,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 42,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 43,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 42,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 43,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 42,
+      "x": 38,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 43,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 44,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 45,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 46,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 47,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 48,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 49,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 48,
+      "x": 37,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 49,
+      "x": 38,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 47,
+      "x": 36,
       "z": -2,
+      "type": "portal",
+      "target": {
+        "x": 57,
+        "z": 1
+      }
+    },
+    {
+      "x": 57,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 57,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 58,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 58,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 58,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 59,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 60,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 59,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 60,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 59,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 60,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 56,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 55,
+      "z": -1,
       "type": "normal"
     }
   ],
   "solution_data": [
-    "right",
-    "right",
-    "right",
-    "right",
-    "down",
-    "right",
-    "up",
-    "right",
+    "left",
+    "left",
+    "left",
     "up",
     "left",
-    "down",
-    "down",
     "down",
     "right",
     "up",
     "left",
     "left",
-    "down",
+    "right",
+    "up",
+    "left",
+    "left",
+    "left",
+    "left",
+    "up",
+    "left",
+    "up",
     "right",
     "down",
     "right",
     "up",
     "up",
     "left",
-    "up",
-    "right",
-    "right",
-    "up",
-    "right",
-    "right",
-    "right",
-    "right",
-    "up",
-    "right",
-    "down",
-    "right",
-    "up",
-    "up",
-    "right",
-    "right",
-    "right",
-    "right",
-    "up",
+    "left",
     "left"
   ]
 }

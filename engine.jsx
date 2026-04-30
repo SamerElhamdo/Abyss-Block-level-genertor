@@ -76,15 +76,33 @@ function stateKey(s) { return `${s.x},${s.z},${s.o}`; }
 // Constrains the walk to a directional cone centered at the goal (origin).
 // directions is an array of 0–2 cardinal strings; spreadDeg is the TOTAL cone width.
 function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
-  const { directions = [], spreadDeg = 360 } = expansionOpts;
+  const {
+    directions     = [],
+    spreadDeg      = 360,
+    deviationPct   = 0,
+    crossAxisLimit = 0,
+    dirAngleDeg    = undefined,
+  } = expansionOpts;
 
   // atan2(z, x) coordinate space: east=0, south=PI/2, west=±PI, north=-PI/2
   const DIR_ANGLE = { east: 0, south: Math.PI / 2, west: Math.PI, north: -Math.PI / 2 };
   const halfSpread = (spreadDeg / 2) * (Math.PI / 180);
-  const centers = directions.map(d => DIR_ANGLE[d]).filter(a => a !== undefined);
+
+  const centers = dirAngleDeg !== undefined
+    ? [dirAngleDeg * Math.PI / 180]
+    : directions.map(d => DIR_ANGLE[d]).filter(a => a !== undefined);
+
+  let crossAxis = null;
+  if (crossAxisLimit > 0 && centers.length > 0) {
+    const primaryAngle = centers[0];
+    crossAxis = Math.abs(Math.cos(primaryAngle)) >= Math.abs(Math.sin(primaryAngle)) ? 'z' : 'x';
+  }
 
   function isAllowedPos(x, z) {
+    if (crossAxis === 'z' && Math.abs(z) > crossAxisLimit) return false;
+    if (crossAxis === 'x' && Math.abs(x) > crossAxisLimit) return false;
     if (centers.length === 0) return true;
+    if (deviationPct > 0 && rng() < deviationPct) return true;
     if (x === 0 && z === 0) return true;
     const angle = Math.atan2(z, x);
     return centers.some(c => {
@@ -136,6 +154,14 @@ function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
       if (r.x === b.x && r.z === b.z && r.o === b.o) { solution.push(d); break; }
     }
   }
+
+  // Force V start: trim leading non-V states so the block always starts upright
+  {
+    let ti = 0;
+    while (ti < pathStates.length - 1 && pathStates[ti].o !== 'V') ti++;
+    if (ti > 0) { pathStates.splice(0, ti); solution.splice(0, ti); }
+  }
+
   return { pathStates, solution, visitedCells };
 }
 
@@ -296,11 +322,26 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
     return { pathStates, solution: path.solution, visitedCells };
   }
 
+  function findSafeEntryIdx(pathStates) {
+    for (let i = 0; i < pathStates.length - 1; i++) {
+      if (pathStates[i].o !== 'V') continue;
+      const cx = pathStates[i].x, cz = pathStates[i].z;
+      const reused = pathStates.slice(i + 1).some(s =>
+        cellsOf(s).some(([x, z]) => x === cx && z === cz)
+      );
+      if (!reused) return i;
+    }
+    for (let i = pathStates.length - 2; i >= 0; i--) {
+      if (pathStates[i].o === 'V') return i;
+    }
+    return 0;
+  }
+
   const islands = rawPaths.map((p, i) => {
     const tr = translatePath(p, offsets[i]);
-    const firstV = tr.pathStates.findIndex(s => s.o === 'V');
-    if (firstV > 0) {
-      return { ...tr, pathStates: tr.pathStates.slice(firstV), solution: tr.solution.slice(firstV) };
+    const safeIdx = findSafeEntryIdx(tr.pathStates);
+    if (safeIdx > 0) {
+      return { ...tr, pathStates: tr.pathStates.slice(safeIdx), solution: tr.solution.slice(safeIdx) };
     }
     return tr;
   });

@@ -78,15 +78,45 @@ function stateKey(s) { return `${s.x},${s.z},${s.o}`; }
 
 // ---- Stage A: Reverse Random Walk ----------------------------------
 function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
-  const { directions = [], spreadDeg = 360 } = expansionOpts;
+  const {
+    directions     = [],
+    spreadDeg      = 360,
+    deviationPct   = 0,
+    crossAxisLimit = 0,
+    // dirAngleDeg: explicit cone-centre angle in degrees.
+    //   0 = east, 90 = south, 180 = west, 270 = north.
+    //   Takes priority over `directions[]`.
+    //   Default undefined → fall back to directions[].
+    dirAngleDeg    = undefined,
+  } = expansionOpts;
 
   // atan2(z,x) space: east=0, south=PI/2, west=±PI, north=-PI/2
   const DIR_ANGLE = { east: 0, south: Math.PI / 2, west: Math.PI, north: -Math.PI / 2 };
   const halfSpread = (spreadDeg / 2) * (Math.PI / 180);
-  const centers = directions.map(d => DIR_ANGLE[d]).filter(a => a !== undefined);
+
+  // Cone centres — prefer explicit angle over named directions
+  const centers = dirAngleDeg !== undefined
+    ? [dirAngleDeg * Math.PI / 180]
+    : directions.map(d => DIR_ANGLE[d]).filter(a => a !== undefined);
+
+  // Cross-axis constraint: limit the perpendicular axis to ±crossAxisLimit cells.
+  // Determine which axis is "cross" from the primary cone angle.
+  //   |cos(angle)| ≥ |sin(angle)|  → mainly east/west  → cross = Z
+  //   |sin(angle)| >  |cos(angle)| → mainly north/south → cross = X
+  let crossAxis = null;
+  if (crossAxisLimit > 0 && centers.length > 0) {
+    const primaryAngle = centers[0];
+    crossAxis = Math.abs(Math.cos(primaryAngle)) >= Math.abs(Math.sin(primaryAngle)) ? 'z' : 'x';
+  }
 
   function isAllowedPos(x, z) {
+    // 1. Cross-axis hard limit (aspect-ratio constraint)
+    if (crossAxis === 'z' && Math.abs(z) > crossAxisLimit) return false;
+    if (crossAxis === 'x' && Math.abs(x) > crossAxisLimit) return false;
+
+    // 2. Directional cone
     if (centers.length === 0) return true;
+    if (deviationPct > 0 && rng() < deviationPct) return true;
     if (x === 0 && z === 0) return true;
     const angle = Math.atan2(z, x);
     return centers.some(c => {
@@ -136,7 +166,26 @@ function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
       if (r.x === b.x && r.z === b.z && r.o === b.o) { solution.push(d); break; }
     }
   }
-  return { pathStates, solution, visitedCells };
+
+  // Force V start: trim leading non-V states so the block always starts upright
+  {
+    let ti = 0;
+    while (ti < pathStates.length - 1 && pathStates[ti].o !== 'V') ti++;
+    if (ti > 0) { pathStates.splice(0, ti); solution.splice(0, ti); }
+  }
+
+  // Compute bounding box from the (trimmed) path cells
+  let bMinX = Infinity, bMaxX = -Infinity, bMinZ = Infinity, bMaxZ = -Infinity;
+  for (const s of pathStates) {
+    for (const [x, z] of cellsOf(s)) {
+      if (x < bMinX) bMinX = x; if (x > bMaxX) bMaxX = x;
+      if (z < bMinZ) bMinZ = z; if (z > bMaxZ) bMaxZ = z;
+    }
+  }
+  const mapBounds = { minX: bMinX, maxX: bMaxX, minZ: bMinZ, maxZ: bMaxZ,
+                      width: bMaxX - bMinX + 1, length: bMaxZ - bMinZ + 1 };
+
+  return { pathStates, solution, visitedCells, mapBounds };
 }
 
 // ---- Stage B: Hazard injection -------------------------------------
@@ -291,13 +340,29 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
     return { pathStates, solution: path.solution, visitedCells };
   }
 
+  // Find the earliest V state whose cell is never reused in any later footprint.
+  // Portal entry tile is deleted on activation; if later states stand on it the block falls.
+  function findSafeEntryIdx(pathStates) {
+    for (let i = 0; i < pathStates.length - 1; i++) {
+      if (pathStates[i].o !== 'V') continue;
+      const cx = pathStates[i].x, cz = pathStates[i].z;
+      const reused = pathStates.slice(i + 1).some(s =>
+        cellsOf(s).some(([x, z]) => x === cx && z === cz)
+      );
+      if (!reused) return i;
+    }
+    // Fallback: last V state (entry cell guaranteed not reused afterward)
+    for (let i = pathStates.length - 2; i >= 0; i--) {
+      if (pathStates[i].o === 'V') return i;
+    }
+    return 0;
+  }
+
   const islands = rawPaths.map((p, i) => {
     const tr = translatePath(p, offsets[i]);
-    // Portal always delivers the block in V orientation.
-    // Trim the path start to the first V state so entry orientation matches.
-    const firstV = tr.pathStates.findIndex(s => s.o === 'V');
-    if (firstV > 0) {
-      return { ...tr, pathStates: tr.pathStates.slice(firstV), solution: tr.solution.slice(firstV) };
+    const safeIdx = findSafeEntryIdx(tr.pathStates);
+    if (safeIdx > 0) {
+      return { ...tr, pathStates: tr.pathStates.slice(safeIdx), solution: tr.solution.slice(safeIdx) };
     }
     return tr;
   });
@@ -327,12 +392,28 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
   const lastIsl = islands[islandCount - 1];
   const goal  = lastIsl.pathStates[lastIsl.pathStates.length - 1];
 
+  // Compute bounding box across all island tiles
+  let bMinX = Infinity, bMaxX = -Infinity, bMinZ = Infinity, bMaxZ = -Infinity;
+  for (const t of allTiles.values()) {
+    if (t.x < bMinX) bMinX = t.x; if (t.x > bMaxX) bMaxX = t.x;
+    if (t.z < bMinZ) bMinZ = t.z; if (t.z > bMaxZ) bMaxZ = t.z;
+  }
+  const mapBounds = {
+    minX: bMinX, maxX: bMaxX, minZ: bMinZ, maxZ: bMaxZ,
+    width: bMaxX - bMinX + 1, length: bMaxZ - bMinZ + 1,
+  };
+  const layoutDir = expansionOpts.dirAngleDeg !== undefined
+    ? `${expansionOpts.dirAngleDeg}deg`
+    : (expansionOpts.directions?.[0] ?? "free");
+
   return {
     level_metadata: {
       id: `lvl_${seed.toString(16)}_${Date.now().toString(36)}`,
       difficulty, seed,
       steps_to_solve: combinedSolution.length,
       island_count: islandCount,
+      map_bounds:  mapBounds,
+      layout_dir:  layoutDir,
     },
     world_settings: { environment: "abyss_default", gravity: 1.0 },
     start_state: {
@@ -383,6 +464,10 @@ export function buildLevel({
       id: `lvl_${seed.toString(16)}_${Date.now().toString(36)}`,
       difficulty, seed,
       steps_to_solve: path.solution.length,
+      map_bounds: path.mapBounds,
+      layout_dir: expansionOpts.dirAngleDeg !== undefined
+        ? `${expansionOpts.dirAngleDeg}deg`
+        : (expansionOpts.directions?.[0] ?? "free"),
     },
     world_settings: { environment: "abyss_default", gravity: 1.0 },
     start_state: {
@@ -394,6 +479,267 @@ export function buildLevel({
     solution_data: path.solution,
     _internal: { pathStates: path.pathStates },
   };
+}
+
+// ---- Simulation (step-by-step with tile destruction) ---------------
+// Returns { ok: true } or { ok: false, step, dir, reason, state }
+export function simulateLevel(data) {
+  const tileMap = new Map(data.tiles.map(t => [t.x + ',' + t.z, { ...t }]));
+  const portals  = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [t.x + ',' + t.z, t.target])
+  );
+
+  const s = data.start_state;
+  let cur = {
+    x: s.pos.x, z: s.pos.z,
+    o: s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ',
+  };
+
+  for (let i = 0; i < data.solution_data.length; i++) {
+    const dir  = data.solution_data[i];
+    const next = rollForward(cur, dir);
+    const foot = cellsOf(next);
+
+    // 1. Check every footprint cell exists
+    for (const [x, z] of foot) {
+      if (!tileMap.has(x + ',' + z)) {
+        return { ok: false, step: i + 1, dir, reason: `missing (${x},${z})`, state: cur };
+      }
+    }
+
+    // 2. Handle tile types on landing
+    for (const [x, z] of foot) {
+      const tile = tileMap.get(x + ',' + z);
+      if (tile.type === 'crumbling') {
+        tileMap.delete(x + ',' + z);
+      } else if (tile.type === 'fragile' && next.o === 'V') {
+        // Fragile tile collapses under full vertical weight — block falls
+        return { ok: false, step: i + 1, dir, reason: `fragile tile (${x},${z}) collapsed under vertical block`, state: next };
+      }
+    }
+
+    // 3. Portal teleport (V on portal → jump; both portal tiles are deleted on activation)
+    if (next.o === 'V' && portals.has(next.x + ',' + next.z)) {
+      const exitKey  = next.x + ',' + next.z;
+      const tg       = portals.get(exitKey);
+      const entryKey = tg.x + ',' + tg.z;
+      tileMap.delete(exitKey);
+      tileMap.delete(entryKey);
+      cur = { x: tg.x, z: tg.z, o: 'V' };
+    } else {
+      cur = next;
+    }
+  }
+
+  const g = data.hole_pos;
+  if (cur.o !== 'V' || cur.x !== g.x || cur.z !== g.z) {
+    return { ok: false, step: -1, dir: null, reason: `ended at (${cur.x},${cur.z},${cur.o}) ≠ goal (${g.x},${g.z})`, state: cur };
+  }
+  return { ok: true };
+}
+
+// ---- Prune tiles not visited by the solution path ------------------
+// Removes tiles the block never touches (safe to call after simulateLevel passes).
+export function pruneUnreachableTiles(data) {
+  const tileMap  = new Map(data.tiles.map(t => [t.x + ',' + t.z, { ...t }]));
+  const portals  = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [t.x + ',' + t.z, t.target])
+  );
+  const reachable = new Set();
+
+  const s = data.start_state;
+  let cur = {
+    x: s.pos.x, z: s.pos.z,
+    o: s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ',
+  };
+  cellsOf(cur).forEach(([x, z]) => reachable.add(x + ',' + z));
+
+  for (const dir of data.solution_data) {
+    const next = rollForward(cur, dir);
+    cellsOf(next).forEach(([x, z]) => reachable.add(x + ',' + z));
+    for (const [x, z] of cellsOf(next)) {
+      const tile = tileMap.get(x + ',' + z);
+      if (!tile) continue;
+      if (tile.type === 'crumbling') tileMap.delete(x + ',' + z);
+    }
+    if (next.o === 'V' && portals.has(next.x + ',' + next.z)) {
+      const exitKey  = next.x + ',' + next.z;
+      const tg       = portals.get(exitKey);
+      const entryKey = tg.x + ',' + tg.z;
+      tileMap.delete(exitKey);
+      tileMap.delete(entryKey);
+      cur = { x: tg.x, z: tg.z, o: 'V' };
+    } else {
+      cur = next;
+    }
+  }
+
+  return { ...data, tiles: data.tiles.filter(t => reachable.has(t.x + ',' + t.z)) };
+}
+
+// ---- Verified builder with retry -----------------------------------
+// constraints: { minMoves, maxMoves }
+// minMoves/maxMoves gate the random-walk path length (layout complexity).
+// BFS optimisation runs unconditionally afterward — the stored solution is
+// always the shortest valid path, regardless of the minMoves floor.
+export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
+  const { minMoves = 0, maxMoves = Infinity } = constraints;
+
+  let lastLvl = null;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const attemptOpts = attempt === 0
+      ? opts
+      : { ...opts, seed: (opts.seed ^ (attempt * 0x1f2e3d4c)) >>> 0 };
+
+    const lvl = buildLevel(attemptOpts);
+    lastLvl = lvl;
+
+    // Gate on random-walk path length (ensures layout is complex enough)
+    const walkMoves = lvl.solution_data.length;
+    if (walkMoves < minMoves || walkMoves > maxMoves) continue;
+
+    // Full physics verification
+    if (!simulateLevel(lvl).ok) continue;
+
+    // Find & apply the absolute shortest solution, then re-prune tiles
+    const pruned  = pruneUnreachableTiles(lvl);
+    const optimal = optimizeSolution(pruned);   // always finds shortest, no floor
+    return { lvl: optimal, attempts: attempt + 1, verified: true };
+  }
+
+  // Fallback: return last generated without BFS if all retries exhausted
+  return { lvl: lastLvl, attempts: maxAttempts, verified: false };
+}
+
+// ---- BFS: find shortest valid solution --------------------------------
+// Always finds the absolute shortest path (no minimum floor).
+// Verifies the candidate with simulateLevel before accepting.
+// Re-prunes tiles to only those visited by the shorter solution.
+// Returns updated data, or original if no shorter path found.
+export function optimizeSolution(data) {
+  const DIRS = ['right', 'left', 'down', 'up'];
+
+  // Build tile set and type map for BFS
+  const tileSet     = new Set(data.tiles.map(t => `${t.x},${t.z}`));
+  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+
+  // Portal map: exit cell → target {x,z}
+  const portalExit = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [`${t.x},${t.z}`, t.target])
+  );
+
+  const s  = data.start_state;
+  const sx = s.pos.x, sz = s.pos.z;
+  const so = s.orientation === 'vertical' ? 'V'
+           : s.orientation === 'horizontal-x' ? 'HX' : 'HZ';
+  const goal = data.hole_pos;
+
+  // BFS state key: x,z,o  (portal order is implied by void separation)
+  const startKey = `${sx},${sz},${so}`;
+  const prev = new Map([[startKey, null]]);  // key → { fromKey, dir }
+  const queue = [{ x: sx, z: sz, o: so }];
+  let foundKey = null;
+
+  const MAX_NODES = 600_000;
+  let visited = 0;
+
+  outer: while (queue.length > 0 && visited < MAX_NODES) {
+    const cur = queue.shift();
+    visited++;
+
+    for (const dir of DIRS) {
+      const next = rollForward(cur, dir);
+      const foot = cellsOf(next);
+
+      // All footprint cells must be present; V on fragile = instant fall (skip)
+      let ok = true;
+      for (const [fx, fz] of foot) {
+        if (!tileSet.has(`${fx},${fz}`)) { ok = false; break; }
+        if (next.o === 'V' && tileTypeMap.get(`${fx},${fz}`) === 'fragile') { ok = false; break; }
+      }
+      if (!ok) continue;
+
+      // Portal teleport: V landing on an exit portal
+      let land = next;
+      if (next.o === 'V' && portalExit.has(`${next.x},${next.z}`)) {
+        const tg = portalExit.get(`${next.x},${next.z}`);
+        land = { x: tg.x, z: tg.z, o: 'V' };
+      }
+
+      const nk = `${land.x},${land.z},${land.o}`;
+      if (prev.has(nk)) continue;
+      prev.set(nk, { fromKey: `${cur.x},${cur.z},${cur.o}`, dir });
+      queue.push(land);
+
+      if (land.o === 'V' && land.x === goal.x && land.z === goal.z) {
+        foundKey = nk;
+        break outer;
+      }
+    }
+  }
+
+  if (!foundKey) return data;
+
+  // Reconstruct move sequence
+  const moves = [];
+  let k = foundKey;
+  while (prev.get(k) !== null) {
+    const { fromKey, dir } = prev.get(k);
+    moves.unshift(dir);
+    k = fromKey;
+  }
+
+  // Only accept if strictly shorter
+  if (moves.length >= data.solution_data.length) return data;
+
+  // Verify the candidate path with full physics simulation
+  const candidate = { ...data, solution_data: moves };
+  if (!simulateLevel(candidate).ok) return data;
+
+  // Update solution and prune tiles to only those the shortest path visits.
+  return pruneUnreachableTiles({ ...data, solution_data: moves });
+}
+
+// ---- Difficulty score from actual level content ---------------------
+// Returns a float in [1, 10].
+// Components:
+//   moves  — length relative to a 70-move ceiling   (0-4 pts)
+//   fragile — fragile tiles / total tiles            (0-2.5 pts)
+//   crumbling — crumbling tiles / total tiles        (0-1.5 pts)
+//   moving — moving tile count (capped at 5)         (0-1 pt)
+//   portal — islands > 1                             (0-1 pt)
+export function computeDifficultyScore(data) {
+  const tiles     = data.tiles;
+  const total     = tiles.length || 1;
+  const fragile   = tiles.filter(t => t.type === 'fragile').length;
+  const crumbling = tiles.filter(t => t.type === 'crumbling').length;
+  const moving    = tiles.filter(t => t.type === 'moving').length;
+  const portals   = tiles.filter(t => t.type === 'portal').length;
+  const moves     = data.solution_data.length;
+
+  const movePts      = Math.min(moves / 70, 1) * 4;
+  const fragilePts   = (fragile   / total) * 2.5;
+  const crumblePts   = (crumbling / total) * 1.5;
+  const movingPts    = Math.min(moving / 5, 1) * 1;
+  const portalPts    = portals > 0 ? 1 : 0;
+
+  const raw = movePts + fragilePts + crumblePts + movingPts + portalPts;
+  return Math.max(1, Math.min(10, +raw.toFixed(2)));
+}
+
+// ---- Tile stats helper ---------------------------------------------
+export function tileStats(data) {
+  const counts = { normal: 0, fragile: 0, crumbling: 0, moving: 0, portal: 0 };
+  for (const t of data.tiles) {
+    const k = t.type ?? 'normal';
+    counts[k] = (counts[k] ?? 0) + 1;
+  }
+  const total = data.tiles.length || 1;
+  const traps = counts.fragile + counts.crumbling + counts.moving;
+  return { ...counts, total, trap_density: +(traps / total).toFixed(3) };
 }
 
 export { makeRNG, rollForward, rollReverse, cellsOf, stateKey, generateGoldenPath, injectHazards };
