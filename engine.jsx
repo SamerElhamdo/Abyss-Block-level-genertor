@@ -302,7 +302,7 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
   }
 
   // Lay islands out left-to-right with a guaranteed gap of 10–14 tiles
-  const GAP = 10 + Math.floor(rng() * 5);
+  const GAP = 3 + Math.floor(rng() * 3); // 3–5 tiles between islands
   let curX = 0;
   const offsets = rawPaths.map(p => {
     const bb = pathBBox(p);

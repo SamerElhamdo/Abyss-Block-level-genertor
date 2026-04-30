@@ -321,7 +321,7 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
     return { minX, maxX, minZ, maxZ };
   }
 
-  const GAP = 10 + Math.floor(rng() * 5);
+  const GAP = 3 + Math.floor(rng() * 3); // 3–5 tiles between islands
   let curX = 0;
   const offsets = rawPaths.map(p => {
     const bb = pathBBox(p);
@@ -568,6 +568,7 @@ export function pruneUnreachableTiles(data) {
       const exitKey  = next.x + ',' + next.z;
       const tg       = portals.get(exitKey);
       const entryKey = tg.x + ',' + tg.z;
+      reachable.add(entryKey); // entry portal is consumed during play — must stay in tile set
       tileMap.delete(exitKey);
       tileMap.delete(entryKey);
       cur = { x: tg.x, z: tg.z, o: 'V' };

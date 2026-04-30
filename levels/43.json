@@ -7,10 +7,10 @@
     "island_count": 4,
     "map_bounds": {
       "minX": 0,
-      "maxX": 58,
+      "maxX": 37,
       "minZ": -2,
       "maxZ": 2,
-      "width": 59,
+      "width": 38,
       "length": 5
     },
     "layout_dir": "20deg",
@@ -36,8 +36,8 @@
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
-      "portal": 3,
-      "total": 60,
+      "portal": 6,
+      "total": 63,
       "trap_density": 0
     },
     "computed_difficulty": 3.06
@@ -54,7 +54,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 50,
+    "x": 29,
     "z": 0
   },
   "tiles": [
@@ -148,43 +148,150 @@
       "z": -1,
       "type": "portal",
       "target": {
-        "x": 20,
+        "x": 13,
         "z": 2
       }
     },
     {
-      "x": 21,
+      "x": 13,
+      "z": 2,
+      "type": "portal",
+      "target": {
+        "x": 0,
+        "z": -1
+      }
+    },
+    {
+      "x": 14,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 22,
+      "x": 15,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 21,
+      "x": 14,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 22,
+      "x": 15,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 13,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 13,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 13,
       "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 13,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": -2,
+      "type": "portal",
+      "target": {
+        "x": 24,
+        "z": 2
+      }
+    },
+    {
+      "x": 24,
+      "z": 2,
+      "type": "portal",
+      "target": {
+        "x": 10,
+        "z": -2
+      }
+    },
+    {
+      "x": 22,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 23,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 23,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 23,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": -2,
       "type": "normal"
     },
     {
@@ -193,180 +300,100 @@
       "type": "normal"
     },
     {
-      "x": 18,
+      "x": 21,
       "z": -2,
       "type": "normal"
     },
     {
       "x": 19,
       "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 17,
-      "z": -2,
       "type": "portal",
       "target": {
-        "x": 38,
-        "z": 2
-      }
-    },
-    {
-      "x": 36,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 36,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 38,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 38,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 38,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 39,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 39,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 39,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 38,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 36,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 34,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 35,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 33,
-      "z": -2,
-      "type": "portal",
-      "target": {
-        "x": 56,
+        "x": 35,
         "z": -1
       }
     },
     {
-      "x": 57,
+      "x": 35,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 19,
+        "z": -2
+      }
+    },
+    {
+      "x": 36,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 37,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 57,
+      "x": 36,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 37,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 57,
+      "x": 36,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 37,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 56,
+      "x": 35,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 54,
+      "x": 33,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 55,
+      "x": 34,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 53,
+      "x": 32,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 51,
+      "x": 30,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 52,
+      "x": 31,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 51,
+      "x": 30,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 52,
+      "x": 31,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 50,
+      "x": 29,
       "z": 0,
       "type": "normal"
     }

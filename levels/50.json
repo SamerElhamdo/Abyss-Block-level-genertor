@@ -7,10 +7,10 @@
     "island_count": 2,
     "map_bounds": {
       "minX": 0,
-      "maxX": 31,
+      "maxX": 23,
       "minZ": -4,
       "maxZ": 3,
-      "width": 32,
+      "width": 24,
       "length": 8
     },
     "layout_dir": "20deg",
@@ -38,11 +38,11 @@
       "fragile": 10,
       "crumbling": 6,
       "moving": 0,
-      "portal": 1,
-      "total": 42,
-      "trap_density": 0.381
+      "portal": 2,
+      "total": 43,
+      "trap_density": 0.372
     },
-    "computed_difficulty": 3.35
+    "computed_difficulty": 3.33
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -56,7 +56,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 22,
+    "x": 14,
     "z": -2
   },
   "tiles": [
@@ -155,122 +155,131 @@
       "z": -4,
       "type": "portal",
       "target": {
-        "x": 31,
+        "x": 23,
         "z": -1
       }
     },
     {
-      "x": 31,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": -2,
-      "type": "fragile"
-    },
-    {
-      "x": 29,
-      "z": -3,
-      "type": "fragile"
-    },
-    {
-      "x": 29,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 28,
-      "z": -3,
-      "type": "crumbling"
-    },
-    {
-      "x": 28,
-      "z": -2,
-      "type": "fragile"
-    },
-    {
-      "x": 27,
-      "z": -3,
-      "type": "crumbling"
-    },
-    {
-      "x": 27,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 26,
+      "x": 23,
       "z": -1,
-      "type": "crumbling"
-    },
-    {
-      "x": 26,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 26,
-      "z": 1,
-      "type": "normal"
+      "type": "portal",
+      "target": {
+        "x": 0,
+        "z": -4
+      }
     },
     {
       "x": 23,
-      "z": -1,
+      "z": -3,
       "type": "normal"
     },
     {
       "x": 23,
       "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 25,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 25,
-      "z": -1,
       "type": "normal"
     },
     {
       "x": 22,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 21,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 21,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 20,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 20,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 19,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 19,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 18,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 18,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 16,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 16,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 17,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 17,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 14,
       "z": -2,
       "type": "normal"
     }

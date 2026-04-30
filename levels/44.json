@@ -3,14 +3,14 @@
     "id": "lvl_44",
     "difficulty": 9,
     "seed": 311230825,
-    "steps_to_solve": 27,
+    "steps_to_solve": 32,
     "island_count": 4,
     "map_bounds": {
       "minX": 0,
-      "maxX": 60,
+      "maxX": 36,
       "minZ": -2,
       "maxZ": 2,
-      "width": 61,
+      "width": 37,
       "length": 5
     },
     "layout_dir": "20deg",
@@ -32,15 +32,15 @@
       "crossAxisLimit": 4
     },
     "tile_stats": {
-      "normal": 37,
+      "normal": 46,
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
-      "portal": 3,
-      "total": 40,
+      "portal": 6,
+      "total": 52,
       "trap_density": 0
     },
-    "computed_difficulty": 2.54
+    "computed_difficulty": 2.83
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -54,7 +54,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 55,
+    "x": 31,
     "z": -1
   },
   "tiles": [
@@ -128,13 +128,100 @@
       "z": -1,
       "type": "portal",
       "target": {
-        "x": 21,
+        "x": 13,
         "z": 0
       }
     },
     {
-      "x": 22,
+      "x": 13,
       "z": 0,
+      "type": "portal",
+      "target": {
+        "x": 0,
+        "z": -1
+      }
+    },
+    {
+      "x": 14,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 14,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 13,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 26,
+        "z": -1
+      }
+    },
+    {
+      "x": 26,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 13,
+        "z": -1
+      }
+    },
+    {
+      "x": 24,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 24,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 25,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 23,
+      "z": 2,
       "type": "normal"
     },
     {
@@ -143,8 +230,8 @@
       "type": "normal"
     },
     {
-      "x": 22,
-      "z": -1,
+      "x": 23,
+      "z": 1,
       "type": "normal"
     },
     {
@@ -155,118 +242,103 @@
     {
       "x": 21,
       "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 42,
-        "z": -1
-      }
+      "type": "normal"
     },
     {
-      "x": 40,
+      "x": 22,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 41,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 39,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 38,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 37,
+      "x": 21,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 38,
+      "x": 22,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 36,
+      "x": 20,
       "z": -2,
       "type": "portal",
       "target": {
-        "x": 57,
+        "x": 33,
         "z": 1
       }
     },
     {
-      "x": 57,
+      "x": 33,
+      "z": 1,
+      "type": "portal",
+      "target": {
+        "x": 20,
+        "z": -2
+      }
+    },
+    {
+      "x": 33,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 57,
+      "x": 33,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 34,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 34,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 58,
+      "x": 34,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 59,
+      "x": 35,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 60,
+      "x": 36,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 59,
+      "x": 35,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 60,
+      "x": 36,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 59,
+      "x": 35,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 60,
+      "x": 36,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 56,
+      "x": 32,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 55,
+      "x": 31,
       "z": -1,
       "type": "normal"
     }
@@ -286,7 +358,12 @@
     "up",
     "left",
     "left",
+    "down",
+    "down",
+    "down",
     "left",
+    "up",
+    "up",
     "left",
     "up",
     "left",

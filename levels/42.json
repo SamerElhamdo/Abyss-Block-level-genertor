@@ -7,10 +7,10 @@
     "island_count": 3,
     "map_bounds": {
       "minX": 0,
-      "maxX": 46,
+      "maxX": 30,
       "minZ": -3,
       "maxZ": 2,
-      "width": 47,
+      "width": 31,
       "length": 6
     },
     "layout_dir": "20deg",
@@ -36,8 +36,8 @@
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
-      "portal": 2,
-      "total": 44,
+      "portal": 4,
+      "total": 46,
       "trap_density": 0
     },
     "computed_difficulty": 2.49
@@ -54,7 +54,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 38,
+    "x": 22,
     "z": -2
   },
   "tiles": [
@@ -133,156 +133,174 @@
       "z": -2,
       "type": "portal",
       "target": {
-        "x": 21,
+        "x": 13,
         "z": -1
       }
     },
     {
-      "x": 22,
+      "x": 13,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 0,
+        "z": -2
+      }
+    },
+    {
+      "x": 14,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 15,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 22,
+      "x": 14,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 15,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 21,
+      "x": 13,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 19,
+      "x": 11,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 12,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 18,
+      "x": 10,
       "z": -2,
       "type": "portal",
       "target": {
-        "x": 46,
+        "x": 30,
         "z": -1
       }
     },
     {
-      "x": 46,
+      "x": 30,
+      "z": -1,
+      "type": "portal",
+      "target": {
+        "x": 10,
+        "z": -2
+      }
+    },
+    {
+      "x": 30,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 46,
+      "x": 30,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 45,
+      "x": 29,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 43,
+      "x": 27,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 44,
+      "x": 28,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 42,
+      "x": 26,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 42,
+      "x": 26,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 42,
+      "x": 26,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 41,
+      "x": 25,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 41,
+      "x": 25,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 41,
+      "x": 25,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 39,
+      "x": 23,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 40,
+      "x": 24,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 39,
+      "x": 23,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 40,
+      "x": 24,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 38,
+      "x": 22,
       "z": -2,
       "type": "normal"
     }

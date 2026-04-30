@@ -7,10 +7,10 @@
     "island_count": 2,
     "map_bounds": {
       "minX": 0,
-      "maxX": 29,
+      "maxX": 22,
       "minZ": -4,
       "maxZ": 3,
-      "width": 30,
+      "width": 23,
       "length": 8
     },
     "layout_dir": "20deg",
@@ -38,11 +38,11 @@
       "fragile": 8,
       "crumbling": 1,
       "moving": 0,
-      "portal": 1,
-      "total": 32,
-      "trap_density": 0.281
+      "portal": 2,
+      "total": 33,
+      "trap_density": 0.273
     },
-    "computed_difficulty": 2.87
+    "computed_difficulty": 2.85
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -56,7 +56,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 20,
+    "x": 13,
     "z": -4
   },
   "tiles": [
@@ -90,137 +90,146 @@
       "z": 0,
       "type": "portal",
       "target": {
-        "x": 27,
+        "x": 20,
         "z": 2
       }
     },
     {
-      "x": 28,
+      "x": 20,
       "z": 2,
-      "type": "normal"
+      "type": "portal",
+      "target": {
+        "x": 0,
+        "z": 0
+      }
     },
     {
-      "x": 29,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 28,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": 3,
-      "type": "fragile"
-    },
-    {
-      "x": 27,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 24,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 25,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 25,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 23,
-      "z": 3,
-      "type": "fragile"
-    },
-    {
-      "x": 22,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 22,
+      "x": 21,
       "z": 2,
       "type": "normal"
     },
     {
       "x": 22,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 21,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 22,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 20,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 19,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 17,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 18,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 18,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 16,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 15,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 15,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": -3,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 23,
+      "x": 16,
       "z": -4,
       "type": "crumbling"
     },
     {
-      "x": 21,
+      "x": 14,
       "z": -4,
       "type": "normal"
     },
     {
-      "x": 22,
+      "x": 15,
       "z": -4,
       "type": "normal"
     },
     {
-      "x": 20,
+      "x": 13,
       "z": -4,
       "type": "normal"
     }
