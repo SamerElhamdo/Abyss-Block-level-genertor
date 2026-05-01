@@ -1,46 +1,35 @@
 {
   "level_metadata": {
     "id": "lvl_44",
-    "difficulty": 9,
-    "seed": 311230825,
-    "steps_to_solve": 32,
-    "island_count": 4,
+    "difficulty": 5,
+    "seed": 228801573,
+    "steps_to_solve": 6,
     "map_bounds": {
-      "minX": 0,
-      "maxX": 36,
-      "minZ": -2,
-      "maxZ": 2,
-      "width": 37,
+      "minX": -6,
+      "maxX": 10,
+      "minZ": 0,
+      "maxZ": 4,
+      "width": 17,
       "length": 5
     },
     "layout_dir": "20deg",
     "slot": 44,
-    "phase": "islands",
-    "mechanics": {
-      "fragile": false,
-      "crumbling": false,
-      "moving": false,
-      "portal": true
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 2,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 70,
-      "deviationPct": 0.15,
-      "crossAxisLimit": 4
-    },
+    "phase": "abyss_mix",
     "tile_stats": {
-      "normal": 46,
+      "normal": 10,
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
-      "portal": 6,
-      "total": 52,
+      "portal": 0,
+      "total": 10,
       "trap_density": 0
     },
-    "computed_difficulty": 2.83
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -48,333 +37,73 @@
   },
   "start_state": {
     "pos": {
-      "x": 36,
-      "z": 0
+      "x": -6,
+      "z": 3
     },
     "orientation": "vertical"
   },
   "hole_pos": {
     "x": 0,
-    "z": -1
+    "z": 0
   },
   "tiles": [
     {
-      "x": 36,
-      "z": 0,
+      "x": -6,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 34,
-      "z": 0,
+      "x": -5,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 35,
-      "z": 0,
+      "x": -4,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 33,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 32,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 32,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 30,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 29,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 28,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 21,
-        "z": 0
-      }
-    },
-    {
-      "x": 21,
-      "z": 0,
-      "type": "portal",
-      "target": {
-        "x": 28,
-        "z": -1
-      }
-    },
-    {
-      "x": 22,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 21,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 16,
-        "z": -1
-      }
-    },
-    {
-      "x": 16,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 21,
-        "z": -1
-      }
-    },
-    {
-      "x": 14,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 14,
+      "x": -3,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 15,
-      "z": 2,
+      "x": -3,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 13,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 13,
+      "x": -3,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 13,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 10,
-      "z": -2,
-      "type": "portal",
-      "target": {
-        "x": 2,
-        "z": 1
-      }
-    },
-    {
-      "x": 2,
-      "z": 1,
-      "type": "portal",
-      "target": {
-        "x": 10,
-        "z": -2
-      }
-    },
-    {
-      "x": 2,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
+      "x": -3,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
+      "x": -2,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
+      "x": -1,
       "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": -1,
       "type": "normal"
     },
     {
       "x": 0,
-      "z": -1,
+      "z": 0,
       "type": "normal"
     }
   ],
   "solution_data": [
-    "left",
-    "left",
-    "left",
-    "up",
-    "left",
-    "down",
     "right",
-    "up",
-    "left",
-    "left",
-    "right",
-    "up",
-    "left",
-    "left",
-    "down",
-    "down",
-    "down",
-    "left",
-    "up",
-    "up",
-    "left",
-    "up",
-    "left",
-    "up",
-    "right",
-    "down",
     "right",
     "up",
     "up",
-    "left",
-    "left",
-    "left"
+    "right",
+    "right"
   ]
 }

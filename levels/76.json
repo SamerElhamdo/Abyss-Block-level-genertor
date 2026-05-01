@@ -1,0 +1,120 @@
+{
+  "level_metadata": {
+    "id": "lvl_76",
+    "difficulty": 5,
+    "seed": 3290370126,
+    "steps_to_solve": 7,
+    "map_bounds": {
+      "minX": -7,
+      "maxX": 2,
+      "minZ": -2,
+      "maxZ": 4,
+      "width": 10,
+      "length": 7
+    },
+    "layout_dir": "20deg",
+    "slot": 76,
+    "phase": "abyss_mix",
+    "tile_stats": {
+      "normal": 12,
+      "fragile": 0,
+      "crumbling": 0,
+      "moving": 0,
+      "portal": 0,
+      "total": 12,
+      "trap_density": 0
+    },
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 2,
+      "z": 2
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 2,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -2,
+      "z": -1,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "up",
+    "left",
+    "left",
+    "up",
+    "left",
+    "down",
+    "right"
+  ]
+}

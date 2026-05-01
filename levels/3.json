@@ -1,45 +1,36 @@
 {
   "level_metadata": {
     "id": "lvl_3",
-    "difficulty": 1,
-    "seed": 1710722016,
-    "steps_to_solve": 10,
+    "difficulty": 2,
+    "objective": "Careful! Fragile tiles will collapse if you stand vertically on them.",
+    "seed": 1710721814,
+    "steps_to_solve": 23,
     "map_bounds": {
       "minX": 0,
-      "maxX": 8,
+      "maxX": 11,
       "minZ": -1,
-      "maxZ": 2,
-      "width": 9,
-      "length": 4
+      "maxZ": 4,
+      "width": 12,
+      "length": 6
     },
     "layout_dir": "20deg",
     "slot": 3,
     "phase": "tutorial",
-    "mechanics": {
-      "fragile": false,
-      "crumbling": false,
-      "moving": false,
-      "portal": false
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 1,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 130,
-      "deviationPct": 0.3,
-      "crossAxisLimit": 6
-    },
     "tile_stats": {
-      "normal": 15,
-      "fragile": 0,
+      "normal": 20,
+      "fragile": 16,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 15,
-      "trap_density": 0
+      "total": 36,
+      "trap_density": 0.444
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 2.61,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -48,7 +39,7 @@
   "start_state": {
     "pos": {
       "x": 5,
-      "z": 2
+      "z": 4
     },
     "orientation": "vertical"
   },
@@ -59,31 +50,126 @@
   "tiles": [
     {
       "x": 5,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 2,
       "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": 0,
+      "x": 7,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": 8,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
-      "x": 6,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 6,
+      "x": 11,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
-      "x": 6,
+      "x": 10,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 9,
       "z": -1,
       "type": "normal"
     },
@@ -104,11 +190,21 @@
     },
     {
       "x": 8,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
       "z": 0,
       "type": "normal"
     },
     {
       "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 5,
       "z": 0,
       "type": "normal"
     },
@@ -134,10 +230,23 @@
     }
   ],
   "solution_data": [
+    "left",
+    "left",
     "up",
     "right",
-    "up",
+    "down",
     "right",
+    "right",
+    "right",
+    "right",
+    "right",
+    "up",
+    "up",
+    "up",
+    "up",
+    "up",
+    "left",
+    "left",
     "down",
     "left",
     "left",

@@ -1,47 +1,35 @@
 {
   "level_metadata": {
     "id": "lvl_28",
-    "difficulty": 7,
-    "seed": 1802849589,
-    "steps_to_solve": 19,
+    "difficulty": 5,
+    "seed": 922745553,
+    "steps_to_solve": 15,
     "map_bounds": {
-      "minX": 0,
-      "maxX": 15,
+      "minX": -16,
+      "maxX": 0,
       "minZ": -4,
-      "maxZ": 5,
-      "width": 16,
-      "length": 10
+      "maxZ": 2,
+      "width": 17,
+      "length": 7
     },
     "layout_dir": "20deg",
     "slot": 28,
-    "phase": "crumbling",
-    "mechanics": {
-      "fragile": true,
-      "crumbling": true,
-      "moving": false,
-      "portal": false,
-      "fragileRate": 0.35,
-      "crumblingRate": 0.147
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 4,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 90,
-      "deviationPct": 0.2,
-      "crossAxisLimit": 5
-    },
+    "phase": "abyss_mix",
     "tile_stats": {
       "normal": 25,
-      "fragile": 5,
-      "crumbling": 2,
+      "fragile": 0,
+      "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 32,
-      "trap_density": 0.219
+      "total": 25,
+      "trap_density": 0
     },
-    "computed_difficulty": 1.57
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -49,8 +37,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 12,
-      "z": 1
+      "x": -15,
+      "z": -2
     },
     "orientation": "vertical"
   },
@@ -60,158 +48,123 @@
   },
   "tiles": [
     {
-      "x": 12,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 15,
+      "x": -15,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 13,
+      "x": -14,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 14,
-      "z": -2,
-      "type": "fragile"
-    },
-    {
-      "x": 12,
+      "x": -13,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 10,
+      "x": -14,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -11,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -3,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 11,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 9,
+      "x": -3,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 10,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": -1,
-      "type": "fragile"
-    },
-    {
-      "x": 8,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": -1,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
+      "x": -3,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 4,
+      "x": -2,
       "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 2,
-      "z": 1,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 1,
-      "type": "crumbling"
-    },
-    {
-      "x": 0,
-      "z": 2,
+      "x": -1,
+      "z": 0,
       "type": "normal"
     },
     {
@@ -222,23 +175,19 @@
   ],
   "solution_data": [
     "right",
+    "up",
+    "up",
     "right",
-    "up",
-    "up",
-    "left",
-    "left",
-    "left",
+    "right",
+    "right",
+    "right",
+    "right",
+    "right",
     "down",
-    "left",
-    "left",
-    "left",
-    "left",
+    "right",
     "down",
-    "left",
     "down",
-    "left",
-    "left",
-    "left",
-    "up"
+    "right",
+    "right"
   ]
 }

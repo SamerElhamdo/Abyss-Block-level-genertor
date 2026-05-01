@@ -1,47 +1,35 @@
 {
   "level_metadata": {
     "id": "lvl_31",
-    "difficulty": 6,
-    "seed": 2995569348,
-    "steps_to_solve": 42,
+    "difficulty": 5,
+    "seed": 2362488924,
+    "steps_to_solve": 13,
     "map_bounds": {
-      "minX": 0,
-      "maxX": 14,
+      "minX": -9,
+      "maxX": 1,
       "minZ": -1,
-      "maxZ": 6,
-      "width": 15,
-      "length": 8
+      "maxZ": 3,
+      "width": 11,
+      "length": 5
     },
     "layout_dir": "20deg",
     "slot": 31,
-    "phase": "moving",
-    "mechanics": {
-      "fragile": true,
-      "crumbling": true,
-      "moving": true,
-      "portal": false,
-      "fragileRate": 0.35,
-      "crumblingRate": 0.18
+    "phase": "abyss_mix",
+    "tile_stats": {
+      "normal": 24,
+      "fragile": 0,
+      "crumbling": 0,
+      "moving": 0,
+      "portal": 0,
+      "total": 24,
+      "trap_density": 0
     },
+    "computed_difficulty": 1,
     "generator": {
       "base_seed": 4747,
-      "attempts": 3,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 100,
-      "deviationPct": 0.25,
-      "crossAxisLimit": 6
-    },
-    "tile_stats": {
-      "normal": 34,
-      "fragile": 11,
-      "crumbling": 4,
-      "moving": 1,
-      "portal": 0,
-      "total": 50,
-      "trap_density": 0.32
-    },
-    "computed_difficulty": 3.27
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -49,8 +37,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 11,
-      "z": 6
+      "x": -9,
+      "z": 1
     },
     "orientation": "vertical"
   },
@@ -60,306 +48,139 @@
   },
   "tiles": [
     {
-      "x": 11,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": 6,
-      "type": "moving",
-      "params": {
-        "axis": "x",
-        "range": [
-          14,
-          15
-        ],
-        "speed": 1.45
-      }
-    },
-    {
-      "x": 14,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 14,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 13,
-      "z": 4,
-      "type": "fragile"
-    },
-    {
-      "x": 13,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": 4,
-      "type": "fragile"
-    },
-    {
-      "x": 12,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 10,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 11,
-      "z": 5,
-      "type": "crumbling"
-    },
-    {
-      "x": 10,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 10,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": 3,
-      "type": "fragile"
-    },
-    {
-      "x": 9,
-      "z": 3,
-      "type": "crumbling"
-    },
-    {
-      "x": 9,
+      "x": -9,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 9,
-      "z": 2,
-      "type": "crumbling"
-    },
-    {
-      "x": 9,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": -1,
-      "type": "crumbling"
-    },
-    {
-      "x": 8,
-      "z": -1,
-      "type": "fragile"
-    },
-    {
-      "x": 6,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": -1,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 3,
+      "x": -8,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
+      "x": -7,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": 0,
+      "x": -6,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 1,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
+      "x": -6,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -6,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -5,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": -5,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -4,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -4,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": 3,
+      "x": -3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -3,
       "z": 3,
-      "type": "fragile"
+      "type": "normal"
     },
     {
-      "x": 4,
+      "x": -2,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -2,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": 4,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 4,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
+      "x": -2,
       "z": 1,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": -1,
+      "x": -1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 0,
       "type": "normal"
     },
     {
       "x": 0,
       "z": 0,
       "type": "normal"
+    },
+    {
+      "x": -2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 2,
+      "type": "normal"
     }
   ],
   "solution_data": [
     "right",
     "right",
-    "up",
-    "left",
-    "left",
     "down",
+    "right",
+    "right",
+    "right",
+    "right",
+    "right",
     "right",
     "up",
     "left",
-    "left",
     "up",
-    "up",
-    "left",
-    "up",
-    "up",
-    "left",
-    "up",
-    "left",
-    "left",
-    "left",
-    "down",
-    "left",
-    "left",
-    "down",
-    "right",
-    "down",
-    "right",
-    "down",
-    "left",
-    "left",
-    "up",
-    "up",
-    "up",
-    "right",
-    "down",
-    "left",
-    "up",
-    "right",
-    "down",
-    "left",
-    "up",
-    "left"
+    "right"
   ]
 }

@@ -1,0 +1,748 @@
+{
+  "level_metadata": {
+    "id": "lvl_3b7a95b7",
+    "difficulty": 6.269662921348314,
+    "objective": "[GEMINI EDITION #7] Master the geometry of the abyss.",
+    "seed": 997889463,
+    "steps_to_solve": 56,
+    "map_bounds": {
+      "minX": -30,
+      "maxX": 0,
+      "minZ": -6,
+      "maxZ": 6,
+      "width": 31,
+      "length": 13
+    },
+    "layout_dir": "220deg",
+    "author": "Gemini AI Designer"
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": -30,
+      "z": -3
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": -30,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -30,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -30,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": -30,
+      "z": 5,
+      "type": "crumbling"
+    },
+    {
+      "x": -30,
+      "z": 6,
+      "type": "crumbling"
+    },
+    {
+      "x": -29,
+      "z": 6,
+      "type": "crumbling"
+    },
+    {
+      "x": -28,
+      "z": 6,
+      "type": "crumbling"
+    },
+    {
+      "x": -27,
+      "z": 6,
+      "type": "crumbling"
+    },
+    {
+      "x": -26,
+      "z": 6,
+      "type": "fragile"
+    },
+    {
+      "x": -25,
+      "z": 6,
+      "type": "fragile"
+    },
+    {
+      "x": -26,
+      "z": 5,
+      "type": "fragile"
+    },
+    {
+      "x": -25,
+      "z": 5,
+      "type": "fragile"
+    },
+    {
+      "x": -26,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": -25,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": -24,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": -23,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -22,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": -23,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": -22,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": -23,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -22,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -21,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -20,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -19,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -18,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -18,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -18,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": -18,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -17,
+      "z": 5,
+      "type": "crumbling"
+    },
+    {
+      "x": -16,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": 5,
+      "type": "crumbling"
+    },
+    {
+      "x": -14,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -15,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": -14,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": -14,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": 4,
+      "type": "crumbling"
+    },
+    {
+      "x": -11,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": -9,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -9,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -10,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": -9,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": -7,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": -7,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": -5,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -5,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -4,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -3,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -2,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -1,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "down",
+    "down",
+    "down",
+    "down",
+    "down",
+    "down",
+    "right",
+    "right",
+    "right",
+    "up",
+    "up",
+    "right",
+    "right",
+    "up",
+    "up",
+    "right",
+    "right",
+    "right",
+    "down",
+    "down",
+    "right",
+    "right",
+    "right",
+    "up",
+    "left",
+    "up",
+    "right",
+    "down",
+    "right",
+    "right",
+    "right",
+    "up",
+    "up",
+    "up",
+    "up",
+    "up",
+    "right",
+    "up",
+    "right",
+    "right",
+    "down",
+    "right",
+    "down",
+    "right",
+    "right",
+    "right"
+  ],
+  "_internal": {
+    "pathStates": [
+      {
+        "x": -30,
+        "z": -3,
+        "o": "V"
+      },
+      {
+        "x": -30,
+        "z": -2,
+        "o": "HZ"
+      },
+      {
+        "x": -30,
+        "z": 0,
+        "o": "V"
+      },
+      {
+        "x": -30,
+        "z": 1,
+        "o": "HZ"
+      },
+      {
+        "x": -30,
+        "z": 3,
+        "o": "V"
+      },
+      {
+        "x": -30,
+        "z": 4,
+        "o": "HZ"
+      },
+      {
+        "x": -30,
+        "z": 6,
+        "o": "V"
+      },
+      {
+        "x": -29,
+        "z": 6,
+        "o": "HX"
+      },
+      {
+        "x": -27,
+        "z": 6,
+        "o": "V"
+      },
+      {
+        "x": -26,
+        "z": 6,
+        "o": "HX"
+      },
+      {
+        "x": -26,
+        "z": 5,
+        "o": "HX"
+      },
+      {
+        "x": -26,
+        "z": 4,
+        "o": "HX"
+      },
+      {
+        "x": -24,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -23,
+        "z": 4,
+        "o": "HX"
+      },
+      {
+        "x": -23,
+        "z": 3,
+        "o": "HX"
+      },
+      {
+        "x": -23,
+        "z": 2,
+        "o": "HX"
+      },
+      {
+        "x": -21,
+        "z": 2,
+        "o": "V"
+      },
+      {
+        "x": -20,
+        "z": 2,
+        "o": "HX"
+      },
+      {
+        "x": -18,
+        "z": 2,
+        "o": "V"
+      },
+      {
+        "x": -18,
+        "z": 3,
+        "o": "HZ"
+      },
+      {
+        "x": -18,
+        "z": 5,
+        "o": "V"
+      },
+      {
+        "x": -17,
+        "z": 5,
+        "o": "HX"
+      },
+      {
+        "x": -15,
+        "z": 5,
+        "o": "V"
+      },
+      {
+        "x": -14,
+        "z": 5,
+        "o": "HX"
+      },
+      {
+        "x": -14,
+        "z": 4,
+        "o": "HX"
+      },
+      {
+        "x": -15,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -15,
+        "z": 2,
+        "o": "HZ"
+      },
+      {
+        "x": -14,
+        "z": 2,
+        "o": "HZ"
+      },
+      {
+        "x": -14,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -14,
+        "z": 5,
+        "o": "HZ"
+      },
+      {
+        "x": -13,
+        "z": 5,
+        "o": "HZ"
+      },
+      {
+        "x": -13,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -12,
+        "z": 4,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -10,
+        "z": 2,
+        "o": "HZ"
+      },
+      {
+        "x": -11,
+        "z": 2,
+        "o": "HZ"
+      },
+      {
+        "x": -11,
+        "z": 4,
+        "o": "V"
+      },
+      {
+        "x": -10,
+        "z": 4,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": 3,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": 2,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": 1,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": -10,
+        "z": -1,
+        "o": "HX"
+      },
+      {
+        "x": -8,
+        "z": -1,
+        "o": "V"
+      },
+      {
+        "x": -8,
+        "z": -3,
+        "o": "HZ"
+      },
+      {
+        "x": -8,
+        "z": -4,
+        "o": "V"
+      },
+      {
+        "x": -8,
+        "z": -6,
+        "o": "HZ"
+      },
+      {
+        "x": -7,
+        "z": -6,
+        "o": "HZ"
+      },
+      {
+        "x": -7,
+        "z": -4,
+        "o": "V"
+      },
+      {
+        "x": -7,
+        "z": -3,
+        "o": "HZ"
+      },
+      {
+        "x": -6,
+        "z": -3,
+        "o": "HZ"
+      },
+      {
+        "x": -6,
+        "z": -1,
+        "o": "V"
+      },
+      {
+        "x": -5,
+        "z": -1,
+        "o": "HX"
+      },
+      {
+        "x": -5,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": -3,
+        "z": 0,
+        "o": "V"
+      },
+      {
+        "x": -2,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "o": "V"
+      }
+    ]
+  }
+}

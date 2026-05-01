@@ -1,45 +1,36 @@
 {
   "level_metadata": {
     "id": "lvl_10",
-    "difficulty": 3,
-    "seed": 2282077462,
-    "steps_to_solve": 12,
+    "difficulty": 4,
+    "objective": "Dimensional jump! Use portals to travel between isolated islands.",
+    "seed": -1235630615,
+    "steps_to_solve": 18,
     "map_bounds": {
       "minX": 0,
-      "maxX": 6,
-      "minZ": -4,
-      "maxZ": 0,
-      "width": 7,
-      "length": 5
+      "maxX": 13,
+      "minZ": -5,
+      "maxZ": 5,
+      "width": 14,
+      "length": 11
     },
     "layout_dir": "20deg",
     "slot": 10,
     "phase": "tutorial",
-    "mechanics": {
-      "fragile": false,
-      "crumbling": false,
-      "moving": false,
-      "portal": false
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 3,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 130,
-      "deviationPct": 0.3,
-      "crossAxisLimit": 6
-    },
     "tile_stats": {
-      "normal": 16,
+      "normal": 30,
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 16,
+      "total": 30,
       "trap_density": 0
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -47,8 +38,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 2,
-      "z": -4
+      "x": 9,
+      "z": 1
     },
     "orientation": "vertical"
   },
@@ -58,28 +49,98 @@
   },
   "tiles": [
     {
-      "x": 2,
-      "z": -4,
+      "x": 9,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": -3,
+      "x": 9,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": 9,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 10,
       "z": -2,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": -1,
+      "x": 10,
+      "z": -4,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": -1,
+      "x": 10,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -2,
       "type": "normal"
     },
     {
@@ -88,37 +149,37 @@
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": -1,
+      "x": 4,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": -3,
+      "x": 4,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": -2,
+      "x": 3,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 6,
-      "z": -3,
+      "x": 3,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 6,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 6,
+      "x": 3,
       "z": -1,
       "type": "normal"
     },
     {
       "x": 1,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
       "z": -1,
       "type": "normal"
     },
@@ -139,15 +200,21 @@
     }
   ],
   "solution_data": [
-    "down",
-    "down",
-    "right",
-    "right",
     "up",
     "right",
+    "up",
+    "up",
+    "up",
+    "left",
+    "left",
+    "left",
     "down",
     "left",
+    "down",
+    "down",
+    "down",
     "left",
+    "up",
     "left",
     "down",
     "left"

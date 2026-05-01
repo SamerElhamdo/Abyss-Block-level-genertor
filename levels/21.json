@@ -2,46 +2,34 @@
   "level_metadata": {
     "id": "lvl_21",
     "difficulty": 5,
-    "seed": 3629093918,
-    "steps_to_solve": 8,
+    "seed": 1666907094,
+    "steps_to_solve": 9,
     "map_bounds": {
-      "minX": 0,
-      "maxX": 12,
-      "minZ": -2,
-      "maxZ": 5,
+      "minX": -12,
+      "maxX": 0,
+      "minZ": -4,
+      "maxZ": 4,
       "width": 13,
-      "length": 8
+      "length": 9
     },
     "layout_dir": "20deg",
     "slot": 21,
-    "phase": "crumbling",
-    "mechanics": {
-      "fragile": true,
-      "crumbling": true,
-      "moving": false,
-      "portal": false,
-      "fragileRate": 0.35,
-      "crumblingRate": 0.03
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 7,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 90,
-      "deviationPct": 0.2,
-      "crossAxisLimit": 5
-    },
+    "phase": "abyss_mix",
     "tile_stats": {
-      "normal": 12,
-      "fragile": 2,
+      "normal": 15,
+      "fragile": 0,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 14,
-      "trap_density": 0.143
+      "total": 15,
+      "trap_density": 0
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -49,8 +37,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 9,
-      "z": -2
+      "x": -12,
+      "z": -1
     },
     "orientation": "vertical"
   },
@@ -60,69 +48,74 @@
   },
   "tiles": [
     {
-      "x": 9,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
+      "x": -12,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": -11,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": -10,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -3,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 4,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 3,
+      "x": -4,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 1,
+      "x": -5,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 2,
+      "x": -5,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -2,
       "z": 0,
-      "type": "fragile"
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 0,
+      "type": "normal"
     },
     {
       "x": 0,
@@ -131,13 +124,14 @@
     }
   ],
   "solution_data": [
-    "left",
-    "left",
-    "left",
+    "right",
+    "right",
+    "right",
+    "right",
+    "right",
     "down",
-    "down",
-    "left",
-    "left",
-    "left"
+    "right",
+    "right",
+    "right"
   ]
 }

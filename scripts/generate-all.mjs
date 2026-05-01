@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 /**
- * Abyss Block — توليد ٥٠ مرحلة مُتحقَّق منها
+ * Abyss Block — توليد ١٠٠ مرحلة مُتحقَّق منها
  *
  * خط الأنابيب لكل مرحلة:
  *   1. توليد → 2. محاكاة كاملة (fragile/crumbling) → 3. إعادة توليد عند الفشل
  *   → 4. تحقق مزدوج → 5. تنظيف البلاطات غير المستخدمة → 6. كتابة الملف
  *
- * المراحل:
- *   1–10   Tutorial   لا أفخاخ
- *  11–20   Fragile    بلاطات هشة تتصاعد تدريجياً
- *  21–30   Crumbling  هشة + متداعية
- *  31–40   Moving     هشة + متداعية + متحركة
- *  41–45   Islands    جزر منفصلة (بوابات)
- *  46–50   ABYSS      كل المكانيكيات
+ * المراحل (١٠٠ مرحلة):
+ *   1–10   Tutorial     لا أفخاخ، التعريف بهوية اللعبة
+ *  11–20   Fragile      بلاطات هشة تتصاعد تدريجياً
+ *  21–30   Crumbling    هشة + متداعية
+ *  31–40   Moving       هشة + متداعية + متحركة
+ *  41–50   Islands      جزر منفصلة (بوابات)
+ *  51–70   Complex Mix  مزيج من المكانيكيات مع التركيز على البزلينغ
+ *  71–100  ABYSS        أقصى صعوبة، كل المكانيكيات، مسارات معقدة
  *
  * الاستخدام:
  *   node scripts/generate-all.mjs
@@ -30,6 +31,7 @@ import {
   computeDifficultyScore,
   tileStats,
 } from "../abyss-engine.mjs";
+import { generateRefinedLevel } from "../ai-refiner.mjs";
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
@@ -47,176 +49,21 @@ function hashSeed(base, slot) {
 }
 
 // ---- Phase definitions ---------------------------------------------
-// Each phase has:
-//   label, from, count
-//   fn(i, seed) → { seed, difficulty, gridSize, mechanics, expansionOpts }
-//   constraints: { minMoves, maxMoves }
-//   maxAttempts: retry budget
-
-// ---- Phase definitions ---------------------------------------------
-// Global direction: all phases share dirAngleDeg + crossAxisLimit from env/defaults.
-// Each phase only controls spreadDeg, deviationPct, and per-phase crossAxisLimit override.
-//
-// ENV overrides:
-//   DIR_DEG=20        — cone centre: degrees from east (0=east, 20=slightly south, 90=south)
-//   CROSS_WIDTH=4     — max cells perpendicular to main axis (half-width)
-//
-// dirAngleDeg=20 means the path grows mostly eastward with 20° south tilt.
-// crossAxisLimit=4 → perpendicular axis stays in [-4, 4] (9 tiles wide).
-
 const PHASES = [
-
-  // ── 1–10  Tutorial ─────────────────────────────────────────────
   {
     label: "tutorial", from: 1, count: 10,
-    constraints: { minMoves: 10, maxMoves: 30 },
-    maxAttempts: 12,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 10);
-      return {
-        seed,
-        difficulty:   lerpRound(1, 3, ti),
-        gridSize:     evenGrid(lerpRound(14, 22, ti)),
-        mechanics:    { fragile: false, crumbling: false, moving: false, portal: false },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      130,   // wide cone for tutorial — less strict
-          deviationPct:   0.30,
-          crossAxisLimit: crossW + 2,  // wider than default for learning levels
-        },
-      };
-    },
+    constraints: { minMoves: 8, maxMoves: 30 },
+    maxAttempts: 15
   },
-
-  // ── 11–20  Fragile ──────────────────────────────────────────────
   {
-    label: "fragile", from: 11, count: 10,
-    constraints: { minMoves: 20, maxMoves: 50 },
-    maxAttempts: 15,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 10);
-      return {
-        seed,
-        difficulty:  lerpRound(3, 6, ti),
-        gridSize:    evenGrid(lerpRound(20, 28, ti)),
-        mechanics: {
-          fragile: true, crumbling: false, moving: false, portal: false,
-          fragileRate: +lerp(0.05, 0.35, ti).toFixed(3),
-        },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      80,
-          deviationPct:   0.15,
-          crossAxisLimit: crossW,
-        },
-      };
-    },
-  },
-
-  // ── 21–30  Crumbling ────────────────────────────────────────────
-  {
-    label: "crumbling", from: 21, count: 10,
-    constraints: { minMoves: 35, maxMoves: 58 },
-    maxAttempts: 15,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 10);
-      return {
-        seed,
-        difficulty:  lerpRound(5, 7, ti),
-        gridSize:    evenGrid(lerpRound(24, 32, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: false, portal: false,
-          fragileRate:   0.35,
-          crumblingRate: +lerp(0.03, 0.18, ti).toFixed(3),
-        },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      90,
-          deviationPct:   0.20,
-          crossAxisLimit: crossW + 1,  // slightly wider for crumbling complexity
-        },
-      };
-    },
-  },
-
-  // ── 31–40  Moving ───────────────────────────────────────────────
-  {
-    label: "moving", from: 31, count: 10,
-    constraints: { minMoves: 42, maxMoves: 70 },
-    maxAttempts: 15,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 10);
-      return {
-        seed,
-        difficulty:  lerpRound(6, 9, ti),
-        gridSize:    evenGrid(lerpRound(28, 36, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: true, portal: false,
-          fragileRate:   0.35,
-          crumblingRate: 0.18,
-        },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      100,
-          deviationPct:   0.25,
-          crossAxisLimit: crossW + 2,  // wider: moving tiles need lateral space
-        },
-      };
-    },
-  },
-
-  // ── 41–45  Islands ──────────────────────────────────────────────
-  {
-    label: "islands", from: 41, count: 5,
-    constraints: { minMoves: 28, maxMoves: 65 },
-    maxAttempts: 20,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 5);
-      return {
-        seed,
-        difficulty:  lerpRound(7, 9, ti),
-        gridSize:    evenGrid(lerpRound(28, 36, ti)),
-        mechanics: { fragile: false, crumbling: false, moving: false, portal: true },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      70,
-          deviationPct:   0.15,
-          crossAxisLimit: crossW,      // narrow island corridors
-        },
-      };
-    },
-  },
-
-  // ── 46–50  ABYSS ────────────────────────────────────────────────
-  {
-    label: "abyss", from: 46, count: 5,
-    constraints: { minMoves: 42, maxMoves: 75 },
-    maxAttempts: 20,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 5);
-      return {
-        seed,
-        difficulty:  lerpRound(9, 10, ti),
-        gridSize:    evenGrid(lerpRound(34, 40, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: true, portal: true,
-          fragileRate:   0.35,
-          crumblingRate: 0.18,
-        },
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      120,         // wider cone for final chaos
-          deviationPct:   0.30,
-          crossAxisLimit: crossW + 3,  // widest: all mechanics need room
-        },
-      };
-    },
+    label: "abyss_mix", from: 11, count: 90,
+    constraints: { minMoves: 25, maxMoves: 110 },
+    maxAttempts: 50
   },
 ];
 
 // ---- Double-check: JSON shape + full simulation --------------------
 function doubleCheck(clean) {
-  // Check 1: shape
   const required = ['level_metadata','start_state','hole_pos','tiles','solution_data'];
   for (const k of required) {
     if (!(k in clean)) return { ok: false, reason: `missing field: ${k}` };
@@ -226,7 +73,6 @@ function doubleCheck(clean) {
   if (!Array.isArray(clean.solution_data) || clean.solution_data.length === 0)
     return { ok: false, reason: 'empty solution_data' };
 
-  // Check 2: full physics simulation
   const sim = simulateLevel(clean);
   if (!sim.ok) return { ok: false, reason: `sim fail step=${sim.step} ${sim.reason}` };
 
@@ -239,12 +85,9 @@ async function main() {
     ? Number(process.env.BASE_SEED) : 4747;
   if (!Number.isFinite(baseSeed)) { console.error("BASE_SEED must be a number"); process.exit(1); }
 
-  // Global layout direction (degrees from east, clockwise).
-  // 0 = pure east, 20 = 20° south of east, 90 = south, 180 = west, etc.
   const dirDeg = process.env.DIR_DEG !== undefined ? Number(process.env.DIR_DEG) : 20;
   if (!Number.isFinite(dirDeg)) { console.error("DIR_DEG must be a number"); process.exit(1); }
 
-  // Global cross-axis half-width (max cells perpendicular to main direction).
   const crossW = process.env.CROSS_WIDTH !== undefined ? Number(process.env.CROSS_WIDTH) : 4;
   if (!Number.isFinite(crossW) || crossW < 0) { console.error("CROSS_WIDTH must be a non-negative number"); process.exit(1); }
 
@@ -252,11 +95,11 @@ async function main() {
   await fs.mkdir(outDir, { recursive: true });
 
   const dirLabel = dirDeg === 0 ? "east" : dirDeg > 0 ? `east+${dirDeg}°S` : `east${dirDeg}°N`;
-  console.log(`\nAbyss Block — توليد ٥٠ مرحلة مُتحقَّق منها`);
+  console.log(`\nAbyss Block — توليد ١٠٠ مرحلة مُتحقَّق منها (AI-Guided)`);
   console.log(`BASE_SEED=${baseSeed}  DIR_DEG=${dirDeg} (${dirLabel})  CROSS_WIDTH=${crossW}  →  ${outDir}/\n`);
 
   let totalOk = 0, totalFallback = 0;
-  const difficultyLog = []; // { slot, computed, label }
+  const difficultyLog = [];
 
   for (const phase of PHASES) {
     const end = phase.from + phase.count - 1;
@@ -265,49 +108,47 @@ async function main() {
     for (let i = 0; i < phase.count; i++) {
       const slot = phase.from + i;
       const seed = hashSeed(baseSeed, slot);
-      const args = phase.fn(i, seed, dirDeg, crossW);
 
-      // Build + verify (with retry)
-      const { lvl, attempts, verified } = buildLevelVerified(
-        args, phase.constraints, phase.maxAttempts
-      );
+      let lvl, verified;
 
-      // buildLevelVerified already ran: prune → BFS optimize → minMoves check.
-      // lvl is the final optimized level (shortest solution, cleaned tiles).
-      // Strip _internal, stamp metadata.
+      // Use AI-Refiner for ALL levels
+      const result = await generateRefinedLevel(slot, phase.label, baseSeed, dirDeg, crossW, phase.constraints);
+      
+      if (result) {
+        lvl = result.lvl;
+        verified = result.verified;
+      } else {
+        // Fallback generator (limited params)
+        const args = { seed, difficulty: 5, gridSize: 40, expansionOpts: { dirAngleDeg: dirDeg, crossAxisLimit: crossW } };
+        const fallback = buildLevelVerified(args, phase.constraints, phase.maxAttempts);
+        lvl = fallback.lvl;
+        verified = fallback.verified;
+      }
+
       const { _internal, ...optimized } = lvl;
       const movesAfterOpt = optimized.solution_data.length;
+      
+      // Stamp final metadata
+      const stats  = tileStats(optimized);
+      const score  = computeDifficultyScore(optimized);
+      
       optimized.level_metadata = {
         ...optimized.level_metadata,
         id:         `lvl_${slot}`,
         slot,
         phase:      phase.label,
-        difficulty: args.difficulty,
-        mechanics:  args.mechanics,
-        generator:  {
-          base_seed:      baseSeed,
-          attempts,
-          verified,
-          dir_angle_deg:  args.expansionOpts.dirAngleDeg ?? 0,
-          spreadDeg:      args.expansionOpts.spreadDeg   ?? 360,
-          deviationPct:   args.expansionOpts.deviationPct ?? 0,
-          crossAxisLimit: args.expansionOpts.crossAxisLimit ?? 0,
-        },
-      };
-      const shortened = false; // BFS already applied inside buildLevelVerified
-
-      // Compute actual difficulty score and tile stats
-      const stats  = tileStats(optimized);
-      const score  = computeDifficultyScore(optimized);
-      optimized.level_metadata = {
-        ...optimized.level_metadata,
         steps_to_solve: movesAfterOpt,
         tile_stats:     stats,
         computed_difficulty: score,
+        generator: {
+          base_seed: baseSeed,
+          ai_guided: true,
+          verified
+        }
       };
+      
       difficultyLog.push({ slot, computed: score, label: phase.label });
 
-      // Double-check before writing
       const dc = doubleCheck(optimized);
       if (!dc.ok) {
         console.error(`  ✗ ${slot} double-check FAIL: ${dc.reason}`);
@@ -316,26 +157,18 @@ async function main() {
         totalOk++;
       }
 
-      const islandTag   = optimized.level_metadata.island_count
-        ? `  islands=${optimized.level_metadata.island_count}` : "";
-      const verifyTag   = verified ? "✓" : "⚠ fallback";
-      const attemptsTag = attempts > 1 ? ` (${attempts} tries)` : "";
-      const optTag      = shortened ? `  ✂${movesBeforeOpt}→${movesAfterOpt}` : "";
-      const trapTag     = `  traps=${stats.fragile}f/${stats.crumbling}c/${stats.moving}m`
-                        + `  ρ=${stats.trap_density}`;
+      const verifyTag = verified ? "✓" : "⚠ fallback";
+      const trapTag   = `  traps=${stats.fragile}f/${stats.crumbling}c/${stats.moving}m  ρ=${stats.trap_density}`;
       const mb = optimized.level_metadata.map_bounds;
       const mapTag = mb ? `  map=${mb.width}×${mb.length}` : "";
 
       console.log(
-        `  ${verifyTag} ${String(slot).padStart(2)}`
-        + `  D${args.difficulty}→${score}`
+        `  ${verifyTag} ${String(slot).padStart(3)}`
+        + `  D${optimized.level_metadata.difficulty || '?' }→${score}`
         + `  moves=${movesAfterOpt}`
         + `  tiles=${optimized.tiles.length}`
         + mapTag
         + trapTag
-        + islandTag
-        + optTag
-        + attemptsTag
       );
 
       await fs.writeFile(
@@ -347,16 +180,15 @@ async function main() {
     console.log();
   }
 
-  console.log(`تم — ${totalOk}/50 مرحلة معتمدة` + (totalFallback ? ` ⚠ ${totalFallback} fallback` : " ✓ جميعها صحيحة"));
+  console.log(`تم — ${totalOk}/100 مرحلة معتمدة` + (totalFallback ? ` ⚠ ${totalFallback} fallback` : " ✓ جميعها صحيحة"));
 
-  // ── Difficulty ordering report ──────────────────────────────────────
   console.log("\n── Difficulty ordering (computed_difficulty)");
   let prevScore = 0, orderOk = true;
   for (const { slot, computed, label } of difficultyLog) {
     const arrow = computed >= prevScore ? "▲" : "▼";
     const warn  = computed < prevScore ? " ⚠ OUT OF ORDER" : "";
     if (computed < prevScore) orderOk = false;
-    console.log(`  ${arrow} ${String(slot).padStart(2)}  [${label.padEnd(9)}]  score=${computed}${warn}`);
+    console.log(`  ${arrow} ${String(slot).padStart(3)}  [${label.padEnd(9)}]  score=${computed}${warn}`);
     prevScore = computed;
   }
   console.log(orderOk ? "\n  ✓ All levels increase in computed difficulty" : "\n  ⚠ Some levels are out of difficulty order — consider adjusting phase params");

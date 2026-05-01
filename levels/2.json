@@ -2,44 +2,35 @@
   "level_metadata": {
     "id": "lvl_2",
     "difficulty": 1,
-    "seed": 3858496895,
-    "steps_to_solve": 13,
+    "objective": "Reach the goal hole by rolling the block. Master the basics of movement.",
+    "seed": -436470401,
+    "steps_to_solve": 9,
     "map_bounds": {
       "minX": 0,
-      "maxX": 4,
+      "maxX": 5,
       "minZ": 0,
-      "maxZ": 6,
-      "width": 5,
-      "length": 7
+      "maxZ": 5,
+      "width": 6,
+      "length": 6
     },
     "layout_dir": "20deg",
     "slot": 2,
     "phase": "tutorial",
-    "mechanics": {
-      "fragile": false,
-      "crumbling": false,
-      "moving": false,
-      "portal": false
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 1,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 130,
-      "deviationPct": 0.3,
-      "crossAxisLimit": 6
-    },
     "tile_stats": {
-      "normal": 17,
+      "normal": 15,
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 17,
+      "total": 15,
       "trap_density": 0
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -48,7 +39,7 @@
   "start_state": {
     "pos": {
       "x": 3,
-      "z": 4
+      "z": 5
     },
     "orientation": "vertical"
   },
@@ -59,47 +50,12 @@
   "tiles": [
     {
       "x": 3,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 3,
       "z": 5,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 6,
+      "x": 1,
+      "z": 3,
       "type": "normal"
     },
     {
@@ -108,8 +64,33 @@
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": 1,
+      "x": 3,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
       "type": "normal"
     },
     {
@@ -144,17 +125,13 @@
     }
   ],
   "solution_data": [
-    "down",
-    "left",
     "up",
     "right",
-    "down",
+    "up",
+    "left",
     "down",
     "left",
     "up",
-    "up",
-    "up",
-    "left",
     "left",
     "up"
   ]

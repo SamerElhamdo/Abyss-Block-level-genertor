@@ -1,0 +1,368 @@
+{
+  "level_metadata": {
+    "id": "lvl_-3f4f4bc",
+    "difficulty": 2,
+    "objective": "[GEMINI EDITION #5] Master the geometry of the abyss.",
+    "seed": -66385084,
+    "steps_to_solve": 25,
+    "map_bounds": {
+      "minX": -15,
+      "maxX": 0,
+      "minZ": -6,
+      "maxZ": 1,
+      "width": 16,
+      "length": 8
+    },
+    "layout_dir": "150deg",
+    "author": "Gemini AI Designer"
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": -15,
+      "z": -1
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": -15,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": -15,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -15,
+      "z": -4,
+      "type": "crumbling"
+    },
+    {
+      "x": -14,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -4,
+      "type": "crumbling"
+    },
+    {
+      "x": -14,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": -14,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -13,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -12,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -11,
+      "z": -6,
+      "type": "crumbling"
+    },
+    {
+      "x": -10,
+      "z": -6,
+      "type": "crumbling"
+    },
+    {
+      "x": -9,
+      "z": -6,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": -5,
+      "type": "normal"
+    },
+    {
+      "x": -9,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -8,
+      "z": -5,
+      "type": "crumbling"
+    },
+    {
+      "x": -8,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": -5,
+      "type": "crumbling"
+    },
+    {
+      "x": -7,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": -7,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -7,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": -7,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -6,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -4,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": -3,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": -3,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": -3,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": -2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "up",
+    "up",
+    "right",
+    "up",
+    "up",
+    "right",
+    "right",
+    "right",
+    "down",
+    "right",
+    "right",
+    "down",
+    "down",
+    "down",
+    "right",
+    "right",
+    "up",
+    "right",
+    "down",
+    "right",
+    "right"
+  ],
+  "_internal": {
+    "pathStates": [
+      {
+        "x": -15,
+        "z": -1,
+        "o": "V"
+      },
+      {
+        "x": -15,
+        "z": -3,
+        "o": "HZ"
+      },
+      {
+        "x": -15,
+        "z": -4,
+        "o": "V"
+      },
+      {
+        "x": -14,
+        "z": -4,
+        "o": "HX"
+      },
+      {
+        "x": -14,
+        "z": -5,
+        "o": "HX"
+      },
+      {
+        "x": -14,
+        "z": -6,
+        "o": "HX"
+      },
+      {
+        "x": -12,
+        "z": -6,
+        "o": "V"
+      },
+      {
+        "x": -11,
+        "z": -6,
+        "o": "HX"
+      },
+      {
+        "x": -9,
+        "z": -6,
+        "o": "V"
+      },
+      {
+        "x": -9,
+        "z": -5,
+        "o": "HZ"
+      },
+      {
+        "x": -8,
+        "z": -5,
+        "o": "HZ"
+      },
+      {
+        "x": -7,
+        "z": -5,
+        "o": "HZ"
+      },
+      {
+        "x": -7,
+        "z": -3,
+        "o": "V"
+      },
+      {
+        "x": -7,
+        "z": -2,
+        "o": "HZ"
+      },
+      {
+        "x": -7,
+        "z": 0,
+        "o": "V"
+      },
+      {
+        "x": -6,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": -4,
+        "z": 0,
+        "o": "V"
+      },
+      {
+        "x": -4,
+        "z": -2,
+        "o": "HZ"
+      },
+      {
+        "x": -3,
+        "z": -2,
+        "o": "HZ"
+      },
+      {
+        "x": -3,
+        "z": 0,
+        "o": "V"
+      },
+      {
+        "x": -5,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": -5,
+        "z": 1,
+        "o": "HX"
+      },
+      {
+        "x": -3,
+        "z": 1,
+        "o": "V"
+      },
+      {
+        "x": -2,
+        "z": 1,
+        "o": "HX"
+      },
+      {
+        "x": -2,
+        "z": 0,
+        "o": "HX"
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "o": "V"
+      }
+    ]
+  }
+}

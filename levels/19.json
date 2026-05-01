@@ -1,46 +1,35 @@
 {
   "level_metadata": {
     "id": "lvl_19",
-    "difficulty": 6,
+    "difficulty": 5,
     "seed": 1268446498,
     "steps_to_solve": 4,
     "map_bounds": {
-      "minX": 0,
-      "maxX": 13,
-      "minZ": -1,
+      "minX": -3,
+      "maxX": 8,
+      "minZ": 0,
       "maxZ": 4,
-      "width": 14,
-      "length": 6
+      "width": 12,
+      "length": 5
     },
     "layout_dir": "20deg",
     "slot": 19,
-    "phase": "fragile",
-    "mechanics": {
-      "fragile": true,
-      "crumbling": false,
-      "moving": false,
-      "portal": false,
-      "fragileRate": 0.317
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 1,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 80,
-      "deviationPct": 0.15,
-      "crossAxisLimit": 4
-    },
+    "phase": "abyss_mix",
     "tile_stats": {
-      "normal": 6,
-      "fragile": 1,
+      "normal": 8,
+      "fragile": 0,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 7,
-      "trap_density": 0.143
+      "total": 8,
+      "trap_density": 0
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 1,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -48,7 +37,7 @@
   },
   "start_state": {
     "pos": {
-      "x": 6,
+      "x": -2,
       "z": 0
     },
     "orientation": "vertical"
@@ -59,45 +48,50 @@
   },
   "tiles": [
     {
-      "x": 6,
+      "x": -2,
       "z": 0,
       "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 0,
-      "type": "fragile"
     },
     {
       "x": 0,
       "z": 0,
       "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": -1,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -2,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": -2,
+      "z": 1,
+      "type": "normal"
     }
   ],
   "solution_data": [
-    "left",
-    "left",
-    "left",
-    "left"
+    "down",
+    "right",
+    "right",
+    "up"
   ]
 }

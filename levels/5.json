@@ -2,44 +2,35 @@
   "level_metadata": {
     "id": "lvl_5",
     "difficulty": 2,
-    "seed": 3010201181,
-    "steps_to_solve": 12,
+    "objective": "Watch your step. Crumbling tiles disappear forever after a single visit.",
+    "seed": -1284766115,
+    "steps_to_solve": 26,
     "map_bounds": {
       "minX": 0,
-      "maxX": 9,
-      "minZ": 0,
-      "maxZ": 6,
-      "width": 10,
-      "length": 7
+      "maxX": 12,
+      "minZ": -3,
+      "maxZ": 5,
+      "width": 13,
+      "length": 9
     },
     "layout_dir": "20deg",
     "slot": 5,
     "phase": "tutorial",
-    "mechanics": {
-      "fragile": false,
-      "crumbling": false,
-      "moving": false,
-      "portal": false
-    },
-    "generator": {
-      "base_seed": 4747,
-      "attempts": 1,
-      "verified": true,
-      "dir_angle_deg": 20,
-      "spreadDeg": 130,
-      "deviationPct": 0.3,
-      "crossAxisLimit": 6
-    },
     "tile_stats": {
-      "normal": 21,
+      "normal": 17,
       "fragile": 0,
-      "crumbling": 0,
+      "crumbling": 23,
       "moving": 0,
       "portal": 0,
-      "total": 21,
-      "trap_density": 0
+      "total": 40,
+      "trap_density": 0.575
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 3.17,
+    "generator": {
+      "base_seed": 4747,
+      "ai_guided": true,
+      "verified": true
+    }
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -47,8 +38,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 5,
-      "z": 5
+      "x": 4,
+      "z": -3
     },
     "orientation": "vertical"
   },
@@ -58,33 +49,113 @@
   },
   "tiles": [
     {
+      "x": 4,
+      "z": -3,
+      "type": "normal"
+    },
+    {
       "x": 5,
-      "z": 5,
-      "type": "normal"
+      "z": -3,
+      "type": "crumbling"
     },
     {
       "x": 6,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 7,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": -3,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 11,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": 11,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
       "z": 3,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
-      "x": 6,
+      "x": 10,
       "z": 4,
       "type": "normal"
     },
     {
-      "x": 6,
-      "z": 5,
-      "type": "normal"
+      "x": 9,
+      "z": 3,
+      "type": "crumbling"
     },
     {
-      "x": 7,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 7,
+      "x": 9,
       "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 3,
       "type": "normal"
     },
     {
@@ -94,27 +165,42 @@
     },
     {
       "x": 8,
-      "z": 2,
+      "z": 5,
+      "type": "crumbling"
+    },
+    {
+      "x": 9,
+      "z": 5,
       "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 5,
+      "type": "crumbling"
     },
     {
       "x": 8,
-      "z": 3,
-      "type": "normal"
+      "z": 2,
+      "type": "crumbling"
     },
     {
       "x": 7,
       "z": 2,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 7,
       "z": 3,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 6,
       "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 6,
+      "z": 3,
       "type": "normal"
     },
     {
@@ -125,17 +211,17 @@
     {
       "x": 4,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 5,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 3,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 1,
@@ -145,12 +231,12 @@
     {
       "x": 2,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 1,
       "z": 0,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 2,
@@ -165,8 +251,22 @@
   ],
   "solution_data": [
     "right",
-    "up",
     "right",
+    "right",
+    "right",
+    "down",
+    "down",
+    "right",
+    "down",
+    "down",
+    "left",
+    "down",
+    "left",
+    "left",
+    "down",
+    "right",
+    "up",
+    "left",
     "up",
     "left",
     "left",
