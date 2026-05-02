@@ -178,7 +178,7 @@ const PHASES = [
   {
     label: "moving", from: 31, count: 10,
     constraints: { minMoves: 42, maxMoves: 70 },
-    maxAttempts: 15,
+    maxAttempts: 120,
     fn(i, seed, dirDeg, crossW) {
       const ti = phaseT(i, 10);
       return {

@@ -323,7 +323,17 @@ function injectHazards(level, opts, rng, stepOffset = 0) {
     // ─────────────────────────────────────────────────────────────────────────
     const occupied = new Set(tilesByKey.keys());
 
-    // Only cells the player MUST cross exactly once qualify.
+    // Narrow-corridor check: a candidate is suitable if it has at most 2 tile-neighbours
+    // (one incoming, one outgoing). Cells at intersections (3+ neighbours) can be bypassed.
+    function isNarrowCorridor(candidateKey) {
+      const [cx, cz] = candidateKey.split(',').map(Number);
+      const neighbours = [[1,0],[-1,0],[0,1],[0,-1]]
+        .filter(([dx,dz]) => occupied.has(`${cx+dx},${cz+dz}`));
+      return neighbours.length <= 2;
+    }
+
+    // Candidates: normal tiles that were critical in the golden path AND sit in a
+    // narrow corridor (no intersection tile that lets the block detour around them).
     const criticalForMoving = localCriticalCells(pathStates);
 
     // Pre-compute first-reach step for every cell in the golden path.
@@ -335,12 +345,19 @@ function injectHazards(level, opts, rng, stepOffset = 0) {
       }
     }
 
-    const candidates = [...tilesByKey.values()].filter(t =>
-      t.type === "normal" &&
-      `${t.x},${t.z}` !== goalKey &&
-      !startCells.includes(`${t.x},${t.z}`) &&
-      criticalForMoving.has(`${t.x},${t.z}`)
-    );
+    // Compute tile bounds for out-of-bounds guard
+    const tileXArr = [...tilesByKey.values()].map(t => t.x);
+    const tileZArr = [...tilesByKey.values()].map(t => t.z);
+    const tMinX = Math.min(...tileXArr), tMaxX = Math.max(...tileXArr);
+    const tMinZ = Math.min(...tileZArr), tMaxZ = Math.max(...tileZArr);
+
+    const candidates = [...tilesByKey.values()].filter(t => {
+      const k = `${t.x},${t.z}`;
+      return t.type === "normal" &&
+        k !== goalKey &&
+        !startCells.includes(k) &&
+        criticalForMoving.has(k);
+    });
     for (let i = candidates.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
@@ -368,15 +385,20 @@ function injectHazards(level, opts, rng, stepOffset = 0) {
         // Both endpoint cells must be void (no static tile, no other path tile).
         if (occupied.has(kLo) || occupied.has(kHi)) continue;
 
+        // Both void endpoints must stay within the visible map bounds (±1 is ok, ±2 is not).
+        if (axis === 'x' && (lo < tMinX - 1 || hi > tMaxX + 1)) continue;
+        if (axis === 'z' && (lo < tMinZ - 1 || hi > tMaxZ + 1)) continue;
+
         // range = [center-1, center+1]; the triangle wave visits lo → center → hi → center → lo…
         const range = [lo, hi];
 
-        // startPhase: tile is AT center (offset=1, phaseIdx=1) when golden path arrives.
-        //   phaseIdx=1 → t = 1 * stepsPerPhase
-        const localReachStep = stepReachMap.get(`${c.x},${c.z}`) ?? 0;
-        const tileReachStep  = localReachStep + stepOffset;
-        const targetT        = stepsPerPhase;   // offset=1 (center) → t = stepsPerPhase
-        const startPhase     = ((targetT - tileReachStep % period) + period) % period;
+        // startPhase is ALWAYS 0: tile starts at range[0] (void end), not at center.
+        // This makes the timing puzzle visually unambiguous — the player sees a gap
+        // from the very first frame and must wait for the tile to swing to center.
+        // The golden path will NOT pass simulateLevel with startPhase=0 (it was
+        // generated without timing constraints). buildLevelVerified skips the golden-
+        // path sim-check for moving levels and relies entirely on the BFS solution.
+        const startPhase = 0;
 
         c.type   = "moving";
         c.params = { axis, range, stepsPerPhase, startPhase };
@@ -629,7 +651,7 @@ export function simulateLevel(data) {
     const dir    = data.solution_data[i];
     const next   = rollForward(cur, dir);
     const foot   = cellsOf(next);
-    const tileMap = tileMapAt(i + 1);  // tile positions after this move
+    const tileMap = tileMapAt(i);  // tile positions at current step — must match what player sees
 
     // 1. Every footprint cell must exist
     for (const [x, z] of foot) {
@@ -730,16 +752,100 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
     const walkMoves = lvl.solution_data.length;
     if (walkMoves < minMoves || walkMoves > maxMoves) continue;
 
-    // Full physics verification
-    if (!simulateLevel(lvl).ok) continue;
+    // Moving tiles use startPhase=0, so the golden path was generated WITHOUT
+    // timing constraints and will NOT pass simulateLevel. For levels with moving
+    // tiles we skip the golden-path check and rely entirely on the BFS solution.
+    const hasMoving = lvl.tiles.some(t => t.type === 'moving');
+    if (!hasMoving && !simulateLevel(lvl).ok) continue;
 
-    // Find & apply the absolute shortest solution, then re-prune tiles
+    // Find the shortest valid solution via step-aware BFS, then re-prune tiles.
     const pruned  = pruneUnreachableTiles(lvl);
-    const optimal = optimizeSolution(pruned);   // always finds shortest, no floor
-    // Guard: if BFS optimisation breaks step-timing for moving tiles, fall back
-    // to the golden-path level (already verified above) rather than discarding.
-    const finalLvl = simulateLevel(optimal).ok ? optimal : pruned;
-    return { lvl: finalLvl, attempts: attempt + 1, verified: true };
+    const optimal = optimizeSolution(pruned);
+
+    // BFS is the authoritative verifier — it must produce a valid simulation.
+    if (!simulateLevel(optimal).ok) continue;
+
+    // Every moving tile center must actually be visited by the optimal path.
+    // If the BFS found a route that bypasses a moving tile, reject this attempt.
+    // If mechanics require a moving tile but none was placed, try to inject one
+    // directly from the BFS path states (cells on the BFS path with ≤2 neighbours).
+    if (hasMoving) {
+      const ps = optimal._internal?.pathStates ?? [];
+      const placedMoving = optimal.tiles.filter(t => t.type === 'moving');
+
+      const allUsed = placedMoving.length > 0 && placedMoving.every(mt =>
+        ps.some(s => {
+          if (s.o === 'V')  return s.x === mt.x && s.z === mt.z;
+          if (s.o === 'HX') return s.z === mt.z && (s.x === mt.x || s.x + 1 === mt.x);
+          if (s.o === 'HZ') return s.x === mt.x && (s.z === mt.z || s.z + 1 === mt.z);
+          return false;
+        })
+      );
+
+      if (!allUsed) {
+        // Try to inject a moving tile onto the BFS path.
+        // Pick the first state in the middle region of the path that sits in a
+        // narrow corridor (≤2 tile neighbours) with both ±1 void endpoint cells.
+        const tilesByKeyOpt = new Map(optimal.tiles.map(t => [`${t.x},${t.z}`, t]));
+        const occupied = new Set(tilesByKeyOpt.keys());
+        const startCellsOpt = cellsOf(ps[0]).map(([x,z]) => `${x},${z}`);
+        const goalKey = `${optimal.hole_pos.x},${optimal.hole_pos.z}`;
+        const stepsPerPhase = 1 + Math.floor(makeRNG(attemptOpts.seed)() * 2);
+
+        let injected = null;
+        const mid = Math.floor(ps.length / 2);
+        for (let di = 0; di < ps.length - 2 && !injected; di++) {
+          const si = mid + (di % 2 === 0 ? di / 2 : -Math.ceil(di / 2));
+          if (si <= 0 || si >= ps.length - 1) continue;
+          const s = ps[si];
+          // Use the primary (anchor) cell of each state as the candidate center.
+          const ck = `${s.x},${s.z}`;
+          if (ck === goalKey || startCellsOpt.includes(ck)) continue;
+          const t = tilesByKeyOpt.get(ck);
+          if (!t || t.type !== 'normal') continue;
+          // skip start/goal
+          // try both axes
+          for (const axis of ['x', 'z']) {
+            const center = axis === 'x' ? s.x : s.z;
+            const lo = center - 1, hi = center + 1;
+            const kLo = axis === 'x' ? `${lo},${s.z}` : `${s.x},${lo}`;
+            const kHi = axis === 'x' ? `${hi},${s.z}` : `${s.x},${hi}`;
+            if (occupied.has(kLo) || occupied.has(kHi)) continue;
+            // within bounds guard
+            const tileXArr = [...tilesByKeyOpt.values()].map(t2 => t2.x);
+            const tileZArr = [...tilesByKeyOpt.values()].map(t2 => t2.z);
+            const tMinX = Math.min(...tileXArr), tMaxX = Math.max(...tileXArr);
+            const tMinZ = Math.min(...tileZArr), tMaxZ = Math.max(...tileZArr);
+            if (axis === 'x' && (lo < tMinX - 1 || hi > tMaxX + 1)) continue;
+            if (axis === 'z' && (lo < tMinZ - 1 || hi > tMaxZ + 1)) continue;
+            // Inject the moving tile; revert any old (bypassed) moving tiles to normal.
+            const newTiles = optimal.tiles.map(tile => {
+              if (`${tile.x},${tile.z}` === ck)
+                return { ...tile, type: 'moving', params: { axis, range: [lo, hi], stepsPerPhase, startPhase: 0 } };
+              if (tile.type === 'moving')
+                return { x: tile.x, z: tile.z, type: 'normal' };
+              return tile;
+            });
+            const candidate = { ...optimal, tiles: newTiles };
+            const simResult = simulateLevel(candidate);
+            if (!simResult.ok) continue;
+            const newOpt = optimizeSolution(candidate);
+            if (!simulateLevel(newOpt).ok) continue;
+            const newPs = newOpt._internal?.pathStates ?? [];
+            const tileUsed = newPs.some(ns =>
+              (ns.o === 'V'  && ns.x === s.x && ns.z === s.z) ||
+              (ns.o === 'HX' && ns.z === s.z && (ns.x === s.x || ns.x + 1 === s.x)) ||
+              (ns.o === 'HZ' && ns.x === s.x && (ns.z === s.z || ns.z + 1 === s.z))
+            );
+            if (tileUsed) { injected = newOpt; break; }
+          }
+        }
+        if (!injected) continue;
+        return { lvl: injected, attempts: attempt + 1, verified: true };
+      }
+    }
+
+    return { lvl: optimal, attempts: attempt + 1, verified: true };
   }
 
   // Fallback: return last generated without BFS if all retries exhausted
@@ -799,7 +905,7 @@ export function optimizeSolution(data) {
     const cur = queue.shift();
     visited++;
     const nextStep = cur.step + 1;
-    const { set: tileSet, typeMap: tileTypeMap } = tileInfoAtStep(nextStep);
+    const { set: tileSet, typeMap: tileTypeMap } = tileInfoAtStep(cur.step);  // check current visible state
 
     for (const dir of DIRS) {
       const next = rollForward(cur, dir);

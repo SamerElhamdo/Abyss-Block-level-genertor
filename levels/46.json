@@ -2,16 +2,16 @@
   "level_metadata": {
     "id": "lvl_46",
     "difficulty": 9,
-    "seed": 784368875,
-    "steps_to_solve": 17,
+    "seed": 553449893,
+    "steps_to_solve": 29,
     "island_count": 2,
     "map_bounds": {
       "minX": 0,
-      "maxX": 19,
+      "maxX": 21,
       "minZ": -4,
-      "maxZ": 3,
-      "width": 20,
-      "length": 8
+      "maxZ": 4,
+      "width": 22,
+      "length": 9
     },
     "layout_dir": "20deg",
     "slot": 46,
@@ -26,8 +26,8 @@
       "constraintMode": true
     },
     "generator": {
-      "base_seed": 4747,
-      "attempts": 4,
+      "base_seed": 773224723,
+      "attempts": 9,
       "verified": true,
       "dir_angle_deg": 20,
       "spreadDeg": 120,
@@ -35,36 +35,32 @@
       "crossAxisLimit": 7
     },
     "tile_stats": {
-      "normal": 12,
-      "fragile": 5,
-      "crumbling": 10,
+      "normal": 23,
+      "fragile": 17,
+      "crumbling": 6,
       "moving": 1,
       "portal": 2,
-      "total": 30,
-      "trap_density": 0.533
+      "total": 49,
+      "trap_density": 0.49
     },
-    "computed_difficulty": 5.99,
+    "computed_difficulty": 8.62,
     "behavioral_analysis": {
-      "precision_moves": 4,
-      "crumbling_moves": 9,
-      "orientation_changes": 12,
+      "precision_moves": 11,
+      "crumbling_moves": 6,
+      "orientation_changes": 22,
       "portal_traversals": 1,
-      "critical_tile_count": 30,
-      "critical_hazard_count": 16,
-      "behavioral_difficulty": 5.99
+      "critical_tile_count": 49,
+      "critical_hazard_count": 24,
+      "behavioral_difficulty": 8.62
     },
     "applied_patterns": [
       {
         "pattern": "FRAGILE_BRIDGE",
-        "index": 8
+        "index": 12
       },
       {
         "pattern": "ONE_TIME_PATH",
-        "index": 5
-      },
-      {
-        "pattern": "PRECISION_CORRIDOR",
-        "index": 8
+        "index": 17
       }
     ]
   },
@@ -74,167 +70,237 @@
   },
   "start_state": {
     "pos": {
-      "x": 19,
-      "z": 3
+      "x": 21,
+      "z": 4
     },
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 2,
-    "z": -3
+    "x": 0,
+    "z": -1
   },
   "tiles": [
+    {
+      "x": 21,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 19,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 20,
+      "z": 4,
+      "type": "normal"
+    },
     {
       "x": 19,
       "z": 3,
       "type": "normal"
     },
     {
-      "x": 19,
-      "z": 1,
-      "type": "moving",
-      "params": {
-        "axis": "x",
-        "range": [
-          18,
-          20
-        ],
-        "stepsPerPhase": 2,
-        "startPhase": 1
-      }
+      "x": 20,
+      "z": 3,
+      "type": "crumbling"
     },
     {
-      "x": 19,
+      "x": 18,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 17,
       "z": 2,
       "type": "fragile"
     },
     {
-      "x": 19,
+      "x": 17,
       "z": 0,
       "type": "normal"
     },
     {
       "x": 17,
-      "z": 0,
-      "type": "crumbling"
+      "z": -2,
+      "type": "normal"
     },
     {
-      "x": 18,
-      "z": 0,
-      "type": "fragile"
+      "x": 17,
+      "z": -1,
+      "type": "normal"
     },
     {
       "x": 16,
-      "z": 0,
-      "type": "crumbling"
+      "z": -2,
+      "type": "normal"
     },
     {
-      "x": 11,
-      "z": -1,
-      "type": "crumbling"
-    },
-    {
-      "x": 12,
+      "x": 16,
       "z": -1,
       "type": "normal"
     },
     {
-      "x": 11,
-      "z": 0,
+      "x": 16,
+      "z": -3,
       "type": "normal"
     },
     {
-      "x": 12,
-      "z": 0,
+      "x": 14,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 15,
+      "z": -3,
       "type": "normal"
     },
     {
       "x": 13,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 14,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 15,
-      "z": 0,
-      "type": "crumbling"
-    },
-    {
-      "x": 11,
-      "z": -2,
-      "type": "crumbling"
-    },
-    {
-      "x": 12,
-      "z": -2,
-      "type": "fragile"
-    },
-    {
-      "x": 11,
-      "z": -3,
-      "type": "crumbling"
-    },
-    {
-      "x": 12,
-      "z": -3,
-      "type": "normal"
-    },
-    {
-      "x": 10,
       "z": -3,
       "type": "portal",
       "target": {
-        "x": 6,
-        "z": -2
+        "x": 5,
+        "z": 2
       }
     },
     {
-      "x": 6,
-      "z": -2,
+      "x": 5,
+      "z": 2,
       "type": "portal",
       "target": {
-        "x": 10,
+        "x": 13,
         "z": -3
       }
     },
     {
-      "x": 4,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": -2,
+      "x": 6,
+      "z": 2,
       "type": "crumbling"
     },
     {
-      "x": 4,
-      "z": -3,
+      "x": 7,
+      "z": 2,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": -3,
+      "x": 6,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 8,
+      "z": 3,
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": -3,
-      "type": "normal"
+      "x": 8,
+      "z": 1,
+      "type": "fragile"
     },
     {
-      "x": 3,
+      "x": 8,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 8,
+      "z": 0,
+      "type": "moving",
+      "params": {
+        "axis": "x",
+        "range": [
+          7,
+          9
+        ],
+        "stepsPerPhase": 2,
+        "startPhase": 0
+      }
+    },
+    {
+      "x": 8,
       "z": -2,
       "type": "fragile"
     },
     {
-      "x": 3,
+      "x": 8,
       "z": -1,
       "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": -3,
+      "type": "crumbling"
+    },
+    {
+      "x": 5,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 5,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -4,
+      "type": "fragile"
+    },
+    {
+      "x": 4,
+      "z": -4,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 4,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 4,
+      "z": -1,
+      "type": "crumbling"
     },
     {
       "x": 2,
@@ -242,33 +308,70 @@
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": -2,
+      "x": 3,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": -1,
       "type": "crumbling"
     },
     {
-      "x": 2,
-      "z": -3,
+      "x": 0,
+      "z": -1,
       "type": "normal"
     }
   ],
   "solution_data": [
+    "left",
+    "up",
+    "left",
+    "up",
+    "left",
     "up",
     "up",
     "left",
+    "up",
     "left",
     "left",
-    "left",
-    "left",
+    "right",
+    "down",
+    "right",
     "up",
     "up",
     "up",
     "left",
+    "up",
     "left",
     "up",
     "left",
     "down",
+    "down",
+    "down",
     "left",
-    "up"
+    "up",
+    "left",
+    "left"
   ]
 }

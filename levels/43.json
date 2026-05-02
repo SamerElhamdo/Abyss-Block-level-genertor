@@ -2,15 +2,15 @@
   "level_metadata": {
     "id": "lvl_43",
     "difficulty": 8,
-    "seed": 1112404191,
-    "steps_to_solve": 36,
-    "island_count": 4,
+    "seed": 2860902514,
+    "steps_to_solve": 25,
+    "island_count": 2,
     "map_bounds": {
       "minX": 0,
-      "maxX": 37,
+      "maxX": 21,
       "minZ": -2,
       "maxZ": 2,
-      "width": 38,
+      "width": 22,
       "length": 5
     },
     "layout_dir": "20deg",
@@ -23,8 +23,8 @@
       "portal": true
     },
     "generator": {
-      "base_seed": 4747,
-      "attempts": 2,
+      "base_seed": 773224723,
+      "attempts": 1,
       "verified": true,
       "dir_angle_deg": 20,
       "spreadDeg": 70,
@@ -32,23 +32,23 @@
       "crossAxisLimit": 4
     },
     "tile_stats": {
-      "normal": 57,
+      "normal": 28,
       "fragile": 0,
       "crumbling": 0,
       "moving": 0,
-      "portal": 6,
-      "total": 63,
+      "portal": 2,
+      "total": 30,
       "trap_density": 0
     },
-    "computed_difficulty": 4.1,
+    "computed_difficulty": 2.79,
     "behavioral_analysis": {
       "precision_moves": 0,
       "crumbling_moves": 0,
-      "orientation_changes": 26,
-      "portal_traversals": 3,
-      "critical_tile_count": 63,
+      "orientation_changes": 18,
+      "portal_traversals": 1,
+      "critical_tile_count": 30,
       "critical_hazard_count": 0,
-      "behavioral_difficulty": 4.1
+      "behavioral_difficulty": 2.79
     },
     "applied_patterns": []
   },
@@ -58,215 +58,19 @@
   },
   "start_state": {
     "pos": {
-      "x": 35,
-      "z": -2
+      "x": 19,
+      "z": 1
     },
     "orientation": "vertical"
   },
   "hole_pos": {
     "x": 0,
-    "z": 0
+    "z": -2
   },
   "tiles": [
     {
-      "x": 35,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 36,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 36,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 36,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 37,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 35,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 33,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 34,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 33,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 34,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 32,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 32,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 32,
+      "x": 19,
       "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 31,
-      "z": -1,
-      "type": "portal",
-      "target": {
-        "x": 25,
-        "z": 2
-      }
-    },
-    {
-      "x": 25,
-      "z": 2,
-      "type": "portal",
-      "target": {
-        "x": 31,
-        "z": -1
-      }
-    },
-    {
-      "x": 26,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 27,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 26,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 27,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 25,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 23,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 24,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 22,
-      "z": -2,
-      "type": "portal",
-      "target": {
-        "x": 17,
-        "z": 2
-      }
-    },
-    {
-      "x": 17,
-      "z": 2,
-      "type": "portal",
-      "target": {
-        "x": 22,
-        "z": -2
-      }
-    },
-    {
-      "x": 15,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 16,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 15,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 16,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 17,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 17,
-      "z": -1,
       "type": "normal"
     },
     {
@@ -276,17 +80,12 @@
     },
     {
       "x": 18,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 18,
       "z": 0,
       "type": "normal"
     },
     {
-      "x": 18,
-      "z": -2,
+      "x": 16,
+      "z": 0,
       "type": "normal"
     },
     {
@@ -295,8 +94,8 @@
       "type": "normal"
     },
     {
-      "x": 17,
-      "z": -2,
+      "x": 16,
+      "z": -1,
       "type": "normal"
     },
     {
@@ -305,71 +104,61 @@
       "type": "normal"
     },
     {
-      "x": 13,
-      "z": -2,
+      "x": 15,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 15,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 18,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 17,
+      "z": 2,
       "type": "normal"
     },
     {
       "x": 14,
       "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": -2,
       "type": "portal",
       "target": {
-        "x": 6,
-        "z": -1
+        "x": 4,
+        "z": 0
       }
     },
     {
-      "x": 6,
-      "z": -1,
+      "x": 4,
+      "z": 0,
       "type": "portal",
       "target": {
-        "x": 12,
+        "x": 14,
         "z": -2
       }
     },
     {
-      "x": 7,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 7,
+      "x": 5,
       "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 1,
       "type": "normal"
     },
     {
       "x": 6,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 1,
+      "z": 0,
       "type": "normal"
     },
     {
@@ -378,72 +167,91 @@
       "type": "normal"
     },
     {
+      "x": 6,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -2,
+      "type": "normal"
+    },
+    {
       "x": 3,
-      "z": 1,
+      "z": -2,
       "type": "normal"
     },
     {
       "x": 1,
-      "z": 1,
+      "z": -2,
       "type": "normal"
     },
     {
       "x": 2,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 0,
+      "z": -2,
       "type": "normal"
     },
     {
       "x": 0,
-      "z": 0,
+      "z": -2,
       "type": "normal"
     }
   ],
   "solution_data": [
-    "right",
-    "down",
-    "down",
     "left",
+    "up",
     "left",
     "up",
     "left",
     "down",
-    "left",
-    "up",
     "right",
-    "up",
-    "left",
-    "up",
-    "up",
-    "left",
-    "left",
-    "left",
-    "up",
     "right",
+    "down",
+    "left",
     "up",
-    "right",
+    "left",
     "up",
-    "left",
-    "left",
-    "left",
+    "up",
     "left",
     "right",
     "down",
-    "down",
-    "left",
-    "left",
-    "left",
+    "right",
+    "up",
     "left",
     "up",
+    "left",
+    "left",
+    "left",
     "left"
   ]
 }
