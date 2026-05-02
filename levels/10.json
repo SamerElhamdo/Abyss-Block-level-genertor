@@ -1,67 +1,67 @@
 {
   "level_metadata": {
     "id": "lvl_10",
-    "difficulty": 3,
-    "seed": 51360430,
-    "steps_to_solve": 8,
+    "difficulty": 7,
+    "seed": 906301205,
+    "steps_to_solve": 16,
     "map_bounds": {
       "minX": 0,
-      "maxX": 6,
-      "minZ": 0,
-      "maxZ": 6,
-      "width": 7,
-      "length": 7
+      "maxX": 7,
+      "minZ": -1,
+      "maxZ": 2,
+      "width": 8,
+      "length": 4
     },
     "layout_dir": "20deg",
     "slot": 10,
-    "phase": "tutorial",
+    "phase": "precision",
     "mechanics": {
       "fragile": true,
       "crumbling": true,
       "moving": false,
       "portal": false,
-      "fragileRate": 0.3,
-      "crumblingRate": 0.15,
+      "fragileRate": 0.58,
+      "crumblingRate": 0.38,
       "constraintMode": true
     },
     "generator": {
-      "base_seed": 773224723,
-      "attempts": 1,
+      "base_seed": 777000,
+      "attempts": 25,
       "verified": true,
       "dir_angle_deg": 20,
-      "spreadDeg": 130,
-      "deviationPct": 0.3,
-      "crossAxisLimit": 6
+      "spreadDeg": 80,
+      "deviationPct": 0.12,
+      "crossAxisLimit": 2
+    },
+    "evolution": {
+      "n_candidates": 15,
+      "winner_index": 5,
+      "winner_seed": 3662721077,
+      "fitness_first": 5.7991,
+      "fitness_best": 7.3059,
+      "fitness_gain": 1.5068
     },
     "tile_stats": {
-      "normal": 10,
-      "fragile": 2,
-      "crumbling": 2,
+      "normal": 15,
+      "fragile": 4,
+      "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 14,
-      "trap_density": 0.286
+      "total": 19,
+      "trap_density": 0.211
     },
-    "computed_difficulty": 2.91,
+    "computed_difficulty": 3.96,
     "behavioral_analysis": {
-      "precision_moves": 2,
-      "crumbling_moves": 2,
-      "orientation_changes": 4,
+      "precision_moves": 4,
+      "crumbling_moves": 0,
+      "orientation_changes": 10,
       "portal_traversals": 0,
-      "critical_tile_count": 14,
+      "critical_tile_count": 19,
       "critical_hazard_count": 4,
-      "behavioral_difficulty": 2.91
+      "behavioral_difficulty": 3.96,
+      "puzzle_efficiency": 7.3059
     },
-    "applied_patterns": [
-      {
-        "pattern": "FRAGILE_BRIDGE",
-        "index": 6
-      },
-      {
-        "pattern": "ONE_TIME_PATH",
-        "index": 3
-      }
-    ]
+    "applied_patterns": []
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -69,8 +69,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 1,
-      "z": 2
+      "x": 2,
+      "z": 0
     },
     "orientation": "vertical"
   },
@@ -80,18 +80,8 @@
   },
   "tiles": [
     {
-      "x": 1,
-      "z": 2,
-      "type": "normal"
-    },
-    {
       "x": 2,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 2,
+      "z": 0,
       "type": "normal"
     },
     {
@@ -101,48 +91,83 @@
     },
     {
       "x": 2,
-      "z": 3,
+      "z": 2,
       "type": "normal"
     },
     {
       "x": 3,
-      "z": 3,
-      "type": "crumbling"
-    },
-    {
-      "x": 1,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 4,
+      "z": 1,
       "type": "normal"
     },
     {
       "x": 3,
-      "z": 4,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": -1,
       "type": "fragile"
     },
     {
       "x": 1,
       "z": 1,
-      "type": "crumbling"
+      "type": "fragile"
     },
     {
       "x": 1,
       "z": 0,
       "type": "fragile"
-    },
-    {
-      "x": 2,
-      "z": 0,
-      "type": "normal"
     },
     {
       "x": 0,
@@ -154,9 +179,17 @@
     "down",
     "right",
     "right",
+    "right",
     "up",
+    "right",
+    "down",
     "left",
     "up",
+    "right",
+    "down",
+    "left",
+    "left",
+    "left",
     "up",
     "left"
   ]

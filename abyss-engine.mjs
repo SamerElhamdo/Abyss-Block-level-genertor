@@ -737,7 +737,11 @@ export function pruneUnreachableTiles(data) {
 // BFS optimisation runs unconditionally afterward — the stored solution is
 // always the shortest valid path, regardless of the minMoves floor.
 export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
-  const { minMoves = 0, maxMoves = Infinity } = constraints;
+  // minMoves / maxMoves  — gate on the random-walk path length (layout complexity).
+  // minBFSMoves          — gate on the BFS-optimal solution length (final playable length).
+  //                        This is the stricter check: it rejects levels where a short
+  //                        shortcut collapses the optimal solution below the target.
+  const { minMoves = 0, maxMoves = Infinity, minBFSMoves = 0 } = constraints;
 
   let lastLvl = null;
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -764,6 +768,10 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
 
     // BFS is the authoritative verifier — it must produce a valid simulation.
     if (!simulateLevel(optimal).ok) continue;
+
+    // Gate on BFS-optimal solution length: reject levels where shortcuts make the
+    // puzzle trivially short even though the random walk was complex enough.
+    if (optimal.solution_data.length < minBFSMoves) continue;
 
     // Every moving tile center must actually be visited by the optimal path.
     // If the BFS found a route that bypasses a moving tile, reject this attempt.
@@ -1176,6 +1184,43 @@ export function tileStats(data) {
   const total = data.tiles.length || 1;
   const traps = counts.fragile + counts.crumbling + counts.moving;
   return { ...counts, total, trap_density: +(traps / total).toFixed(3) };
+}
+
+// ---- Evolution fitness metric ----------------------------------------
+// Selection criterion for Proposal 2 (Generational Evolution).
+//
+// Philosophy: a puzzle is "good" when it forces many moves on few tiles
+// with few traps — but every trap is unavoidable (on every shortest path).
+//
+//   moveEfficiency   = moves / static_tile_count      → long solution, small board
+//   trapNecessity    = critical_traps / total_traps   → all traps matter
+//   trapSparsity     = 1 / (1 + trap_count)           → fewer traps = each one is harder
+//   orientationDensity = orientation_changes / moves  → complex navigation
+//
+// Accepts pre-computed criticalTiles / metrics to avoid redundant BFS calls.
+export function computeEvolutionFitness(data, criticalTiles = null, preMetrics = null) {
+  const moves = data.solution_data.length;
+  const ct    = criticalTiles ?? computeCriticalTiles(data);
+  const m     = preMetrics    ?? computeBehavioralMetrics(data, ct);
+
+  const trapTypes   = new Set(['fragile', 'crumbling', 'moving']);
+  const staticCount = data.tiles.filter(t => t.type !== 'moving').length;
+  const trapCount   = data.tiles.filter(t => trapTypes.has(t.type)).length;
+
+  const moveEfficiency     = moves / Math.max(1, staticCount);
+  const trapSparsity       = 1 / Math.max(1, trapCount);
+  const critTrapCount      = data.tiles.filter(t =>
+    trapTypes.has(t.type) && ct.has(`${t.x},${t.z}`)
+  ).length;
+  const trapNecessity      = trapCount === 0 ? 1 : critTrapCount / trapCount;
+  const orientationDensity = m.orientation_changes / Math.max(1, moves);
+
+  return +(
+    moveEfficiency     * 4.0
+  + trapSparsity       * 2.0
+  + trapNecessity      * 2.5
+  + orientationDensity * 1.5
+  ).toFixed(4);
 }
 
 export { makeRNG, rollForward, rollReverse, cellsOf, stateKey, generateGoldenPath, injectHazards };
