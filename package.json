@@ -4,8 +4,8 @@
   "version": "0.4.0",
   "description": "توليد مراحل ABYSS BLOCK وحفظها كـ JSON من سطر الأوامر",
   "scripts": {
-    "dev": "npx --yes serve . -p 5173",
-    "start": "npx --yes serve . -p 5173",
+    "dev": "npx --yes serve . -p 5174",
+    "start": "npx --yes serve . -p 5174",
     "gen": "node scripts/generate-wave.mjs",
     "gen:wave1": "node scripts/generate-wave.mjs 1",
     "gen:wave2": "node scripts/generate-wave.mjs 2",
