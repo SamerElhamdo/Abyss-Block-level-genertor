@@ -159,6 +159,43 @@ Normal → Crumbling → Normal
 
 ---
 
+### Pattern 5: Maneuver & Cross Pattern
+
+Spatial timing puzzles where the player must align movement with a moving hazard or platform. The following subsection defines the **bridge** variant: perpendicular motion, a single intersection point, and strict step-count synchronization.
+
+#### D. Perpendicular Intersection & The Tri-State Crossing (The "Bridge" Mechanic)
+
+To enforce strict step-calculation, the moving platform must travel **perpendicular** to the player's path, intersecting it at exactly **one focal point**. This creates a tight window of opportunity.
+
+The platform operates in a strict loop of **three states** relative to the player's path:
+
+* **State 1 (Invalid / Fall):** Platform is off to the left. The path is broken.
+* **State 2 (The ONLY Valid State):** Platform aligns exactly with the path. It acts as a bridge.
+* **State 3 (Invalid / Fall):** Platform is off to the right. The path is broken again.
+
+**Visualizing the pattern (top-down view)**
+
+*Legend:*  
+🟩 `[ Safe Permanent Tile ]` | ⬛ `[ Abyss / Gap ]`  
+🟨 `[ Moving Platform ]` | 🟦 `[ Player Cube ]`
+
+```text
+    STATE 1               STATE 2               STATE 3
+  (BLOCKED)           (SAFE TO CROSS)         (BLOCKED)
+
+   ⬛ 🟩 ⬛                ⬛ 🟩 ⬛                ⬛ 🟩 ⬛   <-- Target Path
+   🟨 ⬛ ⬛     --->       ⬛ 🟨 ⬛     --->       ⬛ ⬛ 🟨   <-- Moving Platform Line
+   ⬛ 🟩 ⬛                ⬛ 🟦 ⬛                ⬛ 🟩 ⬛   <-- Choke Point
+   🟩 🟦 🟩                🟩 🟩 🟩                🟩 🟦 🟩   <-- Maneuvering Zone
+```
+
+* In **State 1 & 3**, if the player steps forward, they fall into the abyss.
+* The player must use the **Maneuvering Zone** (bottom row) to waste exactly enough moves so that when they step onto the **Choke Point**, the platform shifts into **State 2**, allowing a safe crossing.
+
+**Design takeaway:** The puzzle is driven entirely by **step counting** to synchronize with **State 2** — no ambiguity about when the bridge is valid.
+
+---
+
 ## 🧠 Combine Patterns
 
 Example Level:
@@ -276,7 +313,14 @@ it's improving **player thinking challenges**.
 
 ---
 
-If you want next step:
 
-* I can design a full **Pattern Library JSON system**
-* Or integrate it directly into your generator
+
+
+
+
+
+
+
+
+
+
