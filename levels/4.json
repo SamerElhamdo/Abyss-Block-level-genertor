@@ -3,7 +3,7 @@
     "id": "lvl_4",
     "difficulty": 2,
     "seed": 2457448891,
-    "steps_to_solve": 8,
+    "steps_to_solve": 12,
     "map_bounds": {
       "minX": 0,
       "maxX": 8,
@@ -16,10 +16,12 @@
     "slot": 4,
     "phase": "tutorial",
     "mechanics": {
-      "fragile": false,
+      "fragile": true,
       "crumbling": false,
       "moving": false,
-      "portal": false
+      "portal": false,
+      "fragileRate": 0.1,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -32,14 +34,29 @@
     },
     "tile_stats": {
       "normal": 14,
-      "fragile": 0,
+      "fragile": 3,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 14,
-      "trap_density": 0
+      "total": 17,
+      "trap_density": 0.176
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 3.01,
+    "behavioral_analysis": {
+      "precision_moves": 3,
+      "crumbling_moves": 0,
+      "orientation_changes": 8,
+      "portal_traversals": 0,
+      "critical_tile_count": 17,
+      "critical_hazard_count": 3,
+      "behavioral_difficulty": 3.01
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 4
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -78,8 +95,8 @@
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": 2,
+      "x": 4,
+      "z": 3,
       "type": "normal"
     },
     {
@@ -98,8 +115,13 @@
       "type": "normal"
     },
     {
-      "x": 3,
-      "z": 0,
+      "x": 6,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 2,
       "type": "normal"
     },
     {
@@ -114,8 +136,18 @@
     },
     {
       "x": 1,
-      "z": 0,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 1,
       "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "fragile"
     },
     {
       "x": 2,
@@ -132,10 +164,14 @@
     "left",
     "left",
     "up",
+    "right",
+    "down",
+    "left",
+    "up",
+    "up",
     "left",
     "left",
     "up",
-    "left",
     "left"
   ]
 }

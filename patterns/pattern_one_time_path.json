@@ -1,0 +1,108 @@
+{
+  "pattern": "ONE_TIME_PATH",
+  "description": "Normal → Crumbling → Normal: لا رجعة",
+  "applied": true,
+  "valid_after_apply": true,
+  "tiles_changed": [
+    {
+      "cell": "1,0",
+      "from": "normal",
+      "to": "crumbling"
+    }
+  ],
+  "applied_at_index": 5,
+  "path_length": 7,
+  "solution_steps": 6,
+  "level": {
+    "level_metadata": {
+      "id": "lvl_7ef6145b_monpxoct",
+      "difficulty": 5,
+      "seed": 2130056283,
+      "steps_to_solve": 36,
+      "map_bounds": {
+        "minX": 0,
+        "maxX": 10,
+        "minZ": -3,
+        "maxZ": 3,
+        "width": 11,
+        "length": 7
+      },
+      "layout_dir": "20deg"
+    },
+    "world_settings": {
+      "environment": "abyss_default",
+      "gravity": 1
+    },
+    "start_state": {
+      "pos": {
+        "x": 2,
+        "z": 1
+      },
+      "orientation": "vertical"
+    },
+    "hole_pos": {
+      "x": 0,
+      "z": 0
+    },
+    "tiles": [
+      {
+        "x": 2,
+        "z": 1,
+        "type": "normal"
+      },
+      {
+        "x": 2,
+        "z": 2,
+        "type": "normal"
+      },
+      {
+        "x": 2,
+        "z": 3,
+        "type": "normal"
+      },
+      {
+        "x": 3,
+        "z": 2,
+        "type": "normal"
+      },
+      {
+        "x": 3,
+        "z": 3,
+        "type": "normal"
+      },
+      {
+        "x": 3,
+        "z": 1,
+        "type": "normal"
+      },
+      {
+        "x": 1,
+        "z": 1,
+        "type": "normal"
+      },
+      {
+        "x": 1,
+        "z": 0,
+        "type": "crumbling"
+      },
+      {
+        "x": 2,
+        "z": 0,
+        "type": "normal"
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "type": "normal"
+      }
+    ],
+    "solution_data": [
+      "down",
+      "right",
+      "up",
+      "left",
+      "up",
+      "left"
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "pattern": "PRECISION_CORRIDOR",
+  "description": "ممر من 3+ بلاطات أفقية متتالية → كلها fragile",
+  "applied": true,
+  "valid_after_apply": true,
+  "tiles_changed": [
+    {
+      "cell": "0,1",
+      "from": "normal",
+      "to": "fragile"
+    },
+    {
+      "cell": "0,2",
+      "from": "normal",
+      "to": "fragile"
+    },
+    {
+      "cell": "0,3",
+      "from": "normal",
+      "to": "fragile"
+    }
+  ],
+  "applied_at_index": 2,
+  "path_length": 10,
+  "solution_steps": 9,
+  "level": {
+    "level_metadata": {
+      "id": "lvl_31f761e5_monpxocu",
+      "difficulty": 5,
+      "seed": 838296037,
+      "steps_to_solve": 9,
+      "map_bounds": {
+        "minX": -1,
+        "maxX": 2,
+        "minZ": 0,
+        "maxZ": 3,
+        "width": 4,
+        "length": 4
+      },
+      "layout_dir": "20deg"
+    },
+    "world_settings": {
+      "environment": "abyss_default",
+      "gravity": 1
+    },
+    "start_state": {
+      "pos": {
+        "x": -1,
+        "z": 0
+      },
+      "orientation": "vertical"
+    },
+    "hole_pos": {
+      "x": 0,
+      "z": 0
+    },
+    "tiles": [
+      {
+        "x": -1,
+        "z": 0,
+        "type": "normal"
+      },
+      {
+        "x": 0,
+        "z": 0,
+        "type": "normal"
+      },
+      {
+        "x": 1,
+        "z": 0,
+        "type": "normal"
+      },
+      {
+        "x": 0,
+        "z": 1,
+        "type": "fragile"
+      },
+      {
+        "x": 1,
+        "z": 1,
+        "type": "normal"
+      },
+      {
+        "x": 0,
+        "z": 2,
+        "type": "fragile"
+      },
+      {
+        "x": 1,
+        "z": 2,
+        "type": "normal"
+      },
+      {
+        "x": 0,
+        "z": 3,
+        "type": "fragile"
+      },
+      {
+        "x": 1,
+        "z": 3,
+        "type": "normal"
+      },
+      {
+        "x": 2,
+        "z": 3,
+        "type": "normal"
+      },
+      {
+        "x": 2,
+        "z": 1,
+        "type": "normal"
+      },
+      {
+        "x": 2,
+        "z": 2,
+        "type": "normal"
+      }
+    ],
+    "solution_data": [
+      "right",
+      "down",
+      "down",
+      "down",
+      "right",
+      "up",
+      "left",
+      "left",
+      "up"
+    ]
+  }
+}

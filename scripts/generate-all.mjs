@@ -28,8 +28,12 @@ import {
   pruneUnreachableTiles,
   optimizeSolution,
   computeDifficultyScore,
+  computeCriticalTiles,
+  computeBehavioralMetrics,
   tileStats,
+  makeRNG,
 } from "../abyss-engine.mjs";
+import { applyPatterns } from "./puzzle-patterns.mjs";
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
@@ -67,22 +71,49 @@ function hashSeed(base, slot) {
 const PHASES = [
 
   // ── 1–10  Tutorial ─────────────────────────────────────────────
+  // Levels 1-3: movement only
+  // Levels 4-5: introduce fragile tiles gently (constraintMode = meaningful placement)
+  // Levels 6-7: fragile becomes required
+  // Levels 8-9: crumbling introduced
+  // Level  10:  first real combined puzzle
   {
     label: "tutorial", from: 1, count: 10,
     constraints: { minMoves: 10, maxMoves: 30 },
-    maxAttempts: 12,
+    maxAttempts: 14,
     fn(i, seed, dirDeg, crossW) {
       const ti = phaseT(i, 10);
+      let mechanics, patterns;
+      if (i < 3) {
+        mechanics = { fragile: false, crumbling: false, moving: false, portal: false };
+        patterns  = [];
+      } else if (i < 5) {
+        mechanics = { fragile: true, crumbling: false, moving: false, portal: false,
+                      fragileRate: 0.10, constraintMode: true };
+        patterns  = ['FRAGILE_BRIDGE'];
+      } else if (i < 7) {
+        mechanics = { fragile: true, crumbling: false, moving: false, portal: false,
+                      fragileRate: 0.25, constraintMode: true };
+        patterns  = ['FRAGILE_BRIDGE'];
+      } else if (i < 9) {
+        mechanics = { fragile: true, crumbling: true, moving: false, portal: false,
+                      fragileRate: 0.25, crumblingRate: 0.10, constraintMode: true };
+        patterns  = ['ONE_TIME_PATH'];
+      } else {
+        mechanics = { fragile: true, crumbling: true, moving: false, portal: false,
+                      fragileRate: 0.30, crumblingRate: 0.15, constraintMode: true };
+        patterns  = ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'];
+      }
       return {
         seed,
         difficulty:   lerpRound(1, 3, ti),
         gridSize:     evenGrid(lerpRound(14, 22, ti)),
-        mechanics:    { fragile: false, crumbling: false, moving: false, portal: false },
+        mechanics,
+        patterns,
         expansionOpts: {
           dirAngleDeg:    dirDeg,
-          spreadDeg:      130,   // wide cone for tutorial — less strict
+          spreadDeg:      130,
           deviationPct:   0.30,
-          crossAxisLimit: crossW + 2,  // wider than default for learning levels
+          crossAxisLimit: crossW + 2,
         },
       };
     },
@@ -102,7 +133,9 @@ const PHASES = [
         mechanics: {
           fragile: true, crumbling: false, moving: false, portal: false,
           fragileRate: +lerp(0.05, 0.35, ti).toFixed(3),
+          constraintMode: true,
         },
+        patterns: ['FRAGILE_BRIDGE'],
         expansionOpts: {
           dirAngleDeg:    dirDeg,
           spreadDeg:      80,
@@ -128,12 +161,14 @@ const PHASES = [
           fragile: true, crumbling: true, moving: false, portal: false,
           fragileRate:   0.35,
           crumblingRate: +lerp(0.03, 0.18, ti).toFixed(3),
+          constraintMode: true,
         },
+        patterns: ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
         expansionOpts: {
           dirAngleDeg:    dirDeg,
           spreadDeg:      90,
           deviationPct:   0.20,
-          crossAxisLimit: crossW + 1,  // slightly wider for crumbling complexity
+          crossAxisLimit: crossW + 1,
         },
       };
     },
@@ -154,12 +189,14 @@ const PHASES = [
           fragile: true, crumbling: true, moving: true, portal: false,
           fragileRate:   0.35,
           crumblingRate: 0.18,
+          constraintMode: true,
         },
+        patterns: ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
         expansionOpts: {
           dirAngleDeg:    dirDeg,
           spreadDeg:      100,
           deviationPct:   0.25,
-          crossAxisLimit: crossW + 2,  // wider: moving tiles need lateral space
+          crossAxisLimit: crossW + 2,
         },
       };
     },
@@ -177,11 +214,12 @@ const PHASES = [
         difficulty:  lerpRound(7, 9, ti),
         gridSize:    evenGrid(lerpRound(28, 36, ti)),
         mechanics: { fragile: false, crumbling: false, moving: false, portal: true },
+        patterns:  [],   // island levels use portal chains — patterns not applicable
         expansionOpts: {
           dirAngleDeg:    dirDeg,
           spreadDeg:      70,
           deviationPct:   0.15,
-          crossAxisLimit: crossW,      // narrow island corridors
+          crossAxisLimit: crossW,
         },
       };
     },
@@ -202,12 +240,14 @@ const PHASES = [
           fragile: true, crumbling: true, moving: true, portal: true,
           fragileRate:   0.35,
           crumblingRate: 0.18,
+          constraintMode: true,
         },
+        patterns: ['FRAGILE_BRIDGE', 'ONE_TIME_PATH', 'PRECISION_CORRIDOR'],
         expansionOpts: {
           dirAngleDeg:    dirDeg,
-          spreadDeg:      120,         // wider cone for final chaos
+          spreadDeg:      120,
           deviationPct:   0.30,
-          crossAxisLimit: crossW + 3,  // widest: all mechanics need room
+          crossAxisLimit: crossW + 3,
         },
       };
     },
@@ -236,7 +276,8 @@ function doubleCheck(clean) {
 // ---- Main ----------------------------------------------------------
 async function main() {
   const baseSeed = process.env.BASE_SEED !== undefined && process.env.BASE_SEED !== ""
-    ? Number(process.env.BASE_SEED) : 4747;
+    ? Number(process.env.BASE_SEED)
+    : Math.floor(Math.random() * 0xFFFF_FFFF);
   if (!Number.isFinite(baseSeed)) { console.error("BASE_SEED must be a number"); process.exit(1); }
 
   // Global layout direction (degrees from east, clockwise).
@@ -273,9 +314,18 @@ async function main() {
       );
 
       // buildLevelVerified already ran: prune → BFS optimize → minMoves check.
-      // lvl is the final optimized level (shortest solution, cleaned tiles).
+      // Apply puzzle patterns if specified (requires _internal.pathStates).
+      let finalLvl = lvl;
+      const patternsToApply = args.patterns ?? [];
+      if (patternsToApply.length > 0 && lvl._internal?.pathStates) {
+        const patRng = makeRNG(hashSeed(baseSeed ^ 0xbeef_cafe, slot));
+        const candidate = applyPatterns(lvl, patternsToApply, patRng);
+        if (simulateLevel(candidate).ok) {
+          finalLvl = candidate;
+        }
+      }
       // Strip _internal, stamp metadata.
-      const { _internal, ...optimized } = lvl;
+      const { _internal, ...optimized } = finalLvl;
       const movesAfterOpt = optimized.solution_data.length;
       optimized.level_metadata = {
         ...optimized.level_metadata,
@@ -296,14 +346,26 @@ async function main() {
       };
       const shortened = false; // BFS already applied inside buildLevelVerified
 
-      // Compute actual difficulty score and tile stats
-      const stats  = tileStats(optimized);
-      const score  = computeDifficultyScore(optimized);
+      // Compute tile stats, critical tiles, and behavioral difficulty
+      const stats         = tileStats(optimized);
+      const criticalTiles = computeCriticalTiles(optimized);
+      const metrics       = computeBehavioralMetrics(optimized, criticalTiles);
+      const score         = metrics.behavioral_difficulty;
       optimized.level_metadata = {
         ...optimized.level_metadata,
-        steps_to_solve: movesAfterOpt,
-        tile_stats:     stats,
+        steps_to_solve:      movesAfterOpt,
+        tile_stats:          stats,
         computed_difficulty: score,
+        behavioral_analysis: {
+          precision_moves:       metrics.precision_moves,
+          crumbling_moves:       metrics.crumbling_moves,
+          orientation_changes:   metrics.orientation_changes,
+          portal_traversals:     metrics.portal_traversals,
+          critical_tile_count:   criticalTiles.size,
+          critical_hazard_count: metrics.critical_hazard_count,
+          behavioral_difficulty: score,
+        },
+        applied_patterns: finalLvl._internal?.appliedPatterns ?? [],
       };
       difficultyLog.push({ slot, computed: score, label: phase.label });
 
@@ -326,6 +388,7 @@ async function main() {
       const mb = optimized.level_metadata.map_bounds;
       const mapTag = mb ? `  map=${mb.width}×${mb.length}` : "";
 
+      const behavTag = `  prec=${metrics.precision_moves}  crumb=${metrics.crumbling_moves}  crit=${criticalTiles.size}`;
       console.log(
         `  ${verifyTag} ${String(slot).padStart(2)}`
         + `  D${args.difficulty}→${score}`
@@ -333,6 +396,7 @@ async function main() {
         + `  tiles=${optimized.tiles.length}`
         + mapTag
         + trapTag
+        + behavTag
         + islandTag
         + optTag
         + attemptsTag

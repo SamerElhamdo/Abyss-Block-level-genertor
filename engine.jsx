@@ -165,6 +165,22 @@ function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
   return { pathStates, solution, visitedCells };
 }
 
+// ---- Approximate critical cells from golden path -------------------
+function localCriticalCells(pathStates) {
+  const visitCount = new Map();
+  for (const s of pathStates) {
+    for (const [x, z] of cellsOf(s)) {
+      const k = `${x},${z}`;
+      visitCount.set(k, (visitCount.get(k) || 0) + 1);
+    }
+  }
+  const critical = new Set();
+  for (const [k, count] of visitCount) {
+    if (count === 1) critical.add(k);
+  }
+  return critical;
+}
+
 // ---- Stage B: Hazard injection --------------------------------------
 function injectHazards(level, opts, rng) {
   const { pathStates } = level;
@@ -182,6 +198,11 @@ function injectHazards(level, opts, rng) {
   const goalKey = `${goal.x},${goal.z}`;
   const startCells = cellsOf(start).map(([x, z]) => `${x},${z}`);
 
+  const fragileRate    = opts.fragileRate    ?? 0.35;
+  const crumblingRate  = opts.crumblingRate  ?? 0.18;
+  const constraintMode = opts.constraintMode ?? false;
+  const localCritical  = constraintMode ? localCriticalCells(pathStates) : null;
+
   if (opts.fragile) {
     const verticalCells = new Set();
     const horizontalCells = new Set();
@@ -195,7 +216,11 @@ function injectHazards(level, opts, rng) {
       if (verticalCells.has(k)) continue;
       if (k === goalKey || startCells.includes(k)) continue;
       const t = tilesByKey.get(k);
-      if (t && rng() < 0.35) t.type = "fragile";
+      if (!t) continue;
+      const rate = (constraintMode && localCritical)
+        ? (localCritical.has(k) ? Math.min(fragileRate * 1.5, 0.9) : fragileRate * 0.4)
+        : fragileRate;
+      if (rng() < rate) t.type = "fragile";
     }
   }
 
@@ -211,7 +236,10 @@ function injectHazards(level, opts, rng) {
       if (count > 1 || k === goalKey || startCells.includes(k)) continue;
       const t = tilesByKey.get(k);
       if (!t || t.type !== "normal") continue;
-      if (rng() < 0.18) t.type = "crumbling";
+      const rate = (constraintMode && localCritical)
+        ? (localCritical.has(k) ? Math.min(crumblingRate * 2.0, 0.8) : crumblingRate * 0.3)
+        : crumblingRate;
+      if (rng() < rate) t.type = "crumbling";
     }
   }
 
@@ -435,7 +463,168 @@ function buildLevel({ difficulty = 5, seed = 42, mechanics = {}, gridSize = 40, 
   };
 }
 
+// ---- Critical tile detection ----------------------------------------
+function computeCriticalTiles(data) {
+  const DIRS = ['right', 'left', 'down', 'up'];
+  const tileSet     = new Set(data.tiles.map(t => `${t.x},${t.z}`));
+  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+  const portalExit  = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [`${t.x},${t.z}`, t.target])
+  );
+
+  const s  = data.start_state;
+  const so = s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ';
+  const goal = data.hole_pos;
+
+  const startKey = `${s.pos.x},${s.pos.z},${so}`;
+  const dist = new Map([[startKey, 0]]);
+  const prev = new Map([[startKey, []]]);
+  const queue = [{ x: s.pos.x, z: s.pos.z, o: so }];
+  let goalKey = null;
+  let visited = 0;
+
+  while (queue.length > 0 && visited < 600000) {
+    const cur = queue.shift();
+    const curKey = `${cur.x},${cur.z},${cur.o}`;
+    const curDist = dist.get(curKey);
+    visited++;
+
+    for (const dir of DIRS) {
+      const next = rollForward(cur, dir);
+      const foot = cellsOf(next);
+      let ok = true;
+      for (const [fx, fz] of foot) {
+        if (!tileSet.has(`${fx},${fz}`)) { ok = false; break; }
+        if (next.o === 'V' && tileTypeMap.get(`${fx},${fz}`) === 'fragile') { ok = false; break; }
+      }
+      if (!ok) continue;
+
+      const transitCells = cellsOf(next).map(([cx, cz]) => `${cx},${cz}`);
+      let land = next;
+      if (next.o === 'V' && portalExit.has(`${next.x},${next.z}`)) {
+        const tg = portalExit.get(`${next.x},${next.z}`);
+        land = { x: tg.x, z: tg.z, o: 'V' };
+      }
+
+      const nk = `${land.x},${land.z},${land.o}`;
+      const nDist = curDist + 1;
+      if (!dist.has(nk)) {
+        dist.set(nk, nDist);
+        prev.set(nk, [{ fromKey: curKey, transitCells }]);
+        queue.push(land);
+        if (land.o === 'V' && land.x === goal.x && land.z === goal.z) goalKey = nk;
+      } else if (dist.get(nk) === nDist) {
+        prev.get(nk).push({ fromKey: curKey, transitCells });
+      }
+    }
+  }
+
+  if (!goalKey) return new Set();
+
+  let critical = null;
+  let pathCount = 0;
+
+  function dfs(key, cells) {
+    if (pathCount >= 200) return;
+    const parts = key.split(',');
+    const o = parts[parts.length - 1];
+    const z = +parts[parts.length - 2];
+    const x = +parts.slice(0, parts.length - 2).join(',');
+    const stateKeys = cellsOf({ x, z, o }).map(([cx, cz]) => `${cx},${cz}`);
+    const extended = cells.concat(stateKeys);
+    const parents = prev.get(key);
+    if (!parents || parents.length === 0) {
+      pathCount++;
+      const pathSet = new Set(extended);
+      if (critical === null) {
+        critical = pathSet;
+      } else {
+        for (const c of [...critical]) {
+          if (!pathSet.has(c)) critical.delete(c);
+        }
+      }
+      return;
+    }
+    for (const { fromKey, transitCells } of parents) {
+      dfs(fromKey, extended.concat(transitCells));
+    }
+  }
+
+  dfs(goalKey, []);
+  return critical || new Set();
+}
+
+// ---- Behavioral difficulty metrics ----------------------------------
+function computeBehavioralMetrics(data, criticalTiles = null) {
+  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+  const portalMap   = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [`${t.x},${t.z}`, t.target])
+  );
+
+  const s = data.start_state;
+  let cur = {
+    x: s.pos.x, z: s.pos.z,
+    o: s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ',
+  };
+
+  let precision_moves = 0, crumbling_moves = 0, orientation_changes = 0, portal_traversals = 0;
+  let prevO = cur.o;
+
+  for (const dir of data.solution_data) {
+    const next = rollForward(cur, dir);
+    if (next.o !== prevO) orientation_changes++;
+    prevO = next.o;
+
+    let hasFragile = false, hasCrumbling = false;
+    for (const [x, z] of cellsOf(next)) {
+      const k = `${x},${z}`;
+      const type = tileTypeMap.get(k);
+      if (type === 'fragile' && (next.o === 'HX' || next.o === 'HZ')) hasFragile = true;
+      if (type === 'crumbling') { hasCrumbling = true; tileTypeMap.delete(k); }
+    }
+    if (hasFragile)   precision_moves++;
+    if (hasCrumbling) crumbling_moves++;
+
+    if (next.o === 'V' && portalMap.has(`${next.x},${next.z}`)) {
+      portal_traversals++;
+      const tg = portalMap.get(`${next.x},${next.z}`);
+      cur = { x: tg.x, z: tg.z, o: 'V' };
+    } else {
+      cur = next;
+    }
+  }
+
+  const steps = data.solution_data.length;
+  let critical_hazard_count = 0;
+  if (criticalTiles != null) {
+    for (const tile of data.tiles) {
+      if ((tile.type === 'fragile' || tile.type === 'crumbling' || tile.type === 'moving') &&
+          criticalTiles.has(`${tile.x},${tile.z}`)) critical_hazard_count++;
+    }
+  }
+
+  const raw = Math.min(precision_moves / 8, 1) * 3.0
+            + Math.min(crumbling_moves / 6, 1) * 1.5
+            + Math.min(orientation_changes / 20, 1) * 1.5
+            + Math.min(steps / 45, 1) * 2.0
+            + Math.min(portal_traversals / 3, 1) * 1.0
+            + Math.min(critical_hazard_count / 4, 1) * 1.0;
+
+  return {
+    precision_moves, crumbling_moves, orientation_changes,
+    portal_traversals, critical_hazard_count,
+    behavioral_difficulty: Math.max(1, Math.min(10, +raw.toFixed(2))),
+  };
+}
+
+function computeDifficultyScore(data, criticalTiles = null) {
+  return computeBehavioralMetrics(data, criticalTiles).behavioral_difficulty;
+}
+
 window.AbyssEngine = {
   makeRNG, rollForward, rollReverse, cellsOf, stateKey,
   generateGoldenPath, injectHazards, buildLevel,
+  computeCriticalTiles, computeBehavioralMetrics, computeDifficultyScore,
 };

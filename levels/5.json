@@ -16,10 +16,12 @@
     "slot": 5,
     "phase": "tutorial",
     "mechanics": {
-      "fragile": false,
+      "fragile": true,
       "crumbling": false,
       "moving": false,
-      "portal": false
+      "portal": false,
+      "fragileRate": 0.1,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -31,15 +33,30 @@
       "crossAxisLimit": 6
     },
     "tile_stats": {
-      "normal": 21,
-      "fragile": 0,
+      "normal": 19,
+      "fragile": 2,
       "crumbling": 0,
       "moving": 0,
       "portal": 0,
       "total": 21,
-      "trap_density": 0
+      "trap_density": 0.095
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 2.38,
+    "behavioral_analysis": {
+      "precision_moves": 2,
+      "crumbling_moves": 0,
+      "orientation_changes": 8,
+      "portal_traversals": 0,
+      "critical_tile_count": 21,
+      "critical_hazard_count": 2,
+      "behavioral_difficulty": 2.38
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 10
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -140,7 +157,7 @@
     {
       "x": 1,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 2,
@@ -155,7 +172,7 @@
     {
       "x": 2,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 0,

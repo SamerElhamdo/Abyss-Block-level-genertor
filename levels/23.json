@@ -21,7 +21,8 @@
       "moving": false,
       "portal": false,
       "fragileRate": 0.35,
-      "crumblingRate": 0.063
+      "crumblingRate": 0.063,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -33,15 +34,34 @@
       "crossAxisLimit": 5
     },
     "tile_stats": {
-      "normal": 18,
-      "fragile": 7,
-      "crumbling": 1,
+      "normal": 12,
+      "fragile": 12,
+      "crumbling": 2,
       "moving": 0,
       "portal": 0,
       "total": 26,
-      "trap_density": 0.308
+      "trap_density": 0.538
     },
-    "computed_difficulty": 1.59
+    "computed_difficulty": 5.92,
+    "behavioral_analysis": {
+      "precision_moves": 8,
+      "crumbling_moves": 2,
+      "orientation_changes": 10,
+      "portal_traversals": 0,
+      "critical_tile_count": 26,
+      "critical_hazard_count": 14,
+      "behavioral_difficulty": 5.92
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 11
+      },
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 6
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -82,7 +102,7 @@
     {
       "x": 13,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 12,
@@ -92,7 +112,7 @@
     {
       "x": 13,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 11,
@@ -102,12 +122,12 @@
     {
       "x": 9,
       "z": 1,
-      "type": "fragile"
+      "type": "normal"
     },
     {
       "x": 10,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 6,
@@ -132,7 +152,7 @@
     {
       "x": 8,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 6,
@@ -147,12 +167,12 @@
     {
       "x": 5,
       "z": 2,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 4,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 4,
@@ -167,17 +187,17 @@
     {
       "x": 3,
       "z": 2,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 3,
       "z": 0,
-      "type": "crumbling"
+      "type": "normal"
     },
     {
       "x": 1,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 2,

@@ -40,7 +40,17 @@
       "total": 46,
       "trap_density": 0
     },
-    "computed_difficulty": 2.49
+    "computed_difficulty": 3.17,
+    "behavioral_analysis": {
+      "precision_moves": 0,
+      "crumbling_moves": 0,
+      "orientation_changes": 18,
+      "portal_traversals": 2,
+      "critical_tile_count": 46,
+      "critical_hazard_count": 0,
+      "behavioral_difficulty": 3.17
+    },
+    "applied_patterns": []
   },
   "world_settings": {
     "environment": "abyss_default",

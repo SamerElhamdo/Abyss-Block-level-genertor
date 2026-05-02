@@ -16,10 +16,13 @@
     "slot": 8,
     "phase": "tutorial",
     "mechanics": {
-      "fragile": false,
-      "crumbling": false,
+      "fragile": true,
+      "crumbling": true,
       "moving": false,
-      "portal": false
+      "portal": false,
+      "fragileRate": 0.25,
+      "crumblingRate": 0.1,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -31,15 +34,30 @@
       "crossAxisLimit": 6
     },
     "tile_stats": {
-      "normal": 30,
-      "fragile": 0,
-      "crumbling": 0,
+      "normal": 20,
+      "fragile": 8,
+      "crumbling": 2,
       "moving": 0,
       "portal": 0,
       "total": 30,
-      "trap_density": 0
+      "trap_density": 0.333
     },
-    "computed_difficulty": 1
+    "computed_difficulty": 5.63,
+    "behavioral_analysis": {
+      "precision_moves": 7,
+      "crumbling_moves": 2,
+      "orientation_changes": 10,
+      "portal_traversals": 0,
+      "critical_tile_count": 30,
+      "critical_hazard_count": 10,
+      "behavioral_difficulty": 5.63
+    },
+    "applied_patterns": [
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 13
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -65,7 +83,7 @@
     {
       "x": 9,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 10,
@@ -75,7 +93,7 @@
     {
       "x": 9,
       "z": 2,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 10,
@@ -135,12 +153,12 @@
     {
       "x": 8,
       "z": 5,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 7,
       "z": 4,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 7,
@@ -150,12 +168,12 @@
     {
       "x": 6,
       "z": 4,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 6,
       "z": 5,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 6,
@@ -165,7 +183,7 @@
     {
       "x": 4,
       "z": 3,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 5,
@@ -175,12 +193,12 @@
     {
       "x": 3,
       "z": 3,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 3,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 3,
@@ -200,7 +218,7 @@
     {
       "x": 2,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 0,

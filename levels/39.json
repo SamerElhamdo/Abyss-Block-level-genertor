@@ -21,7 +21,8 @@
       "moving": true,
       "portal": false,
       "fragileRate": 0.35,
-      "crumblingRate": 0.18
+      "crumblingRate": 0.18,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -33,15 +34,34 @@
       "crossAxisLimit": 6
     },
     "tile_stats": {
-      "normal": 20,
+      "normal": 14,
       "fragile": 5,
-      "crumbling": 3,
-      "moving": 0,
+      "crumbling": 9,
+      "moving": 1,
       "portal": 0,
-      "total": 28,
-      "trap_density": 0.286
+      "total": 29,
+      "trap_density": 0.517
     },
-    "computed_difficulty": 1.52
+    "computed_difficulty": 5.46,
+    "behavioral_analysis": {
+      "precision_moves": 4,
+      "crumbling_moves": 8,
+      "orientation_changes": 10,
+      "portal_traversals": 0,
+      "critical_tile_count": 28,
+      "critical_hazard_count": 14,
+      "behavioral_difficulty": 5.46
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 6
+      },
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 15
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -63,6 +83,20 @@
       "x": 5,
       "z": 0,
       "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": -4,
+      "type": "moving",
+      "params": {
+        "axis": "z",
+        "range": [
+          -5,
+          -3
+        ],
+        "stepsPerPhase": 2,
+        "startPhase": 2
+      }
     },
     {
       "x": 6,
@@ -97,7 +131,7 @@
     {
       "x": 6,
       "z": 4,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 6,
@@ -132,7 +166,7 @@
     {
       "x": 6,
       "z": 5,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 8,
@@ -152,7 +186,7 @@
     {
       "x": 6,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 6,
@@ -162,7 +196,7 @@
     {
       "x": 3,
       "z": 2,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 1,
@@ -172,12 +206,12 @@
     {
       "x": 2,
       "z": 2,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 1,
       "z": 1,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 2,

@@ -20,7 +20,8 @@
       "crumbling": false,
       "moving": false,
       "portal": false,
-      "fragileRate": 0.183
+      "fragileRate": 0.183,
+      "constraintMode": true
     },
     "generator": {
       "base_seed": 4747,
@@ -40,7 +41,22 @@
       "total": 15,
       "trap_density": 0.133
     },
-    "computed_difficulty": 1.08
+    "computed_difficulty": 2.58,
+    "behavioral_analysis": {
+      "precision_moves": 2,
+      "crumbling_moves": 0,
+      "orientation_changes": 10,
+      "portal_traversals": 0,
+      "critical_tile_count": 15,
+      "critical_hazard_count": 2,
+      "behavioral_difficulty": 2.58
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 1
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -71,7 +87,7 @@
     {
       "x": 3,
       "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 2,
@@ -91,7 +107,7 @@
     {
       "x": 5,
       "z": 1,
-      "type": "fragile"
+      "type": "normal"
     },
     {
       "x": 6,

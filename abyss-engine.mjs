@@ -76,6 +76,45 @@ function cellsOf(state) {
 
 function stateKey(s) { return `${s.x},${s.z},${s.o}`; }
 
+// ---- Step-count moving tile helpers --------------------------------
+// Moving tiles oscillate between range[0] and range[1] along one axis.
+// The tile spends `stepsPerPhase` player-steps at each position before moving.
+// `startPhase` offsets the cycle so the tile can start at any point in its loop.
+//
+// Cycle (triangle wave): range[0] → range[1] → range[0] → ...
+// Period = 2 * (range[1] - range[0]) * stepsPerPhase  player-steps.
+
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+function lcmTwo(a, b) { const g = gcd(a, b); return g === 0 ? 1 : (a / g) * b; }
+
+// Returns the global step-count period (LCM of all moving tile periods, capped at 120).
+function computeMovingTilePeriod(tiles) {
+  let period = 1;
+  for (const t of tiles) {
+    if (t.type !== 'moving' || !t.params?.stepsPerPhase) continue;
+    const { range, stepsPerPhase } = t.params;
+    const width = range[1] - range[0];
+    if (width <= 0) continue;
+    const p = 2 * width * stepsPerPhase;
+    period = lcmTwo(period, p);
+    if (period > 120) return 120;
+  }
+  return period;
+}
+
+// Returns { x, z } of a moving tile at a given player-step count.
+function getTilePositionAtStep(tile, step) {
+  const { axis, range, stepsPerPhase = 1, startPhase = 0 } = tile.params;
+  const width = range[1] - range[0];
+  if (width <= 0) return { x: tile.x, z: tile.z };
+  const period = 2 * width * stepsPerPhase;
+  const t      = (step + startPhase) % period;
+  const phaseIdx = Math.floor(t / stepsPerPhase);
+  const offset   = phaseIdx <= width ? phaseIdx : 2 * width - phaseIdx;
+  const pos      = range[0] + offset;
+  return axis === 'x' ? { x: pos, z: tile.z } : { x: tile.x, z: pos };
+}
+
 // ---- Stage A: Reverse Random Walk ----------------------------------
 function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
   const {
@@ -188,8 +227,28 @@ function generateGoldenPath(rng, steps, bounds, expansionOpts = {}) {
   return { pathStates, solution, visitedCells, mapBounds };
 }
 
+// ---- Approximate critical cells from golden path -------------------
+// A cell visited exactly once in the path cannot be avoided (in the golden path).
+function localCriticalCells(pathStates) {
+  const visitCount = new Map();
+  for (const s of pathStates) {
+    for (const [x, z] of cellsOf(s)) {
+      const k = `${x},${z}`;
+      visitCount.set(k, (visitCount.get(k) || 0) + 1);
+    }
+  }
+  const critical = new Set();
+  for (const [k, count] of visitCount) {
+    if (count === 1) critical.add(k);
+  }
+  return critical;
+}
+
 // ---- Stage B: Hazard injection -------------------------------------
-function injectHazards(level, opts, rng) {
+// stepOffset: global step index at which this island's path begins (0 for single-island levels).
+// Moving tile startPhase must be computed against the GLOBAL step count so that
+// simulateLevel (which counts steps globally) finds the tile in the correct position.
+function injectHazards(level, opts, rng, stepOffset = 0) {
   const { pathStates } = level;
   const tilesByKey = new Map();
 
@@ -205,8 +264,10 @@ function injectHazards(level, opts, rng) {
   const goalKey = `${goal.x},${goal.z}`;
   const startCells = cellsOf(start).map(([x, z]) => `${x},${z}`);
 
-  const fragileRate   = opts.fragileRate   ?? 0.35;
-  const crumblingRate = opts.crumblingRate ?? 0.18;
+  const fragileRate    = opts.fragileRate    ?? 0.35;
+  const crumblingRate  = opts.crumblingRate  ?? 0.18;
+  const constraintMode = opts.constraintMode ?? false;
+  const localCritical  = constraintMode ? localCriticalCells(pathStates) : null;
 
   if (opts.fragile) {
     const verticalCells = new Set();
@@ -220,7 +281,12 @@ function injectHazards(level, opts, rng) {
     for (const k of horizontalCells) {
       if (verticalCells.has(k) || k === goalKey || startCells.includes(k)) continue;
       const t = tilesByKey.get(k);
-      if (t && rng() < fragileRate) t.type = "fragile";
+      if (!t) continue;
+      // In constraint mode: strongly prefer critical tiles (single-visit), reduce noise elsewhere
+      const rate = (constraintMode && localCritical)
+        ? (localCritical.has(k) ? Math.min(fragileRate * 1.5, 0.9) : fragileRate * 0.4)
+        : fragileRate;
+      if (rng() < rate) t.type = "fragile";
     }
   }
 
@@ -236,46 +302,84 @@ function injectHazards(level, opts, rng) {
       if (count > 1 || k === goalKey || startCells.includes(k)) continue;
       const t = tilesByKey.get(k);
       if (!t || t.type !== "normal") continue;
-      if (rng() < crumblingRate) t.type = "crumbling";
+      // In constraint mode: prefer critical single-visit tiles, suppress decorative ones
+      const rate = (constraintMode && localCritical)
+        ? (localCritical.has(k) ? Math.min(crumblingRate * 2.0, 0.8) : crumblingRate * 0.3)
+        : crumblingRate;
+      if (rng() < rate) t.type = "crumbling";
     }
   }
 
   if (opts.moving) {
+    // ── Moving-tile placement rules ──────────────────────────────────────────
+    // Shape: exactly 3 cells on one axis  [center-1 | CENTER | center+1]
+    //   center   = the path cell — the only crossing position for the player
+    //   center±1 = extend into the void; must be EMPTY in the static tile map
+    // Motion: triangle-wave  center-1 → center → center+1 → center → …
+    //   The tile oscillates symmetrically; it passes through center twice per cycle.
+    // Collision rule: all 3 cells are verified clear of any static tile.
+    // Timing: startPhase is set so the tile is AT center when the golden path
+    //   first steps onto this cell (global step count for multi-island levels).
+    // ─────────────────────────────────────────────────────────────────────────
     const occupied = new Set(tilesByKey.keys());
+
+    // Only cells the player MUST cross exactly once qualify.
+    const criticalForMoving = localCriticalCells(pathStates);
+
+    // Pre-compute first-reach step for every cell in the golden path.
+    const stepReachMap = new Map();
+    for (let si = 0; si < pathStates.length; si++) {
+      for (const [px, pz] of cellsOf(pathStates[si])) {
+        const k = `${px},${pz}`;
+        if (!stepReachMap.has(k)) stepReachMap.set(k, si);
+      }
+    }
+
     const candidates = [...tilesByKey.values()].filter(t =>
-      t.type === "normal" && `${t.x},${t.z}` !== goalKey && !startCells.includes(`${t.x},${t.z}`)
+      t.type === "normal" &&
+      `${t.x},${t.z}` !== goalKey &&
+      !startCells.includes(`${t.x},${t.z}`) &&
+      criticalForMoving.has(`${t.x},${t.z}`)
     );
     for (let i = candidates.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
     }
-    const needed = Math.min(3, Math.floor(candidates.length / 30));
+
+    const stepsPerPhase = 1 + Math.floor(rng() * 2);   // 1–2 player-steps per position
+    // period = 2 * width * stepsPerPhase = 2 * 2 * stepsPerPhase = 4 * stepsPerPhase
+    const width  = 2;     // always: center-1 … center … center+1
+    const period = 2 * width * stepsPerPhase;
+
     let placed = 0;
+
     for (const c of candidates) {
-      if (placed >= needed) break;
-      const moveLen = 1 + Math.floor(rng() * 2);
-      const dirs = [
-        { axis: "x", dir:  1 },
-        { axis: "x", dir: -1 },
-        { axis: "z", dir:  1 },
-        { axis: "z", dir: -1 },
-      ].sort(() => rng() - 0.5);
-      for (const { axis, dir } of dirs) {
-        let clear = true;
-        for (let s = 1; s <= moveLen; s++) {
-          const nx = c.x + (axis === "x" ? dir * s : 0);
-          const nz = c.z + (axis === "z" ? dir * s : 0);
-          if (occupied.has(`${nx},${nz}`)) { clear = false; break; }
-        }
-        if (!clear) continue;
-        c.type = "moving";
-        const base = axis === "x" ? c.x : c.z;
-        const end  = base + dir * moveLen;
-        c.params = {
-          axis,
-          range: dir > 0 ? [base, end] : [end, base],
-          speed: +(0.8 + rng() * 1.5).toFixed(2),
-        };
+      if (placed >= 1) break;
+
+      // Try both axes; pick the first where both ±1 neighbours are void.
+      const axes = ['x', 'z'].sort(() => rng() - 0.5);
+      for (const axis of axes) {
+        const center = axis === 'x' ? c.x : c.z;
+        const lo = center - 1;
+        const hi = center + 1;
+        const kLo = axis === 'x' ? `${lo},${c.z}` : `${c.x},${lo}`;
+        const kHi = axis === 'x' ? `${hi},${c.z}` : `${c.x},${hi}`;
+
+        // Both endpoint cells must be void (no static tile, no other path tile).
+        if (occupied.has(kLo) || occupied.has(kHi)) continue;
+
+        // range = [center-1, center+1]; the triangle wave visits lo → center → hi → center → lo…
+        const range = [lo, hi];
+
+        // startPhase: tile is AT center (offset=1, phaseIdx=1) when golden path arrives.
+        //   phaseIdx=1 → t = 1 * stepsPerPhase
+        const localReachStep = stepReachMap.get(`${c.x},${c.z}`) ?? 0;
+        const tileReachStep  = localReachStep + stepOffset;
+        const targetT        = stepsPerPhase;   // offset=1 (center) → t = stepsPerPhase
+        const startPhase     = ((targetT - tileReachStep % period) + period) % period;
+
+        c.type   = "moving";
+        c.params = { axis, range, stepsPerPhase, startPhase };
         placed++;
         break;
       }
@@ -375,9 +479,11 @@ function buildIslandLevel(rng, steps, difficulty, seed, mechanics, gridSize, exp
   });
 
   const allTiles = new Map();
+  let globalStepOffset = 0;
   for (const isl of islands) {
-    const tiles = injectHazards(isl, mechNoPortal, rng);
+    const tiles = injectHazards(isl, mechNoPortal, rng, globalStepOffset);
     for (const t of tiles) allTiles.set(`${t.x},${t.z}`, t);
+    globalStepOffset += isl.solution.length;
   }
 
   for (let i = 0; i < islandCount - 1; i++) {
@@ -446,12 +552,13 @@ export function buildLevel({
   const steps = 8 + difficulty * 6;
 
   const mech = {
-    fragile:       mechanics.fragile       ?? false,
-    crumbling:     mechanics.crumbling     ?? false,
-    moving:        mechanics.moving        ?? false,
-    portal:        mechanics.portal        ?? false,
-    fragileRate:   mechanics.fragileRate   ?? 0.35,
-    crumblingRate: mechanics.crumblingRate ?? 0.18,
+    fragile:        mechanics.fragile        ?? false,
+    crumbling:      mechanics.crumbling      ?? false,
+    moving:         mechanics.moving         ?? false,
+    portal:         mechanics.portal         ?? false,
+    fragileRate:    mechanics.fragileRate    ?? 0.35,
+    crumblingRate:  mechanics.crumblingRate  ?? 0.18,
+    constraintMode: mechanics.constraintMode ?? false,
   };
 
   if (mech.portal) {
@@ -490,12 +597,27 @@ export function buildLevel({
 
 // ---- Simulation (step-by-step with tile destruction) ---------------
 // Returns { ok: true } or { ok: false, step, dir, reason, state }
+// Moving tiles use step-count positions: at step N the tile is at getTilePositionAtStep(t, N).
 export function simulateLevel(data) {
-  const tileMap = new Map(data.tiles.map(t => [t.x + ',' + t.z, { ...t }]));
-  const portals  = new Map(
+  // Static tile map (mutable: crumbling/portal tiles removed as consumed).
+  const staticMap = new Map(
+    data.tiles.filter(t => t.type !== 'moving').map(t => [t.x + ',' + t.z, { ...t }])
+  );
+  const movingTiles = data.tiles.filter(t => t.type === 'moving');
+  const portals = new Map(
     data.tiles.filter(t => t.type === 'portal' && t.target)
               .map(t => [t.x + ',' + t.z, t.target])
   );
+
+  // Returns the tile map after applying moving tile positions at the given step.
+  function tileMapAt(step) {
+    const m = new Map(staticMap);
+    for (const t of movingTiles) {
+      const pos = getTilePositionAtStep(t, step);
+      m.set(`${pos.x},${pos.z}`, { ...t, x: pos.x, z: pos.z });
+    }
+    return m;
+  }
 
   const s = data.start_state;
   let cur = {
@@ -504,35 +626,34 @@ export function simulateLevel(data) {
   };
 
   for (let i = 0; i < data.solution_data.length; i++) {
-    const dir  = data.solution_data[i];
-    const next = rollForward(cur, dir);
-    const foot = cellsOf(next);
+    const dir    = data.solution_data[i];
+    const next   = rollForward(cur, dir);
+    const foot   = cellsOf(next);
+    const tileMap = tileMapAt(i + 1);  // tile positions after this move
 
-    // 1. Check every footprint cell exists
+    // 1. Every footprint cell must exist
     for (const [x, z] of foot) {
-      if (!tileMap.has(x + ',' + z)) {
-        return { ok: false, step: i + 1, dir, reason: `missing (${x},${z})`, state: cur };
-      }
+      if (!tileMap.has(x + ',' + z))
+        return { ok: false, step: i + 1, dir, reason: `missing (${x},${z}) at step ${i + 1}`, state: cur };
     }
 
     // 2. Handle tile types on landing
     for (const [x, z] of foot) {
       const tile = tileMap.get(x + ',' + z);
       if (tile.type === 'crumbling') {
-        tileMap.delete(x + ',' + z);
+        staticMap.delete(x + ',' + z);
       } else if (tile.type === 'fragile' && next.o === 'V') {
-        // Fragile tile collapses under full vertical weight — block falls
         return { ok: false, step: i + 1, dir, reason: `fragile tile (${x},${z}) collapsed under vertical block`, state: next };
       }
     }
 
-    // 3. Portal teleport (V on portal → jump; both portal tiles are deleted on activation)
+    // 3. Portal teleport
     if (next.o === 'V' && portals.has(next.x + ',' + next.z)) {
       const exitKey  = next.x + ',' + next.z;
       const tg       = portals.get(exitKey);
       const entryKey = tg.x + ',' + tg.z;
-      tileMap.delete(exitKey);
-      tileMap.delete(entryKey);
+      staticMap.delete(exitKey);
+      staticMap.delete(entryKey);
       cur = { x: tg.x, z: tg.z, o: 'V' };
     } else {
       cur = next;
@@ -540,9 +661,8 @@ export function simulateLevel(data) {
   }
 
   const g = data.hole_pos;
-  if (cur.o !== 'V' || cur.x !== g.x || cur.z !== g.z) {
+  if (cur.o !== 'V' || cur.x !== g.x || cur.z !== g.z)
     return { ok: false, step: -1, dir: null, reason: `ended at (${cur.x},${cur.z},${cur.o}) ≠ goal (${g.x},${g.z})`, state: cur };
-  }
   return { ok: true };
 }
 
@@ -584,7 +704,9 @@ export function pruneUnreachableTiles(data) {
     }
   }
 
-  return { ...data, tiles: data.tiles.filter(t => reachable.has(t.x + ',' + t.z)) };
+  // Moving tiles are always kept — they are dynamic platforms whose base position
+  // may not be visited, but they are essential game objects.
+  return { ...data, tiles: data.tiles.filter(t => t.type === 'moving' || reachable.has(t.x + ',' + t.z)) };
 }
 
 // ---- Verified builder with retry -----------------------------------
@@ -614,7 +736,10 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
     // Find & apply the absolute shortest solution, then re-prune tiles
     const pruned  = pruneUnreachableTiles(lvl);
     const optimal = optimizeSolution(pruned);   // always finds shortest, no floor
-    return { lvl: optimal, attempts: attempt + 1, verified: true };
+    // Guard: if BFS optimisation breaks step-timing for moving tiles, fall back
+    // to the golden-path level (already verified above) rather than discarding.
+    const finalLvl = simulateLevel(optimal).ok ? optimal : pruned;
+    return { lvl: finalLvl, attempts: attempt + 1, verified: true };
   }
 
   // Fallback: return last generated without BFS if all retries exhausted
@@ -622,16 +747,19 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
 }
 
 // ---- BFS: find shortest valid solution --------------------------------
-// Always finds the absolute shortest path (no minimum floor).
-// Verifies the candidate with simulateLevel before accepting.
-// Re-prunes tiles to only those visited by the shorter solution.
-// Returns updated data, or original if no shorter path found.
+// Step-count aware: includes step % movingTilePeriod in state key so moving
+// tile positions are correctly modelled. Falls back to step-agnostic BFS
+// (period=1) when no step-based moving tiles are present.
 export function optimizeSolution(data) {
   const DIRS = ['right', 'left', 'down', 'up'];
 
-  // Build tile set and type map for BFS
-  const tileSet     = new Set(data.tiles.map(t => `${t.x},${t.z}`));
-  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+  const staticTiles   = data.tiles.filter(t => t.type !== 'moving');
+  const movingTilesArr = data.tiles.filter(t => t.type === 'moving' && t.params?.stepsPerPhase);
+  const period        = computeMovingTilePeriod(data.tiles);
+
+  // Static tile lookups
+  const staticSet     = new Set(staticTiles.map(t => `${t.x},${t.z}`));
+  const staticTypeMap = new Map(staticTiles.map(t => [`${t.x},${t.z}`, t.type]));
 
   // Portal map: exit cell → target {x,z}
   const portalExit = new Map(
@@ -639,16 +767,29 @@ export function optimizeSolution(data) {
               .map(t => [`${t.x},${t.z}`, t.target])
   );
 
+  // Build tile set + type map for a specific player step
+  function tileInfoAtStep(step) {
+    if (movingTilesArr.length === 0) return { set: staticSet, typeMap: staticTypeMap };
+    const set     = new Set(staticSet);
+    const typeMap = new Map(staticTypeMap);
+    for (const t of movingTilesArr) {
+      const pos = getTilePositionAtStep(t, step);
+      set.add(`${pos.x},${pos.z}`);
+      typeMap.set(`${pos.x},${pos.z}`, 'moving');
+    }
+    return { set, typeMap };
+  }
+
   const s  = data.start_state;
   const sx = s.pos.x, sz = s.pos.z;
   const so = s.orientation === 'vertical' ? 'V'
            : s.orientation === 'horizontal-x' ? 'HX' : 'HZ';
   const goal = data.hole_pos;
 
-  // BFS state key: x,z,o  (portal order is implied by void separation)
-  const startKey = `${sx},${sz},${so}`;
-  const prev = new Map([[startKey, null]]);  // key → { fromKey, dir }
-  const queue = [{ x: sx, z: sz, o: so }];
+  // State key: x,z,o,stepMod  — stepMod collapses to 0 for non-moving levels (period=1)
+  const startKey = `${sx},${sz},${so},0`;
+  const prev = new Map([[startKey, null]]);
+  const queue = [{ x: sx, z: sz, o: so, step: 0 }];
   let foundKey = null;
 
   const MAX_NODES = 600_000;
@@ -657,12 +798,14 @@ export function optimizeSolution(data) {
   outer: while (queue.length > 0 && visited < MAX_NODES) {
     const cur = queue.shift();
     visited++;
+    const nextStep = cur.step + 1;
+    const { set: tileSet, typeMap: tileTypeMap } = tileInfoAtStep(nextStep);
 
     for (const dir of DIRS) {
       const next = rollForward(cur, dir);
       const foot = cellsOf(next);
 
-      // All footprint cells must be present; V on fragile = instant fall (skip)
+      // All footprint cells must be present; V on fragile = instant fall
       let ok = true;
       for (const [fx, fz] of foot) {
         if (!tileSet.has(`${fx},${fz}`)) { ok = false; break; }
@@ -670,21 +813,20 @@ export function optimizeSolution(data) {
       }
       if (!ok) continue;
 
-      // Portal teleport: V landing on an exit portal
+      // Portal teleport
       let land = next;
       if (next.o === 'V' && portalExit.has(`${next.x},${next.z}`)) {
         const tg = portalExit.get(`${next.x},${next.z}`);
         land = { x: tg.x, z: tg.z, o: 'V' };
       }
 
-      const nk = `${land.x},${land.z},${land.o}`;
+      const nk = `${land.x},${land.z},${land.o},${nextStep % period}`;
       if (prev.has(nk)) continue;
-      prev.set(nk, { fromKey: `${cur.x},${cur.z},${cur.o}`, dir });
-      queue.push(land);
+      prev.set(nk, { fromKey: `${cur.x},${cur.z},${cur.o},${cur.step % period}`, dir });
+      queue.push({ ...land, step: nextStep });
 
       if (land.o === 'V' && land.x === goal.x && land.z === goal.z) {
-        foundKey = nk;
-        break outer;
+        foundKey = nk; break outer;
       }
     }
   }
@@ -700,42 +842,222 @@ export function optimizeSolution(data) {
     k = fromKey;
   }
 
-  // Only accept if strictly shorter
   if (moves.length >= data.solution_data.length) return data;
 
-  // Verify the candidate path with full physics simulation
   const candidate = { ...data, solution_data: moves };
   if (!simulateLevel(candidate).ok) return data;
 
-  // Update solution and prune tiles to only those the shortest path visits.
-  return pruneUnreachableTiles({ ...data, solution_data: moves });
+  // Rebuild pathStates from the optimized move sequence so _internal stays in sync
+  const newPathStates = [{ x: sx, z: sz, o: so }];
+  let curPS = { x: sx, z: sz, o: so };
+  for (const dir of moves) {
+    curPS = rollForward(curPS, dir);
+    if (curPS.o === 'V' && portalExit.has(`${curPS.x},${curPS.z}`)) {
+      const tg = portalExit.get(`${curPS.x},${curPS.z}`);
+      curPS = { x: tg.x, z: tg.z, o: 'V' };
+    }
+    newPathStates.push(curPS);
+  }
+
+  const pruned = pruneUnreachableTiles({ ...data, solution_data: moves });
+  return {
+    ...pruned,
+    _internal: { ...(pruned._internal ?? {}), pathStates: newPathStates },
+  };
+}
+
+// ---- Critical tile detection via BFS + path enumeration ------------
+// Returns Set<"x,z"> of tiles that appear on EVERY shortest solution path.
+// These tiles are guaranteed to matter — any hazard placed on them is unavoidable.
+export function computeCriticalTiles(data) {
+  const DIRS = ['right', 'left', 'down', 'up'];
+  const tileSet     = new Set(data.tiles.map(t => `${t.x},${t.z}`));
+  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+  const portalExit  = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [`${t.x},${t.z}`, t.target])
+  );
+
+  const s  = data.start_state;
+  const so = s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ';
+  const goal = data.hole_pos;
+
+  const startKey = `${s.pos.x},${s.pos.z},${so}`;
+  // prev: stateKey → array of { fromKey, transitCells[] }  (multiple parents = multiple shortest paths)
+  const dist = new Map([[startKey, 0]]);
+  const prev = new Map([[startKey, []]]);
+  const queue = [{ x: s.pos.x, z: s.pos.z, o: so }];
+  let goalKey = null;
+
+  const MAX_NODES = 600_000;
+  let visited = 0;
+
+  while (queue.length > 0 && visited < MAX_NODES) {
+    const cur = queue.shift();
+    const curKey = `${cur.x},${cur.z},${cur.o}`;
+    const curDist = dist.get(curKey);
+    visited++;
+
+    for (const dir of DIRS) {
+      const next = rollForward(cur, dir);
+      const foot = cellsOf(next);
+
+      let ok = true;
+      for (const [fx, fz] of foot) {
+        if (!tileSet.has(`${fx},${fz}`)) { ok = false; break; }
+        if (next.o === 'V' && tileTypeMap.get(`${fx},${fz}`) === 'fragile') { ok = false; break; }
+      }
+      if (!ok) continue;
+
+      // Cells visited before any portal jump (used to build path cell sets)
+      const transitCells = cellsOf(next).map(([cx, cz]) => `${cx},${cz}`);
+
+      let land = next;
+      if (next.o === 'V' && portalExit.has(`${next.x},${next.z}`)) {
+        const tg = portalExit.get(`${next.x},${next.z}`);
+        land = { x: tg.x, z: tg.z, o: 'V' };
+      }
+
+      const nk = `${land.x},${land.z},${land.o}`;
+      const nDist = curDist + 1;
+
+      if (!dist.has(nk)) {
+        dist.set(nk, nDist);
+        prev.set(nk, [{ fromKey: curKey, transitCells }]);
+        queue.push(land);
+        if (land.o === 'V' && land.x === goal.x && land.z === goal.z) goalKey = nk;
+      } else if (dist.get(nk) === nDist) {
+        prev.get(nk).push({ fromKey: curKey, transitCells });
+      }
+    }
+  }
+
+  if (!goalKey) return new Set();
+
+  // Enumerate up to MAX_PATHS shortest paths backward from goal, intersecting their cell sets.
+  // A tile is critical if it appears in every path.
+  const MAX_PATHS = 200;
+  let critical = null;
+  let pathCount = 0;
+
+  function dfs(key, cells) {
+    if (pathCount >= MAX_PATHS) return;
+
+    const parts = key.split(',');
+    const o = parts[parts.length - 1];
+    const z = +parts[parts.length - 2];
+    const x = +parts.slice(0, parts.length - 2).join(',');
+    const stateKeys = cellsOf({ x, z, o }).map(([cx, cz]) => `${cx},${cz}`);
+    const extended = cells.concat(stateKeys);
+
+    const parents = prev.get(key);
+    if (!parents || parents.length === 0) {
+      pathCount++;
+      const pathSet = new Set(extended);
+      if (critical === null) {
+        critical = pathSet;
+      } else {
+        for (const c of [...critical]) {
+          if (!pathSet.has(c)) critical.delete(c);
+        }
+      }
+      return;
+    }
+
+    for (const { fromKey, transitCells } of parents) {
+      dfs(fromKey, extended.concat(transitCells));
+    }
+  }
+
+  dfs(goalKey, []);
+  return critical || new Set();
+}
+
+// ---- Behavioral difficulty metrics ---------------------------------
+// Walks the solution path and measures player-experience-relevant signals.
+// Returns a metrics object including behavioral_difficulty score in [1, 10].
+export function computeBehavioralMetrics(data, criticalTiles = null) {
+  const tileTypeMap = new Map(data.tiles.map(t => [`${t.x},${t.z}`, t.type]));
+  const portalMap   = new Map(
+    data.tiles.filter(t => t.type === 'portal' && t.target)
+              .map(t => [`${t.x},${t.z}`, t.target])
+  );
+
+  const s = data.start_state;
+  let cur = {
+    x: s.pos.x, z: s.pos.z,
+    o: s.orientation === 'vertical' ? 'V' : s.orientation === 'horizontal-x' ? 'HX' : 'HZ',
+  };
+
+  let precision_moves    = 0;  // HX/HZ landing on a fragile tile (must approach horizontally)
+  let crumbling_moves    = 0;  // any step landing on a crumbling tile (irreversible)
+  let orientation_changes = 0; // number of times orientation changes during solution
+  let portal_traversals  = 0;  // portal jumps in solution
+  let prevO = cur.o;
+
+  for (const dir of data.solution_data) {
+    const next = rollForward(cur, dir);
+
+    if (next.o !== prevO) orientation_changes++;
+    prevO = next.o;
+
+    let hasFragile = false, hasCrumbling = false;
+    for (const [x, z] of cellsOf(next)) {
+      const k = `${x},${z}`;
+      const type = tileTypeMap.get(k);
+      if (type === 'fragile' && (next.o === 'HX' || next.o === 'HZ')) hasFragile = true;
+      if (type === 'crumbling') { hasCrumbling = true; tileTypeMap.delete(k); }
+    }
+    if (hasFragile)   precision_moves++;
+    if (hasCrumbling) crumbling_moves++;
+
+    if (next.o === 'V' && portalMap.has(`${next.x},${next.z}`)) {
+      portal_traversals++;
+      const tg = portalMap.get(`${next.x},${next.z}`);
+      cur = { x: tg.x, z: tg.z, o: 'V' };
+    } else {
+      cur = next;
+    }
+  }
+
+  const steps = data.solution_data.length;
+
+  let critical_hazard_count = 0;
+  if (criticalTiles != null) {
+    for (const tile of data.tiles) {
+      if ((tile.type === 'fragile' || tile.type === 'crumbling' || tile.type === 'moving') &&
+          criticalTiles.has(`${tile.x},${tile.z}`)) {
+        critical_hazard_count++;
+      }
+    }
+  }
+
+  // Weighted behavioral metrics — max raw = 10.0
+  const precisionPts      = Math.min(precision_moves    /  8, 1) * 3.0;
+  const crumblingPts      = Math.min(crumbling_moves    /  6, 1) * 1.5;
+  const orientationPts    = Math.min(orientation_changes / 20, 1) * 1.5;
+  const pathLengthPts     = Math.min(steps              / 45, 1) * 2.0;
+  const portalPts         = Math.min(portal_traversals  /  3, 1) * 1.0;
+  const criticalHazardPts = Math.min(critical_hazard_count / 4, 1) * 1.0;
+
+  const raw = precisionPts + crumblingPts + orientationPts + pathLengthPts + portalPts + criticalHazardPts;
+  const behavioral_difficulty = Math.max(1, Math.min(10, +raw.toFixed(2)));
+
+  return {
+    precision_moves,
+    crumbling_moves,
+    orientation_changes,
+    portal_traversals,
+    critical_hazard_count,
+    behavioral_difficulty,
+  };
 }
 
 // ---- Difficulty score from actual level content ---------------------
-// Returns a float in [1, 10].
-// Components:
-//   moves  — length relative to a 70-move ceiling   (0-4 pts)
-//   fragile — fragile tiles / total tiles            (0-2.5 pts)
-//   crumbling — crumbling tiles / total tiles        (0-1.5 pts)
-//   moving — moving tile count (capped at 5)         (0-1 pt)
-//   portal — islands > 1                             (0-1 pt)
-export function computeDifficultyScore(data) {
-  const tiles     = data.tiles;
-  const total     = tiles.length || 1;
-  const fragile   = tiles.filter(t => t.type === 'fragile').length;
-  const crumbling = tiles.filter(t => t.type === 'crumbling').length;
-  const moving    = tiles.filter(t => t.type === 'moving').length;
-  const portals   = tiles.filter(t => t.type === 'portal').length;
-  const moves     = data.solution_data.length;
-
-  const movePts      = Math.min(moves / 70, 1) * 4;
-  const fragilePts   = (fragile   / total) * 2.5;
-  const crumblePts   = (crumbling / total) * 1.5;
-  const movingPts    = Math.min(moving / 5, 1) * 1;
-  const portalPts    = portals > 0 ? 1 : 0;
-
-  const raw = movePts + fragilePts + crumblePts + movingPts + portalPts;
-  return Math.max(1, Math.min(10, +raw.toFixed(2)));
+// Returns a float in [1, 10] based on behavioral metrics (not tile counts).
+// criticalTiles: optional Set<"x,z"> from computeCriticalTiles() — improves accuracy.
+export function computeDifficultyScore(data, criticalTiles = null) {
+  return computeBehavioralMetrics(data, criticalTiles).behavioral_difficulty;
 }
 
 // ---- Tile stats helper ---------------------------------------------
