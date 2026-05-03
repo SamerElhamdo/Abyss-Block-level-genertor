@@ -2,14 +2,14 @@
   "level_metadata": {
     "id": "lvl_14",
     "difficulty": 8,
-    "seed": 924094930,
-    "steps_to_solve": 24,
+    "seed": 4053488572,
+    "steps_to_solve": 22,
     "map_bounds": {
       "minX": 0,
-      "maxX": 15,
+      "maxX": 16,
       "minZ": -1,
       "maxZ": 3,
-      "width": 16,
+      "width": 17,
       "length": 5
     },
     "layout_dir": "20deg",
@@ -27,7 +27,7 @@
     },
     "generator": {
       "base_seed": 777000,
-      "attempts": 78,
+      "attempts": 15,
       "verified": true,
       "dir_angle_deg": 20,
       "spreadDeg": 95,
@@ -35,52 +35,39 @@
       "crossAxisLimit": 3
     },
     "evolution": {
-      "n_candidates": 60,
-      "winner_index": 41,
-      "winner_seed": 1476197902,
-      "selection_score": 6.9977,
+      "n_candidates": 500,
+      "winner_index": 275,
+      "winner_seed": 1159465364,
+      "selection_score": 6.9852,
       "fitness_first": 5.1061,
-      "fitness_best": 7.0603,
-      "fitness_gain": 1.954,
+      "fitness_best": 6.9878,
+      "fitness_gain": 1.882,
       "score_first": 8.87,
-      "score_best": 7.42,
+      "score_best": 7.58,
       "target_difficulty": 7.605,
-      "delta_from_target": -0.19
+      "delta_from_target": -0.03
     },
     "tile_stats": {
-      "normal": 14,
+      "normal": 12,
       "fragile": 11,
-      "crumbling": 4,
+      "crumbling": 5,
       "moving": 1,
       "portal": 0,
-      "total": 30,
-      "trap_density": 0.533
+      "total": 29,
+      "trap_density": 0.586
     },
-    "computed_difficulty": 7.42,
+    "computed_difficulty": 7.58,
     "behavioral_analysis": {
       "precision_moves": 10,
-      "crumbling_moves": 4,
+      "crumbling_moves": 5,
       "orientation_changes": 18,
       "portal_traversals": 0,
-      "critical_tile_count": 30,
-      "critical_hazard_count": 16,
-      "behavioral_difficulty": 7.42,
-      "puzzle_efficiency": 7.0603
+      "critical_tile_count": 29,
+      "critical_hazard_count": 17,
+      "behavioral_difficulty": 7.58,
+      "puzzle_efficiency": 6.9878
     },
-    "applied_patterns": [
-      {
-        "pattern": "FRAGILE_BRIDGE",
-        "index": 5
-      },
-      {
-        "pattern": "ONE_TIME_PATH",
-        "index": 16
-      },
-      {
-        "pattern": "PRECISION_CORRIDOR",
-        "index": 19
-      }
-    ]
+    "applied_patterns": []
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -89,7 +76,7 @@
   "start_state": {
     "pos": {
       "x": 14,
-      "z": 1
+      "z": 3
     },
     "orientation": "vertical"
   },
@@ -100,33 +87,33 @@
   "tiles": [
     {
       "x": 14,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 14,
       "z": 1,
       "type": "normal"
     },
     {
       "x": 14,
       "z": 2,
-      "type": "fragile"
+      "type": "normal"
     },
     {
       "x": 14,
-      "z": 3,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 13,
-      "z": 2,
+      "x": 15,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 13,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 1,
-      "type": "normal"
+      "x": 16,
+      "z": 0,
+      "type": "fragile"
     },
     {
       "x": 15,
@@ -134,54 +121,93 @@
       "type": "fragile"
     },
     {
-      "x": 15,
-      "z": 2,
+      "x": 16,
+      "z": 1,
       "type": "fragile"
     },
     {
       "x": 15,
-      "z": 3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 16,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 13,
+      "z": 2,
       "type": "fragile"
     },
     {
       "x": 12,
-      "z": 3,
-      "type": "crumbling"
-    },
-    {
-      "x": 11,
-      "z": 3,
-      "type": "crumbling"
-    },
-    {
-      "x": 11,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 11,
       "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": 0,
       "type": "fragile"
+    },
+    {
+      "x": 12,
+      "z": 1,
+      "type": "moving",
+      "params": {
+        "axis": "x",
+        "range": [
+          11,
+          13
+        ],
+        "stepsPerPhase": 1,
+        "startPhase": 0
+      }
+    },
+    {
+      "x": 12,
+      "z": -1,
+      "type": "crumbling"
     },
     {
       "x": 10,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 9,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
       "z": 0,
       "type": "normal"
     },
     {
       "x": 8,
       "z": 0,
-      "type": "crumbling"
+      "type": "fragile"
     },
     {
-      "x": 9,
+      "x": 4,
       "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 0,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 5,
@@ -191,66 +217,22 @@
     {
       "x": 6,
       "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": 0,
       "type": "normal"
     },
     {
       "x": 3,
       "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 3,
-      "z": 2,
       "type": "crumbling"
-    },
-    {
-      "x": 4,
-      "z": 2,
-      "type": "fragile"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "fragile"
     },
     {
       "x": 1,
       "z": 0,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 2,
       "z": 0,
-      "type": "moving",
-      "params": {
-        "axis": "z",
-        "range": [
-          -1,
-          1
-        ],
-        "stepsPerPhase": 2,
-        "startPhase": 0
-      }
+      "type": "fragile"
     },
     {
       "x": 0,
@@ -259,8 +241,7 @@
     }
   ],
   "solution_data": [
-    "down",
-    "left",
+    "up",
     "up",
     "right",
     "down",
@@ -276,11 +257,10 @@
     "left",
     "left",
     "left",
-    "left",
     "down",
     "left",
     "left",
-    "up",
+    "left",
     "left",
     "left"
   ]

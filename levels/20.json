@@ -36,10 +36,10 @@
       "crossAxisLimit": 5
     },
     "evolution": {
-      "n_candidates": 60,
+      "n_candidates": 500,
       "winner_index": 48,
       "winner_seed": 2637210279,
-      "selection_score": 6.787,
+      "selection_score": 6.7237,
       "fitness_first": 5.5501,
       "fitness_best": 6.8382,
       "fitness_gain": 1.288,
