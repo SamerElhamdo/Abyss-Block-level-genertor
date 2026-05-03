@@ -1,24 +1,20 @@
 #!/usr/bin/env node
 /**
- * Abyss Block — توليد ٢٠ مرحلة مُتحقَّق منها
+ * Abyss Block — توليد مراحل مُتحقَّق منها
  *
- * خط الأنابيب لكل مرحلة:
- *   1. توليد N مرشح (Generational Evolution)
- *   2. الاختيار بمعيار: moves↑ / tiles↓ / traps↓ / trap_necessity↑
- *   3. محاكاة كاملة → تحقق مزدوج → كتابة الملف
- *
- * المراحل (٢٠ مرحلة، صعبة من المرحلة الأولى):
- *   1–5   Hard Start   fragile + crumbling، D4→D6
- *   6–10  Precision    fragile + crumbling ثقيل، D5→D7
- *  11–15  Moving       fragile + crumbling + moving، D6→D8
- *  16–18  Islands      جزر + بوابات، D7→D9
- *  19–20  ABYSS        كل الميكانيكيات، D9→D10
+ * الانتخاب الموجَّه بالهدف (Target-Guided Evolution):
+ *   كل مرحلة لها صعوبة مستهدفة محسوبة من DIFF_MIN → DIFF_MAX.
+ *   الانتخاب يُرجِّح المرشح الأقرب للهدف مع الحفاظ على puzzle_efficiency.
  *
  * متغيرات البيئة:
- *   BASE_SEED    — البذرة الأساسية (عشوائية إن لم تُحدَّد)
- *   DIR_DEG      — اتجاه المسار بالدرجات من الشرق (افتراضي: 20)
- *   CROSS_WIDTH  — نصف عرض الممر العرضي (افتراضي: 3)
+ *   LEVEL_COUNT  — عدد المراحل (افتراضي: 20، مدى: 5–100)
+ *   DIFF_MIN     — صعوبة المرحلة الأولى (افتراضي: 3.5)
+ *   DIFF_MAX     — صعوبة المرحلة الأخيرة (افتراضي: 9.5)
+ *   DIFF_SIGMA   — تسامح مطابقة الهدف (افتراضي: 1.2، أصغر = أصرم)
  *   EVOLUTION_N  — عدد المرشحين لكل مرحلة (افتراضي: 20)
+ *   BASE_SEED    — البذرة الأساسية (عشوائية إن لم تُحدَّد)
+ *   DIR_DEG      — اتجاه المسار (افتراضي: 20)
+ *   CROSS_WIDTH  — نصف عرض الممر (افتراضي: 3)
  *   LEVELS_OUT   — مجلد الإخراج (افتراضي: levels/)
  */
 
@@ -30,7 +26,6 @@ import {
   simulateLevel,
   pruneUnreachableTiles,
   optimizeSolution,
-  computeDifficultyScore,
   computeCriticalTiles,
   computeBehavioralMetrics,
   computeEvolutionFitness,
@@ -42,11 +37,12 @@ import { applyPatterns } from "./puzzle-patterns.mjs";
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 
-// ---- helpers -------------------------------------------------------
+// ── helpers ──────────────────────────────────────────────────────────
 function lerp(a, b, t)      { return a + (b - a) * t; }
 function lerpRound(a, b, t) { return Math.round(lerp(a, b, t)); }
 function phaseT(i, n)       { return n <= 1 ? 1 : i / (n - 1); }
 function evenGrid(n)        { return n % 2 === 0 ? n : n - 1; }
+
 function hashSeed(base, slot) {
   let x = ((base >>> 0) ^ (slot * 0x9e3779b9)) >>> 0;
   x = Math.imul(x ^ (x >>> 16), 0x7feb352d);
@@ -54,10 +50,34 @@ function hashSeed(base, slot) {
   return x >>> 0;
 }
 
-// ---- Map bounds correction -----------------------------------------
-// Recomputes map_bounds from actual tile positions, including full
-// oscillation range of moving tiles, so no tile ever appears outside
-// the declared grid.
+// ── توزيع المراحل حسب الأوزان ───────────────────────────────────────
+// يُعيد مصفوفة أعداد صحيحة تجمع إلى total،
+// كل عنصر ≥ 1 إذا كان الوزن > 0 وكان total يكفي.
+function distributeWeighted(total, weights) {
+  const sum   = weights.reduce((a, b) => a + b, 0);
+  const raw   = weights.map(w => (w / sum) * total);
+  const counts = raw.map(Math.floor);
+  let rem = total - counts.reduce((a, b) => a + b, 0);
+
+  // وزّع البقية على الأجزاء ذات الكسر الأكبر
+  raw.map((r, i) => ({ i, f: r - Math.floor(r) }))
+     .sort((a, b) => b.f - a.f)
+     .slice(0, rem)
+     .forEach(({ i }) => counts[i]++);
+
+  // ضمان حدٍّ أدنى 1 لكل مرحلة قدر الإمكان
+  const active = Math.min(weights.length, total);
+  for (let i = 0; i < active; i++) {
+    if (counts[i] === 0) {
+      const maxIdx = counts.reduce((mi, c, ci) => c > counts[mi] ? ci : mi, 0);
+      if (counts[maxIdx] > 1) { counts[maxIdx]--; counts[i]++; }
+    }
+  }
+  return counts;
+}
+
+// ── تصحيح حدود الخريطة ───────────────────────────────────────────────
+// يشمل كامل نطاق تذبذب moving tiles حتى لا تظهر خارج الـ grid.
 function recomputeMapBounds(data) {
   let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
   for (const t of data.tiles) {
@@ -79,29 +99,36 @@ function recomputeMapBounds(data) {
   return { minX, maxX, minZ, maxZ, width: maxX - minX + 1, length: maxZ - minZ + 1 };
 }
 
-// ---- Phase definitions ---------------------------------------------
-// 20 levels, hard from level 1, gradual ramp to max difficulty.
+// ── معادلة الانتخاب الموجَّه بالهدف ──────────────────────────────────
+// تجمع بين puzzle_efficiency (جودة اللغز) وقرب الصعوبة من الهدف.
 //
-// Design principle:
-//   - constraintMode always on → traps placed only on critical cells
-//   - Small gridSize relative to steps → denser, longer paths
-//   - High fragile/crumbling rates → fewer safe tiles
-//   - crossAxisLimit tight → narrow corridors force orientation management
+//   proximity = exp(-(score - target)² / (2 × sigma²))
+//   selection = fitness × (FLOOR + (1 - FLOOR) × proximity)
+//
+// FLOOR = 0.25 → حتى لو لا يوجد مرشح قريب، نختار الأفضل fitness.
+// FLOOR = 0    → نرفض أي مرشح بعيد عن الهدف تماماً.
+const SELECTION_FLOOR = 0.25;
 
-const TOTAL_LEVELS = 20;
+function selectionScore(fitness, computedDifficulty, targetDifficulty, sigma) {
+  const d         = computedDifficulty - targetDifficulty;
+  const proximity = Math.exp(-(d * d) / (2 * sigma * sigma));
+  return fitness * (SELECTION_FLOOR + (1 - SELECTION_FLOOR) * proximity);
+}
 
-const PHASES = [
+// ── قوالب المراحل ─────────────────────────────────────────────────────
+// كل قالب يصف ميكانيكيات مرحلة. الدالة fn() تُنتج إعدادات بناءً على
+// موضع المرحلة (phaseT) وعدد مراحلها الفعلي (count).
+// يُبنى PHASES ديناميكياً من هذه القوالب حسب LEVEL_COUNT.
 
-  // ── 1–5  Hard Start ─────────────────────────────────────────────
-  // Mechanics active from level 1: fragile + crumbling.
-  // No tutorial grace period — player faces real traps immediately.
-  // minBFSMoves ensures the optimal solution stays long after BFS shortcutting.
+const PHASE_TEMPLATES = [
+
+  // ── Hard Start ──────────────────────────────────────────────────
   {
-    label: "hard_start", from: 1, count: 5,
+    label: 'hard_start', weight: 25,
     constraints: { minMoves: 20, maxMoves: 50, minBFSMoves: 12 },
     maxAttempts: 40,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 5);
+    fn(i, count, seed, dirDeg, crossW) {
+      const ti = phaseT(i, count);
       return {
         seed,
         difficulty:  lerpRound(4, 6, ti),
@@ -123,14 +150,13 @@ const PHASES = [
     },
   },
 
-  // ── 6–10  Precision ─────────────────────────────────────────────
-  // Heavier fragile + crumbling, longer BFS-optimal paths, tighter corridors.
+  // ── Precision ───────────────────────────────────────────────────
   {
-    label: "precision", from: 6, count: 5,
+    label: 'precision', weight: 25,
     constraints: { minMoves: 28, maxMoves: 58, minBFSMoves: 16 },
     maxAttempts: 45,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 5);
+    fn(i, count, seed, dirDeg, crossW) {
+      const ti = phaseT(i, count);
       return {
         seed,
         difficulty:  lerpRound(5, 7, ti),
@@ -152,14 +178,13 @@ const PHASES = [
     },
   },
 
-  // ── 11–15  Moving ───────────────────────────────────────────────
-  // Adds timing puzzles (moving tiles) on top of fragile/crumbling.
+  // ── Moving ──────────────────────────────────────────────────────
   {
-    label: "moving", from: 11, count: 5,
+    label: 'moving', weight: 25,
     constraints: { minMoves: 38, maxMoves: 68, minBFSMoves: 22 },
     maxAttempts: 160,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 5);
+    fn(i, count, seed, dirDeg, crossW) {
+      const ti = phaseT(i, count);
       return {
         seed,
         difficulty:  lerpRound(6, 9, ti),
@@ -181,16 +206,13 @@ const PHASES = [
     },
   },
 
-  // ── 16–18  Islands ──────────────────────────────────────────────
-  // Multi-island navigation via portals + fragile/crumbling on each island.
-  // buildIslandLevel injects hazards per island using mechanics (minus portal flag),
-  // so fragile/crumbling traps work correctly here.
+  // ── Islands ─────────────────────────────────────────────────────
   {
-    label: "islands", from: 16, count: 3,
+    label: 'islands', weight: 15,
     constraints: { minMoves: 30, maxMoves: 68, minBFSMoves: 24 },
     maxAttempts: 35,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 3);
+    fn(i, count, seed, dirDeg, crossW) {
+      const ti = phaseT(i, count);
       return {
         seed,
         difficulty:  lerpRound(7, 9, ti),
@@ -201,7 +223,7 @@ const PHASES = [
           crumblingRate:  +lerp(0.12, 0.22, ti).toFixed(3),
           constraintMode: true,
         },
-        patterns: ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
+        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
         expansionOpts: {
           dirAngleDeg:    dirDeg,
           spreadDeg:      70,
@@ -212,14 +234,13 @@ const PHASES = [
     },
   },
 
-  // ── 19–20  ABYSS ────────────────────────────────────────────────
-  // All mechanics combined at max difficulty.
+  // ── ABYSS ───────────────────────────────────────────────────────
   {
-    label: "abyss", from: 19, count: 2,
+    label: 'abyss', weight: 10,
     constraints: { minMoves: 45, maxMoves: 85, minBFSMoves: 30 },
     maxAttempts: 32,
-    fn(i, seed, dirDeg, crossW) {
-      const ti = phaseT(i, 2);
+    fn(i, count, seed, dirDeg, crossW) {
+      const ti = phaseT(i, count);
       return {
         seed,
         difficulty:  lerpRound(9, 10, ti),
@@ -242,7 +263,31 @@ const PHASES = [
   },
 ];
 
-// ---- Double-check: JSON shape + full simulation + bounds -----------
+// ── بناء PHASES ديناميكياً من LEVEL_COUNT ─────────────────────────────
+function buildPhases(levelCount) {
+  const weights = PHASE_TEMPLATES.map(t => t.weight);
+  const counts  = distributeWeighted(levelCount, weights);
+
+  let fromSlot = 1;
+  return PHASE_TEMPLATES
+    .map((tmpl, i) => {
+      const count = counts[i];
+      const from  = fromSlot;
+      fromSlot   += count;
+      return { ...tmpl, from, count };
+    })
+    .filter(p => p.count > 0);
+}
+
+// ── حساب الصعوبات المستهدفة ───────────────────────────────────────────
+// تسلسل خطي تصاعدي صارم من diffMin إلى diffMax على levelCount مرحلة.
+function computeTargets(levelCount, diffMin, diffMax) {
+  return Array.from({ length: levelCount }, (_, i) =>
+    +lerp(diffMin, diffMax, levelCount <= 1 ? 1 : i / (levelCount - 1)).toFixed(3)
+  );
+}
+
+// ── التحقق المزدوج ────────────────────────────────────────────────────
 function doubleCheck(clean) {
   const required = ['level_metadata', 'start_state', 'hole_pos', 'tiles', 'solution_data'];
   for (const k of required) {
@@ -253,59 +298,53 @@ function doubleCheck(clean) {
   if (!Array.isArray(clean.solution_data) || clean.solution_data.length === 0)
     return { ok: false, reason: 'empty solution_data' };
 
-  // Full physics simulation
   const sim = simulateLevel(clean);
   if (!sim.ok) return { ok: false, reason: `sim fail step=${sim.step} ${sim.reason}` };
 
-  // Tile bounds: every static tile must be within declared map_bounds.
-  // Moving tiles are covered because recomputeMapBounds already includes their ranges.
+  // تحقق من عدم وجود بلاطات ثابتة خارج الحدود المُعلنة
   const mb = clean.level_metadata?.map_bounds;
   if (mb) {
     for (const t of clean.tiles) {
-      if (t.type === 'moving') continue; // range included in bounds by construction
+      if (t.type === 'moving') continue;
       if (t.x < mb.minX || t.x > mb.maxX || t.z < mb.minZ || t.z > mb.maxZ)
         return { ok: false, reason: `tile (${t.x},${t.z}) outside map_bounds` };
     }
   }
-
   return { ok: true };
 }
 
-// ---- Single-candidate pipeline -------------------------------------
-// Builds, verifies, applies patterns, and scores one candidate level.
-// Returns a result object, or null if the build failed entirely.
+// ── خط أنابيب مرشح واحد ──────────────────────────────────────────────
 const PAT_XOR = 0xbeef_cafe;
 
 function buildScoredCandidate(slot, evoSeed, phase, phaseIdx, dirDeg, crossW) {
-  const args = phase.fn(phaseIdx, evoSeed, dirDeg, crossW);
-  const { lvl, attempts, verified } = buildLevelVerified(args, phase.constraints, phase.maxAttempts);
+  const args = phase.fn(phaseIdx, phase.count, evoSeed, dirDeg, crossW);
+  const { lvl, attempts, verified } = buildLevelVerified(
+    args, phase.constraints, phase.maxAttempts
+  );
   if (!lvl) return null;
 
-  // For fallback levels (verified=false), buildLevelVerified returned the raw
-  // buildLevel() output without BFS optimization or minBFSMoves enforcement.
-  // Apply BFS here and enforce minBFSMoves to reject trivially short fallbacks.
+  // للـ fallback: طبّق BFS يدوياً وتحقق من minBFSMoves
   let workLvl = lvl;
   if (!verified) {
     const pruned = pruneUnreachableTiles(lvl);
     const bfs    = optimizeSolution(pruned);
     if (!simulateLevel(bfs).ok) return null;
-    const minBFSMoves = phase.constraints.minBFSMoves ?? 0;
-    if (bfs.solution_data.length < minBFSMoves) return null;
+    if (bfs.solution_data.length < (phase.constraints.minBFSMoves ?? 0)) return null;
     workLvl = bfs;
   }
 
-  // Apply puzzle patterns
+  // طبّق الأنماط
   let finalLvl = workLvl;
   const patternsToApply = args.patterns ?? [];
-  if (patternsToApply.length > 0 && lvl._internal?.pathStates) {
+  if (patternsToApply.length > 0 && workLvl._internal?.pathStates) {
     const patRng = makeRNG(hashSeed(PAT_XOR ^ evoSeed, slot));
-    const candidate = applyPatterns(lvl, patternsToApply, patRng);
+    const candidate = applyPatterns(workLvl, patternsToApply, patRng);
     if (simulateLevel(candidate).ok) finalLvl = candidate;
   }
 
   const { _internal, ...optimized } = finalLvl;
 
-  // Correct map_bounds to include moving tile oscillation range
+  // صحّح الحدود لتشمل نطاق moving tiles
   const correctedBounds = recomputeMapBounds(optimized);
   if (correctedBounds) {
     optimized.level_metadata = { ...optimized.level_metadata, map_bounds: correctedBounds };
@@ -325,8 +364,10 @@ function buildScoredCandidate(slot, evoSeed, phase, phaseIdx, dirDeg, crossW) {
   };
 }
 
-// ---- Main ----------------------------------------------------------
+// ── Main ─────────────────────────────────────────────────────────────
 async function main() {
+
+  // ─ قراءة المتغيرات ─────────────────────────────────────────────────
   const baseSeed = process.env.BASE_SEED !== undefined && process.env.BASE_SEED !== ""
     ? Number(process.env.BASE_SEED)
     : Math.floor(Math.random() * 0xFFFF_FFFF);
@@ -336,20 +377,56 @@ async function main() {
   if (!Number.isFinite(dirDeg)) { console.error("DIR_DEG must be a number"); process.exit(1); }
 
   const crossW = process.env.CROSS_WIDTH !== undefined ? Number(process.env.CROSS_WIDTH) : 3;
-  if (!Number.isFinite(crossW) || crossW < 0) { console.error("CROSS_WIDTH must be a non-negative number"); process.exit(1); }
+  if (!Number.isFinite(crossW) || crossW < 0) { console.error("CROSS_WIDTH must be ≥ 0"); process.exit(1); }
 
   const evolutionN = process.env.EVOLUTION_N !== undefined
     ? Math.max(1, Math.round(Number(process.env.EVOLUTION_N)))
     : 20;
   if (!Number.isFinite(evolutionN)) { console.error("EVOLUTION_N must be a number"); process.exit(1); }
 
+  const levelCount = process.env.LEVEL_COUNT !== undefined
+    ? Math.max(5, Math.round(Number(process.env.LEVEL_COUNT)))
+    : 20;
+  if (!Number.isFinite(levelCount)) { console.error("LEVEL_COUNT must be a number"); process.exit(1); }
+
+  const diffMin = process.env.DIFF_MIN !== undefined ? Number(process.env.DIFF_MIN) : 3.5;
+  const diffMax = process.env.DIFF_MAX !== undefined ? Number(process.env.DIFF_MAX) : 9.5;
+  if (!Number.isFinite(diffMin) || !Number.isFinite(diffMax) || diffMin >= diffMax)
+    { console.error("DIFF_MIN must be < DIFF_MAX"); process.exit(1); }
+
+  const diffSigma = process.env.DIFF_SIGMA !== undefined ? Number(process.env.DIFF_SIGMA) : 1.2;
+  if (!Number.isFinite(diffSigma) || diffSigma <= 0) { console.error("DIFF_SIGMA must be > 0"); process.exit(1); }
+
   const outDir = path.resolve(PROJECT_ROOT, process.env.LEVELS_OUT ?? "levels");
   await fs.mkdir(outDir, { recursive: true });
 
-  const dirLabel = dirDeg === 0 ? "east" : dirDeg > 0 ? `east+${dirDeg}°S` : `east${dirDeg}°N`;
-  console.log(`\nAbyss Block — توليد ${TOTAL_LEVELS} مرحلة مُتحقَّق منها`);
-  console.log(`BASE_SEED=${baseSeed}  DIR_DEG=${dirDeg} (${dirLabel})  CROSS_WIDTH=${crossW}  EVOLUTION_N=${evolutionN}  →  ${outDir}/\n`);
+  // ─ بناء المراحل والأهداف ───────────────────────────────────────────
+  const PHASES  = buildPhases(levelCount);
+  const targets = computeTargets(levelCount, diffMin, diffMax);
 
+  // ─ رأس التقرير ─────────────────────────────────────────────────────
+  const dirLabel = dirDeg === 0 ? "east" : dirDeg > 0 ? `east+${dirDeg}°S` : `east${dirDeg}°N`;
+  console.log(`\nAbyss Block — توليد ${levelCount} مرحلة مُتحقَّق منها`);
+  console.log([
+    `BASE_SEED=${baseSeed}`,
+    `DIR_DEG=${dirDeg} (${dirLabel})`,
+    `CROSS_WIDTH=${crossW}`,
+    `EVOLUTION_N=${evolutionN}`,
+    `LEVEL_COUNT=${levelCount}`,
+    `DIFF=${diffMin}→${diffMax}`,
+    `SIGMA=${diffSigma}`,
+    `→ ${outDir}/`,
+  ].join('  ') + '\n');
+
+  // تفصيل الأهداف لكل مرحلة
+  console.log("── Difficulty targets");
+  for (const ph of PHASES) {
+    const slotTargets = Array.from({ length: ph.count }, (_, i) => targets[ph.from - 1 + i]);
+    console.log(`   ${ph.label.padEnd(12)} slots ${ph.from}–${ph.from + ph.count - 1}  targets: ${slotTargets.join(', ')}`);
+  }
+  console.log();
+
+  // ─ حلقة التوليد الرئيسية ──────────────────────────────────────────
   let totalOk = 0, totalFallback = 0;
   const difficultyLog = [];
 
@@ -358,13 +435,15 @@ async function main() {
     console.log(`── ${phase.label.toUpperCase()} (${phase.from}–${end})`);
 
     for (let i = 0; i < phase.count; i++) {
-      const slot = phase.from + i;
+      const slot   = phase.from + i;
+      const target = targets[slot - 1];
 
-      // ── Generational Evolution ──────────────────────────────────────
-      // Selection criterion: max puzzle_efficiency (few tiles + few traps + many moves
-      // + all traps critical). ei=0 uses the canonical seed for determinism at N=1.
-      let bestResult   = null;
-      let firstFitness = null;
+      // ── الانتخاب الموجَّه بالهدف ──────────────────────────────────
+      // ei=0 يستخدم البذرة الكلاسيكية → EVOLUTION_N=1 = سلوك قديم تاماً.
+      let bestResult      = null;
+      let bestSelScore    = -Infinity;
+      let firstScore      = null;
+      let firstFitness    = null;
 
       for (let ei = 0; ei < evolutionN; ei++) {
         const evoSeed = ei === 0
@@ -374,15 +453,19 @@ async function main() {
         const result = buildScoredCandidate(slot, evoSeed, phase, i, dirDeg, crossW);
         if (!result) continue;
 
+        if (firstScore   === null) firstScore   = result.score;
         if (firstFitness === null) firstFitness = result.fitness;
 
-        if (!bestResult || result.fitness > bestResult.fitness) {
-          bestResult = { ...result, evoSeed, evoIdx: ei };
+        const sel = selectionScore(result.fitness, result.score, target, diffSigma);
+
+        if (sel > bestSelScore) {
+          bestSelScore = sel;
+          bestResult   = { ...result, evoSeed, evoIdx: ei, selScore: sel };
         }
       }
 
       if (!bestResult) {
-        console.error(`  ✗ ${slot} all ${evolutionN} evolution candidates failed`);
+        console.error(`  ✗ ${slot} all ${evolutionN} candidates failed`);
         totalFallback++;
         continue;
       }
@@ -394,14 +477,19 @@ async function main() {
         evoSeed, evoIdx,
       } = bestResult;
 
-      // Stamp final metadata
+      const delta      = +(score - target).toFixed(2);
+      const deltaStr   = delta >= 0 ? `+${delta}` : `${delta}`;
+      const fitnessGain = firstFitness !== null ? +(fitness - firstFitness).toFixed(3) : 0;
+
+      // ─ ختم الـ metadata ──────────────────────────────────────────
       optimized.level_metadata = {
         ...optimized.level_metadata,
-        id:         `lvl_${slot}`,
+        id:               `lvl_${slot}`,
         slot,
-        phase:      phase.label,
-        difficulty: args.difficulty,
-        mechanics:  args.mechanics,
+        phase:            phase.label,
+        difficulty:       args.difficulty,
+        target_difficulty: target,
+        mechanics:        args.mechanics,
         generator: {
           base_seed:      baseSeed,
           attempts,
@@ -415,9 +503,14 @@ async function main() {
           n_candidates:      evolutionN,
           winner_index:      evoIdx,
           winner_seed:       evoSeed,
+          selection_score:   +bestSelScore.toFixed(4),
           fitness_first:     firstFitness,
           fitness_best:      fitness,
-          fitness_gain:      +(fitness - firstFitness).toFixed(4),
+          fitness_gain:      fitnessGain,
+          score_first:       firstScore,
+          score_best:        score,
+          target_difficulty: target,
+          delta_from_target: delta,
         },
         steps_to_solve:      movesAfterOpt,
         tile_stats:          stats,
@@ -434,12 +527,14 @@ async function main() {
         },
         applied_patterns: finalLvl._internal?.appliedPatterns ?? [],
       };
+
       difficultyLog.push({
-        slot, computed: score, fitness, label: phase.label,
-        gain: +(fitness - firstFitness).toFixed(4),
+        slot, computed: score, target,
+        delta, label: phase.label,
+        fitness, fitnessGain,
       });
 
-      // Double-check before writing
+      // ─ تحقق مزدوج قبل الكتابة ────────────────────────────────────
       const dc = doubleCheck(optimized);
       if (!dc.ok) {
         console.error(`  ✗ ${slot} double-check FAIL: ${dc.reason}`);
@@ -448,28 +543,28 @@ async function main() {
         totalOk++;
       }
 
+      // ─ طباعة السطر ───────────────────────────────────────────────
       const islandTag   = optimized.level_metadata.island_count
-        ? `  islands=${optimized.level_metadata.island_count}` : "";
-      const verifyTag   = verified ? "✓" : "⚠ fallback";
-      const attemptsTag = attempts > 1 ? ` (${attempts} tries)` : "";
-      const trapTag     = `  traps=${stats.fragile}f/${stats.crumbling}c/${stats.moving}m`
-                        + `  ρ=${stats.trap_density}`;
-      const mb      = optimized.level_metadata.map_bounds;
-      const mapTag  = mb ? `  map=${mb.width}×${mb.length}` : "";
-      const behavTag = `  prec=${metrics.precision_moves}  crumb=${metrics.crumbling_moves}  crit=${criticalTiles.size}`;
-      const evoTag   = evolutionN > 1
-        ? `  evo=${evoIdx + 1}/${evolutionN}` + (fitness > firstFitness ? `+${+(fitness - firstFitness).toFixed(2)}` : "")
+        ? `  isl=${optimized.level_metadata.island_count}` : "";
+      const verifyTag   = verified ? "✓" : "⚠";
+      const attemptsTag = attempts > 1 ? ` (${attempts})` : "";
+      const mb          = optimized.level_metadata.map_bounds;
+      const mapTag      = mb ? `  ${mb.width}×${mb.length}` : "";
+      const trapTag     = `  ${stats.fragile}f/${stats.crumbling}c/${stats.moving}m`;
+      const evoTag      = evolutionN > 1
+        ? `  evo=${evoIdx + 1}/${evolutionN}`
         : "";
 
       console.log(
         `  ${verifyTag} ${String(slot).padStart(2)}`
-        + `  D${args.difficulty}→${score}`
+        + `  tgt=${String(target).padEnd(4)}`
+        + `  got=${String(score).padStart(5)}`
+        + `  Δ=${deltaStr.padStart(5)}`
         + `  fit=${fitness}`
-        + `  moves=${movesAfterOpt}`
-        + `  tiles=${optimized.tiles.length}`
+        + `  mv=${movesAfterOpt}`
+        + `  ti=${optimized.tiles.length}`
         + mapTag
         + trapTag
-        + behavTag
         + islandTag
         + evoTag
         + attemptsTag
@@ -484,30 +579,47 @@ async function main() {
     console.log();
   }
 
-  console.log(`تم — ${totalOk}/${TOTAL_LEVELS} مرحلة معتمدة` + (totalFallback ? ` ⚠ ${totalFallback} fallback` : " ✓ جميعها صحيحة"));
+  // ─ تقرير الصعوبة ──────────────────────────────────────────────────
+  console.log(`تم — ${totalOk}/${levelCount} مرحلة معتمدة`
+    + (totalFallback ? ` ⚠ ${totalFallback} مشكلة` : " ✓ جميعها صحيحة"));
 
-  // ── Difficulty ordering report ──────────────────────────────────────
-  console.log("\n── Difficulty ordering (computed_difficulty)");
-  let prevScore = 0, orderOk = true;
-  for (const { slot, computed, fitness, label } of difficultyLog) {
-    const arrow = computed >= prevScore ? "▲" : "▼";
-    const warn  = computed < prevScore ? " ⚠ OUT OF ORDER" : "";
-    if (computed < prevScore) orderOk = false;
-    console.log(`  ${arrow} ${String(slot).padStart(2)}  [${label.padEnd(10)}]  score=${computed}  fit=${fitness}${warn}`);
+  console.log("\n── Difficulty report  (target → actual  Δ)");
+  let prevScore = -Infinity, orderOk = true, totalDelta = 0;
+
+  for (const { slot, computed, target, delta, label } of difficultyLog) {
+    const arrow     = computed >= prevScore ? "▲" : "▼";
+    const outOrder  = computed < prevScore;
+    if (outOrder) orderOk = false;
+    totalDelta += Math.abs(delta);
+
+    const bar  = "█".repeat(Math.round(computed))
+               + "░".repeat(Math.max(0, 10 - Math.round(computed)));
+    const warn = outOrder ? " ⚠ OUT OF ORDER" : "";
+    console.log(
+      `  ${arrow} ${String(slot).padStart(2)}  [${label.padEnd(10)}]`
+      + `  tgt=${String(target).padEnd(4)}`
+      + `  got=${String(computed).padStart(5)}`
+      + `  Δ=${String(delta >= 0 ? '+'+delta : delta).padStart(5)}`
+      + `  ${bar}${warn}`
+    );
     prevScore = computed;
   }
+
+  const avgDelta = (totalDelta / levelCount).toFixed(3);
   console.log(orderOk
-    ? "\n  ✓ All levels increase in computed difficulty"
-    : "\n  ⚠ Some levels are out of difficulty order — consider adjusting phase params"
+    ? `\n  ✓ ترتيب الصعوبة صحيح تماماً  (متوسط |Δ| = ${avgDelta})`
+    : `\n  ⚠ بعض المراحل خارج الترتيب  (متوسط |Δ| = ${avgDelta})`
+      + `\n  💡 جرّب: زيادة EVOLUTION_N أو تضييق DIFF_SIGMA`
   );
 
-  // ── Evolution improvement summary ──────────────────────────────────
+  // ─ تقرير الانتخاب ─────────────────────────────────────────────────
   if (evolutionN > 1) {
-    const improved = difficultyLog.filter(e => e.gain > 0);
-    const avgGain  = difficultyLog.reduce((s, e) => s + e.gain, 0) / difficultyLog.length;
-    console.log(`\n── Evolution summary (N=${evolutionN})`);
-    console.log(`  Avg fitness gain : +${avgGain.toFixed(4)}`);
-    console.log(`  Levels improved  : ${improved.length}/${TOTAL_LEVELS}`);
+    const improved   = difficultyLog.filter(e => e.fitnessGain > 0).length;
+    const avgFitGain = (difficultyLog.reduce((s, e) => s + e.fitnessGain, 0) / levelCount).toFixed(3);
+    console.log(`\n── Evolution summary  (N=${evolutionN}  sigma=${diffSigma})`);
+    console.log(`  Avg fitness gain  : +${avgFitGain}`);
+    console.log(`  Levels improved   : ${improved}/${levelCount}`);
+    console.log(`  Avg |Δ| from target: ${avgDelta}`);
   }
 }
 

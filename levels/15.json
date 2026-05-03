@@ -15,6 +15,7 @@
     "layout_dir": "20deg",
     "slot": 15,
     "phase": "moving",
+    "target_difficulty": 7.921,
     "mechanics": {
       "fragile": true,
       "crumbling": true,
@@ -34,12 +35,17 @@
       "crossAxisLimit": 3
     },
     "evolution": {
-      "n_candidates": 15,
+      "n_candidates": 60,
       "winner_index": 2,
       "winner_seed": 3436409341,
+      "selection_score": 6.8184,
       "fitness_first": 6.5055,
       "fitness_best": 6.8767,
-      "fitness_gain": 0.3712
+      "fitness_gain": 0.371,
+      "score_first": 7.74,
+      "score_best": 7.74,
+      "target_difficulty": 7.921,
+      "delta_from_target": -0.18
     },
     "tile_stats": {
       "normal": 16,

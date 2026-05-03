@@ -2,19 +2,20 @@
   "level_metadata": {
     "id": "lvl_4",
     "difficulty": 6,
-    "seed": 3493707184,
-    "steps_to_solve": 15,
+    "seed": 2481752640,
+    "steps_to_solve": 12,
     "map_bounds": {
       "minX": 0,
-      "maxX": 7,
-      "minZ": -2,
+      "maxX": 4,
+      "minZ": 0,
       "maxZ": 2,
-      "width": 8,
-      "length": 5
+      "width": 5,
+      "length": 3
     },
     "layout_dir": "20deg",
     "slot": 4,
     "phase": "hard_start",
+    "target_difficulty": 4.447,
     "mechanics": {
       "fragile": true,
       "crumbling": true,
@@ -26,7 +27,7 @@
     },
     "generator": {
       "base_seed": 777000,
-      "attempts": 13,
+      "attempts": 18,
       "verified": true,
       "dir_angle_deg": 20,
       "spreadDeg": 90,
@@ -34,41 +35,42 @@
       "crossAxisLimit": 2
     },
     "evolution": {
-      "n_candidates": 15,
-      "winner_index": 14,
-      "winner_seed": 2786550304,
+      "n_candidates": 60,
+      "winner_index": 29,
+      "winner_seed": 2180945996,
+      "selection_score": 8.0577,
       "fitness_first": 7.1872,
-      "fitness_best": 7.2794,
-      "fitness_gain": 0.0922
+      "fitness_best": 8.1136,
+      "fitness_gain": 0.926,
+      "score_first": 6.46,
+      "score_best": 4.61,
+      "target_difficulty": 4.447,
+      "delta_from_target": 0.16
     },
     "tile_stats": {
-      "normal": 9,
-      "fragile": 6,
-      "crumbling": 2,
+      "normal": 7,
+      "fragile": 4,
+      "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 17,
-      "trap_density": 0.471
+      "total": 11,
+      "trap_density": 0.364
     },
-    "computed_difficulty": 5.54,
+    "computed_difficulty": 4.61,
     "behavioral_analysis": {
       "precision_moves": 7,
-      "crumbling_moves": 2,
-      "orientation_changes": 10,
+      "crumbling_moves": 0,
+      "orientation_changes": 6,
       "portal_traversals": 0,
-      "critical_tile_count": 17,
-      "critical_hazard_count": 8,
-      "behavioral_difficulty": 5.54,
-      "puzzle_efficiency": 7.2794
+      "critical_tile_count": 11,
+      "critical_hazard_count": 4,
+      "behavioral_difficulty": 4.61,
+      "puzzle_efficiency": 8.1136
     },
     "applied_patterns": [
       {
         "pattern": "FRAGILE_BRIDGE",
-        "index": 1
-      },
-      {
-        "pattern": "ONE_TIME_PATH",
-        "index": 1
+        "index": 11
       }
     ]
   },
@@ -78,8 +80,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 7,
-      "z": -2
+      "x": 4,
+      "z": 0
     },
     "orientation": "vertical"
   },
@@ -89,54 +91,14 @@
   },
   "tiles": [
     {
-      "x": 7,
-      "z": -2,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 7,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": -1,
-      "type": "crumbling"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 6,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
       "x": 4,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 3,
-      "z": 1,
+      "z": 0,
       "type": "normal"
     },
     {
       "x": 2,
       "z": 2,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 3,
@@ -164,9 +126,19 @@
       "type": "normal"
     },
     {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
       "x": 3,
       "z": 0,
-      "type": "crumbling"
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "fragile"
     },
     {
       "x": 0,
@@ -175,11 +147,8 @@
     }
   ],
   "solution_data": [
+    "left",
     "down",
-    "down",
-    "left",
-    "left",
-    "left",
     "down",
     "left",
     "up",

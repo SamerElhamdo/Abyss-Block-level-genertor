@@ -1,33 +1,32 @@
 {
   "level_metadata": {
-    "id": "lvl_3",
-    "difficulty": 5,
-    "seed": 1889938219,
+    "id": "lvl_1",
+    "difficulty": 4,
+    "seed": 4065045909,
     "steps_to_solve": 15,
     "map_bounds": {
       "minX": 0,
-      "maxX": 5,
+      "maxX": 3,
       "minZ": 0,
       "maxZ": 2,
-      "width": 6,
+      "width": 4,
       "length": 3
     },
     "layout_dir": "20deg",
-    "slot": 3,
+    "slot": 1,
     "phase": "hard_start",
-    "target_difficulty": 4.132,
     "mechanics": {
       "fragile": true,
       "crumbling": true,
       "moving": false,
       "portal": false,
-      "fragileRate": 0.485,
-      "crumblingRate": 0.24,
+      "fragileRate": 0.42,
+      "crumblingRate": 0.18,
       "constraintMode": true
     },
     "generator": {
-      "base_seed": 777000,
-      "attempts": 14,
+      "base_seed": 1973243057,
+      "attempts": 11,
       "verified": true,
       "dir_angle_deg": 20,
       "spreadDeg": 90,
@@ -35,46 +34,37 @@
       "crossAxisLimit": 2
     },
     "evolution": {
-      "n_candidates": 60,
-      "winner_index": 34,
-      "winner_seed": 3858708471,
-      "selection_score": 8.2525,
-      "fitness_first": 5.9524,
-      "fitness_best": 8.6154,
-      "fitness_gain": 2.663,
-      "score_first": 4.88,
-      "score_best": 4.54,
-      "target_difficulty": 4.132,
-      "delta_from_target": 0.41
+      "n_candidates": 500,
+      "winner_index": 41,
+      "winner_seed": 3313879405,
+      "fitness_first": 7.0731,
+      "fitness_best": 10.3,
+      "fitness_gain": 3.2269
     },
     "tile_stats": {
-      "normal": 9,
-      "fragile": 3,
-      "crumbling": 1,
+      "normal": 8,
+      "fragile": 2,
+      "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 13,
-      "trap_density": 0.308
+      "total": 10,
+      "trap_density": 0.2
     },
-    "computed_difficulty": 4.54,
+    "computed_difficulty": 4.02,
     "behavioral_analysis": {
-      "precision_moves": 5,
-      "crumbling_moves": 1,
-      "orientation_changes": 10,
+      "precision_moves": 6,
+      "crumbling_moves": 0,
+      "orientation_changes": 8,
       "portal_traversals": 0,
-      "critical_tile_count": 13,
-      "critical_hazard_count": 4,
-      "behavioral_difficulty": 4.54,
-      "puzzle_efficiency": 8.6154
+      "critical_tile_count": 10,
+      "critical_hazard_count": 2,
+      "behavioral_difficulty": 4.02,
+      "puzzle_efficiency": 10.3
     },
     "applied_patterns": [
       {
         "pattern": "FRAGILE_BRIDGE",
-        "index": 14
-      },
-      {
-        "pattern": "ONE_TIME_PATH",
-        "index": 14
+        "index": 5
       }
     ]
   },
@@ -84,8 +74,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 3,
-      "z": 1
+      "x": 2,
+      "z": 0
     },
     "orientation": "vertical"
   },
@@ -95,46 +85,6 @@
   },
   "tiles": [
     {
-      "x": 3,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 0,
-      "type": "normal"
-    },
-    {
       "x": 2,
       "z": 0,
       "type": "normal"
@@ -147,12 +97,37 @@
     {
       "x": 2,
       "z": 2,
-      "type": "crumbling"
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 2,
+      "type": "normal"
     },
     {
       "x": 1,
       "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
       "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "normal"
     },
     {
       "x": 0,
@@ -161,20 +136,20 @@
     }
   ],
   "solution_data": [
-    "right",
     "down",
     "left",
     "up",
     "right",
     "down",
+    "down",
     "left",
     "up",
-    "up",
+    "right",
     "right",
     "down",
     "left",
     "up",
-    "left",
+    "up",
     "left"
   ]
 }

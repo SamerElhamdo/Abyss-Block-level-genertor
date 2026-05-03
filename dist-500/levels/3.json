@@ -2,20 +2,19 @@
   "level_metadata": {
     "id": "lvl_3",
     "difficulty": 5,
-    "seed": 1889938219,
-    "steps_to_solve": 15,
+    "seed": 2870517388,
+    "steps_to_solve": 16,
     "map_bounds": {
       "minX": 0,
-      "maxX": 5,
+      "maxX": 4,
       "minZ": 0,
       "maxZ": 2,
-      "width": 6,
+      "width": 5,
       "length": 3
     },
     "layout_dir": "20deg",
     "slot": 3,
     "phase": "hard_start",
-    "target_difficulty": 4.132,
     "mechanics": {
       "fragile": true,
       "crumbling": true,
@@ -26,7 +25,7 @@
       "constraintMode": true
     },
     "generator": {
-      "base_seed": 777000,
+      "base_seed": 1973243057,
       "attempts": 14,
       "verified": true,
       "dir_angle_deg": 20,
@@ -35,48 +34,34 @@
       "crossAxisLimit": 2
     },
     "evolution": {
-      "n_candidates": 60,
-      "winner_index": 34,
-      "winner_seed": 3858708471,
-      "selection_score": 8.2525,
-      "fitness_first": 5.9524,
-      "fitness_best": 8.6154,
-      "fitness_gain": 2.663,
-      "score_first": 4.88,
-      "score_best": 4.54,
-      "target_difficulty": 4.132,
-      "delta_from_target": 0.41
+      "n_candidates": 500,
+      "winner_index": 287,
+      "winner_seed": 1044480592,
+      "fitness_first": 5.5464,
+      "fitness_best": 9.4375,
+      "fitness_gain": 3.8911
     },
     "tile_stats": {
       "normal": 9,
       "fragile": 3,
-      "crumbling": 1,
+      "crumbling": 0,
       "moving": 0,
       "portal": 0,
-      "total": 13,
-      "trap_density": 0.308
+      "total": 12,
+      "trap_density": 0.25
     },
-    "computed_difficulty": 4.54,
+    "computed_difficulty": 5.21,
     "behavioral_analysis": {
-      "precision_moves": 5,
-      "crumbling_moves": 1,
+      "precision_moves": 8,
+      "crumbling_moves": 0,
       "orientation_changes": 10,
       "portal_traversals": 0,
-      "critical_tile_count": 13,
-      "critical_hazard_count": 4,
-      "behavioral_difficulty": 4.54,
-      "puzzle_efficiency": 8.6154
+      "critical_tile_count": 12,
+      "critical_hazard_count": 3,
+      "behavioral_difficulty": 5.21,
+      "puzzle_efficiency": 9.4375
     },
-    "applied_patterns": [
-      {
-        "pattern": "FRAGILE_BRIDGE",
-        "index": 14
-      },
-      {
-        "pattern": "ONE_TIME_PATH",
-        "index": 14
-      }
-    ]
+    "applied_patterns": []
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -84,7 +69,7 @@
   },
   "start_state": {
     "pos": {
-      "x": 3,
+      "x": 2,
       "z": 1
     },
     "orientation": "vertical"
@@ -95,6 +80,11 @@
   },
   "tiles": [
     {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
       "x": 3,
       "z": 1,
       "type": "normal"
@@ -102,57 +92,47 @@
     {
       "x": 4,
       "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 2,
       "type": "fragile"
     },
     {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
       "x": 4,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 5,
+      "x": 2,
       "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 0,
       "type": "normal"
     },
     {
       "x": 2,
       "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 1,
       "type": "fragile"
-    },
-    {
-      "x": 2,
-      "z": 2,
-      "type": "crumbling"
     },
     {
       "x": 1,
       "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 1,
       "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
     },
     {
       "x": 0,
@@ -165,14 +145,15 @@
     "down",
     "left",
     "up",
-    "right",
-    "down",
     "left",
+    "down",
+    "right",
     "up",
     "up",
-    "right",
-    "down",
     "left",
+    "down",
+    "right",
+    "right",
     "up",
     "left",
     "left"
