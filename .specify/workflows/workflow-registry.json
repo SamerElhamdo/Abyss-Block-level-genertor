@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "workflows": {
+    "speckit": {
+      "name": "\u062f\u0648\u0631\u0629 SDD \u0643\u0627\u0645\u0644\u0629",
+      "version": "1.0.0",
+      "description": "\u064a\u0634\u063a\u0651\u0644 specify \u2192 plan \u2192 tasks \u2192 implement \u0645\u0639 \u0628\u0648\u0627\u0628\u0627\u062a \u0645\u0631\u0627\u062c\u0639\u0629",
+      "source": "bundled",
+      "installed_at": "2026-05-04T08:19:28.369388+00:00",
+      "updated_at": "2026-05-04T08:19:28.369392+00:00"
+    }
+  }
+}

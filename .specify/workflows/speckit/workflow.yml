@@ -1,0 +1,63 @@
+schema_version: "1.0"
+workflow:
+  id: "speckit"
+  name: "دورة SDD كاملة"
+  version: "1.0.0"
+  author: "GitHub"
+  description: "يشغّل specify → plan → tasks → implement مع بوابات مراجعة"
+
+requires:
+  speckit_version: ">=0.7.2"
+  integrations:
+    any: ["copilot", "claude", "gemini"]
+
+inputs:
+  spec:
+    type: string
+    required: true
+    prompt: "صف ما تريد بناءه"
+  integration:
+    type: string
+    default: "copilot"
+    prompt: "التكامل المستخدم (مثل claude، copilot، gemini)"
+  scope:
+    type: string
+    default: "full"
+    enum: ["full", "backend-only", "frontend-only"]
+
+steps:
+  - id: specify
+    command: speckit.specify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: review-spec
+    type: gate
+    message: "راجع المواصفات المولّدة قبل التخطيط."
+    options: [approve, reject]
+    on_reject: abort
+
+  - id: plan
+    command: speckit.plan
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: review-plan
+    type: gate
+    message: "راجع الخطة قبل توليد المهام."
+    options: [approve, reject]
+    on_reject: abort
+
+  - id: tasks
+    command: speckit.tasks
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: implement
+    command: speckit.implement
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
