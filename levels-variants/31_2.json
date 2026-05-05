@@ -1,0 +1,240 @@
+{
+  "level_metadata": {
+    "id": "lvl_31_v2",
+    "difficulty": 7,
+    "seed": 2558369388,
+    "steps_to_solve": 22,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 11,
+      "minZ": -2,
+      "maxZ": 2,
+      "width": 12,
+      "length": 5
+    },
+    "layout_dir": "20deg",
+    "slot": 31,
+    "variant_rank": 2,
+    "phase": "moving",
+    "target_difficulty": 7.337,
+    "mechanics": {
+      "fragile": true,
+      "crumbling": true,
+      "moving": true,
+      "portal": false,
+      "fragileRate": 0.142,
+      "crumblingRate": 0.082,
+      "constraintMode": true
+    },
+    "evolution": {
+      "n_candidates": 888,
+      "winner_index": 749,
+      "winner_seed": 194238004,
+      "selection_score": 7.086,
+      "fitness_best": 7.4442,
+      "score_best": 6.9,
+      "delta_from_target": -0.44
+    },
+    "tile_stats": {
+      "normal": 20,
+      "fragile": 3,
+      "crumbling": 2,
+      "moving": 1,
+      "portal": 0,
+      "total": 26,
+      "trap_density": 0.231
+    },
+    "computed_difficulty": 6.9,
+    "behavioral_analysis": {
+      "precision_moves": 3,
+      "crumbling_moves": 2,
+      "orientation_changes": 16,
+      "portal_traversals": 0,
+      "critical_hazard_count": 6,
+      "behavioral_difficulty": 6.9,
+      "critical_tile_count": 26,
+      "puzzle_efficiency": 7.4442
+    },
+    "applied_patterns": []
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 11,
+      "z": -1
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 11,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 5,
+      "z": -1,
+      "type": "moving",
+      "params": {
+        "axis": "z",
+        "range": [
+          -2,
+          0
+        ],
+        "stepsPerPhase": 2,
+        "startPhase": 0
+      }
+    },
+    {
+      "x": 6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "down",
+    "left",
+    "down",
+    "left",
+    "left",
+    "up",
+    "up",
+    "left",
+    "left",
+    "down",
+    "left",
+    "left",
+    "down",
+    "right",
+    "up",
+    "up",
+    "left",
+    "down",
+    "right",
+    "up",
+    "left",
+    "left"
+  ]
+}

@@ -1,14 +1,14 @@
 {
   "level_metadata": {
     "id": "lvl_5_v2",
-    "difficulty": 6,
-    "seed": 2933310407,
-    "steps_to_solve": 14,
+    "difficulty": 5,
+    "seed": 3254817270,
+    "steps_to_solve": 13,
     "map_bounds": {
       "minX": 0,
       "maxX": 9,
-      "minZ": -1,
-      "maxZ": 1,
+      "minZ": -2,
+      "maxZ": 0,
       "width": 10,
       "length": 3
     },
@@ -16,26 +16,55 @@
     "slot": 5,
     "variant_rank": 2,
     "phase": "hard_start",
-    "target_difficulty": 4.105,
-    "evolution": {
-      "n_candidates": 20,
-      "winner_index": 1,
-      "selection_score": 4.7459,
-      "fitness_best": 7.1468,
-      "score_best": 4.65,
-      "delta_from_target": 0.54
+    "target_difficulty": 5.745,
+    "mechanics": {
+      "fragile": true,
+      "crumbling": true,
+      "moving": false,
+      "portal": false,
+      "fragileRate": 0.183,
+      "crumblingRate": 0.103,
+      "constraintMode": true
     },
-    "computed_difficulty": 4.65,
+    "evolution": {
+      "n_candidates": 888,
+      "winner_index": 870,
+      "winner_seed": 3710823610,
+      "selection_score": 7.9947,
+      "fitness_best": 7.9989,
+      "score_best": 5.7,
+      "delta_from_target": -0.04
+    },
+    "tile_stats": {
+      "normal": 9,
+      "fragile": 3,
+      "crumbling": 2,
+      "moving": 0,
+      "portal": 0,
+      "total": 14,
+      "trap_density": 0.357
+    },
+    "computed_difficulty": 5.7,
     "behavioral_analysis": {
-      "precision_moves": 5,
-      "crumbling_moves": 1,
+      "precision_moves": 3,
+      "crumbling_moves": 2,
       "orientation_changes": 12,
       "portal_traversals": 0,
-      "critical_hazard_count": 8,
-      "behavioral_difficulty": 4.65,
-      "critical_tile_count": 18,
-      "puzzle_efficiency": 7.1468
-    }
+      "critical_hazard_count": 5,
+      "behavioral_difficulty": 5.7,
+      "critical_tile_count": 14,
+      "puzzle_efficiency": 7.9989
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 8
+      },
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 7
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -44,7 +73,7 @@
   "start_state": {
     "pos": {
       "x": 2,
-      "z": 1
+      "z": 0
     },
     "orientation": "vertical"
   },
@@ -55,86 +84,66 @@
   "tiles": [
     {
       "x": 2,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 4,
-      "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 8,
       "z": 0,
       "type": "normal"
-    },
-    {
-      "x": 9,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 9,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 9,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 5,
-      "z": 0,
-      "type": "fragile"
-    },
-    {
-      "x": 3,
-      "z": 0,
-      "type": "crumbling"
     },
     {
       "x": 1,
       "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 8,
+      "z": -1,
       "type": "fragile"
     },
     {
-      "x": 2,
+      "x": 9,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 8,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 9,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
       "z": 0,
       "type": "fragile"
     },
@@ -155,7 +164,6 @@
     "left",
     "left",
     "left",
-    "up",
     "left",
     "left",
     "left"

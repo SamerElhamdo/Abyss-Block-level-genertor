@@ -1,0 +1,257 @@
+{
+  "level_metadata": {
+    "id": "problem_first_gen",
+    "slot": 1,
+    "phase": "abyss",
+    "target_difficulty": 16,
+    "computed_difficulty": 16,
+    "generator_mode": "problem_first",
+    "evolution": {
+      "n_candidates": 1,
+      "winner_index": 0,
+      "winner_seed": 123456,
+      "selection_score": 10
+    },
+    "behavioral_analysis": {
+      "precision_moves": 2,
+      "behavioral_difficulty": 16,
+      "puzzle_efficiency": 5
+    }
+  },
+  "start_state": {
+    "pos": {
+      "x": 2,
+      "z": 12
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 12,
+    "z": 2
+  },
+  "tiles": [
+    {
+      "x": 10,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 10,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 10,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 11,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 11,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 12,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 12,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 13,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 13,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 14,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 14,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "up",
+    "right",
+    "up",
+    "right",
+    "up",
+    "up",
+    "right",
+    "up",
+    "right",
+    "up",
+    "right",
+    "right",
+    "up",
+    "right",
+    "up",
+    "right"
+  ]
+}

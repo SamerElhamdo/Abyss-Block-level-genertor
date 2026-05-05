@@ -1,0 +1,224 @@
+{
+  "level_metadata": {
+    "id": "lvl_22_v1",
+    "difficulty": 6,
+    "seed": 3873337095,
+    "steps_to_solve": 21,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 12,
+      "minZ": -2,
+      "maxZ": 0,
+      "width": 13,
+      "length": 3
+    },
+    "layout_dir": "20deg",
+    "slot": 22,
+    "variant_rank": 1,
+    "phase": "precision",
+    "target_difficulty": 6.786,
+    "mechanics": {
+      "fragile": true,
+      "crumbling": true,
+      "moving": false,
+      "portal": false,
+      "fragileRate": 0.197,
+      "crumblingRate": 0.127,
+      "constraintMode": true
+    },
+    "evolution": {
+      "n_candidates": 888,
+      "winner_index": 519,
+      "winner_seed": 3982332779,
+      "selection_score": 7.628,
+      "fitness_best": 7.6284,
+      "score_best": 6.8,
+      "delta_from_target": 0.01
+    },
+    "tile_stats": {
+      "normal": 17,
+      "fragile": 3,
+      "crumbling": 3,
+      "moving": 0,
+      "portal": 0,
+      "total": 23,
+      "trap_density": 0.261
+    },
+    "computed_difficulty": 6.8,
+    "behavioral_analysis": {
+      "precision_moves": 5,
+      "crumbling_moves": 3,
+      "orientation_changes": 16,
+      "portal_traversals": 0,
+      "critical_hazard_count": 6,
+      "behavioral_difficulty": 6.8,
+      "critical_tile_count": 23,
+      "puzzle_efficiency": 7.6284
+    },
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 3
+      },
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 7
+      }
+    ]
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 2,
+      "z": 0
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 8,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": 0,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "right",
+    "right",
+    "right",
+    "up",
+    "right",
+    "right",
+    "up",
+    "right",
+    "down",
+    "right",
+    "up",
+    "left",
+    "down",
+    "left",
+    "left",
+    "left",
+    "left",
+    "down",
+    "left",
+    "left",
+    "left"
+  ]
+}

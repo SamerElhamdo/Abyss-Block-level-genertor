@@ -2,20 +2,20 @@
   "level_metadata": {
     "id": "lvl_27",
     "difficulty": 6,
-    "seed": 944011048,
-    "steps_to_solve": 28,
+    "seed": 2526635184,
+    "steps_to_solve": 21,
     "map_bounds": {
       "minX": 0,
-      "maxX": 13,
+      "maxX": 11,
       "minZ": -1,
       "maxZ": 2,
-      "width": 14,
+      "width": 12,
       "length": 4
     },
     "layout_dir": "20deg",
     "slot": 27,
     "phase": "moving",
-    "target_difficulty": 5.153,
+    "target_difficulty": 7.092,
     "mechanics": {
       "fragile": true,
       "crumbling": true,
@@ -26,7 +26,7 @@
       "constraintMode": true
     },
     "generator": {
-      "base_seed": 777000,
+      "base_seed": 51514556156,
       "attempts": 17,
       "verified": true,
       "dir_angle_deg": 20,
@@ -35,39 +35,48 @@
       "crossAxisLimit": 2
     },
     "evolution": {
-      "n_candidates": 1000,
-      "winner_index": 542,
-      "winner_seed": 3399984104,
-      "selection_score": 9.3303,
-      "fitness_first": 8.4851,
-      "fitness_best": 9.4119,
-      "fitness_gain": 0.927,
-      "score_first": 2.52,
-      "score_best": 4.97,
-      "target_difficulty": 5.153,
-      "delta_from_target": -0.18
+      "n_candidates": 999,
+      "winner_index": 259,
+      "winner_seed": 1685762160,
+      "selection_score": 8.0615,
+      "fitness_first": 7.6918,
+      "fitness_best": 8.1039,
+      "fitness_gain": 0.412,
+      "score_first": 3.75,
+      "score_best": 6.95,
+      "target_difficulty": 7.092,
+      "delta_from_target": -0.14
     },
     "tile_stats": {
-      "normal": 29,
-      "fragile": 0,
-      "crumbling": 1,
+      "normal": 18,
+      "fragile": 2,
+      "crumbling": 2,
       "moving": 0,
       "portal": 0,
-      "total": 30,
-      "trap_density": 0.033
+      "total": 22,
+      "trap_density": 0.182
     },
-    "computed_difficulty": 4.97,
+    "computed_difficulty": 6.95,
     "behavioral_analysis": {
-      "precision_moves": 0,
-      "crumbling_moves": 1,
-      "orientation_changes": 22,
+      "precision_moves": 4,
+      "crumbling_moves": 2,
+      "orientation_changes": 18,
       "portal_traversals": 0,
-      "critical_tile_count": 30,
-      "critical_hazard_count": 1,
-      "behavioral_difficulty": 4.97,
-      "puzzle_efficiency": 9.4119
+      "critical_tile_count": 22,
+      "critical_hazard_count": 4,
+      "behavioral_difficulty": 6.95,
+      "puzzle_efficiency": 8.1039
     },
-    "applied_patterns": []
+    "applied_patterns": [
+      {
+        "pattern": "FRAGILE_BRIDGE",
+        "index": 14
+      },
+      {
+        "pattern": "ONE_TIME_PATH",
+        "index": 7
+      }
+    ]
   },
   "world_settings": {
     "environment": "abyss_default",
@@ -75,8 +84,8 @@
   },
   "start_state": {
     "pos": {
-      "x": 2,
-      "z": -1
+      "x": 1,
+      "z": 1
     },
     "orientation": "vertical"
   },
@@ -86,13 +95,8 @@
   },
   "tiles": [
     {
-      "x": 2,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 0,
+      "x": 1,
+      "z": 1,
       "type": "normal"
     },
     {
@@ -101,24 +105,9 @@
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 2,
-      "type": "normal"
-    },
-    {
       "x": 3,
       "z": 1,
-      "type": "normal"
+      "type": "fragile"
     },
     {
       "x": 4,
@@ -131,99 +120,79 @@
       "type": "normal"
     },
     {
-      "x": 10,
+      "x": 6,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 8,
       "z": 1,
       "type": "normal"
     },
     {
       "x": 9,
-      "z": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 11,
+      "z": 0,
       "type": "normal"
     },
     {
       "x": 10,
-      "z": 2,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 8,
-      "z": 2,
+      "x": 10,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": 1,
       "type": "normal"
     },
     {
-      "x": 6,
-      "z": 2,
+      "x": 11,
+      "z": -1,
       "type": "normal"
     },
     {
-      "x": 7,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 5,
+      "x": 3,
       "z": 0,
       "type": "normal"
     },
     {
       "x": 4,
       "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 0,
       "type": "normal"
     },
     {
-      "x": 11,
+      "x": 2,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 12,
+      "x": 3,
       "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 1,
       "type": "crumbling"
-    },
-    {
-      "x": 13,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 13,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": -1,
-      "type": "normal"
-    },
-    {
-      "x": 12,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 1,
-      "type": "normal"
     },
     {
       "x": 1,
@@ -237,13 +206,7 @@
     }
   ],
   "solution_data": [
-    "down",
-    "down",
     "right",
-    "right",
-    "up",
-    "left",
-    "down",
     "right",
     "right",
     "right",
@@ -251,19 +214,18 @@
     "right",
     "up",
     "right",
-    "up",
-    "left",
-    "down",
-    "left",
     "down",
     "left",
     "left",
     "left",
     "left",
-    "up",
-    "left",
     "left",
     "up",
+    "left",
+    "down",
+    "right",
+    "up",
+    "left",
     "left"
   ]
 }
