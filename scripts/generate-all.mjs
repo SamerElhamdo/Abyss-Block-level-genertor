@@ -22,347 +22,12 @@ import fs   from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  buildLevelVerified,
-  simulateLevel,
-  pruneUnreachableTiles,
-  optimizeSolution,
-  computeCriticalTiles,
-  computeBehavioralMetrics,
-  computeEvolutionFitness,
-  tileStats,
-  makeRNG,
-} from "../abyss-engine.mjs";
-import { applyPatterns } from "./puzzle-patterns.mjs";
+  hashSeed, selectionScore, computeTargets, buildPhases,
+  buildScoredCandidate, doubleCheck,
+} from "./shared-generator.mjs";
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
-
-// ── helpers ──────────────────────────────────────────────────────────
-function lerp(a, b, t)      { return a + (b - a) * t; }
-function lerpRound(a, b, t) { return Math.round(lerp(a, b, t)); }
-function phaseT(i, n)       { return n <= 1 ? 1 : i / (n - 1); }
-function evenGrid(n)        { return n % 2 === 0 ? n : n - 1; }
-
-function hashSeed(base, slot) {
-  let x = ((base >>> 0) ^ (slot * 0x9e3779b9)) >>> 0;
-  x = Math.imul(x ^ (x >>> 16), 0x7feb352d);
-  x ^= x >>> 15;
-  return x >>> 0;
-}
-
-// ── توزيع المراحل حسب الأوزان ───────────────────────────────────────
-// يُعيد مصفوفة أعداد صحيحة تجمع إلى total،
-// كل عنصر ≥ 1 إذا كان الوزن > 0 وكان total يكفي.
-function distributeWeighted(total, weights) {
-  const sum   = weights.reduce((a, b) => a + b, 0);
-  const raw   = weights.map(w => (w / sum) * total);
-  const counts = raw.map(Math.floor);
-  let rem = total - counts.reduce((a, b) => a + b, 0);
-
-  // وزّع البقية على الأجزاء ذات الكسر الأكبر
-  raw.map((r, i) => ({ i, f: r - Math.floor(r) }))
-     .sort((a, b) => b.f - a.f)
-     .slice(0, rem)
-     .forEach(({ i }) => counts[i]++);
-
-  // ضمان حدٍّ أدنى 1 لكل مرحلة قدر الإمكان
-  const active = Math.min(weights.length, total);
-  for (let i = 0; i < active; i++) {
-    if (counts[i] === 0) {
-      const maxIdx = counts.reduce((mi, c, ci) => c > counts[mi] ? ci : mi, 0);
-      if (counts[maxIdx] > 1) { counts[maxIdx]--; counts[i]++; }
-    }
-  }
-  return counts;
-}
-
-// ── تصحيح حدود الخريطة ───────────────────────────────────────────────
-// يشمل كامل نطاق تذبذب moving tiles حتى لا تظهر خارج الـ grid.
-function recomputeMapBounds(data) {
-  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-  for (const t of data.tiles) {
-    if (t.type === 'moving' && t.params) {
-      const { axis, range } = t.params;
-      if (axis === 'x') {
-        minX = Math.min(minX, range[0]); maxX = Math.max(maxX, range[1]);
-        minZ = Math.min(minZ, t.z);      maxZ = Math.max(maxZ, t.z);
-      } else {
-        minX = Math.min(minX, t.x);      maxX = Math.max(maxX, t.x);
-        minZ = Math.min(minZ, range[0]); maxZ = Math.max(maxZ, range[1]);
-      }
-    } else {
-      minX = Math.min(minX, t.x); maxX = Math.max(maxX, t.x);
-      minZ = Math.min(minZ, t.z); maxZ = Math.max(maxZ, t.z);
-    }
-  }
-  if (!isFinite(minX)) return data.level_metadata?.map_bounds ?? null;
-  return { minX, maxX, minZ, maxZ, width: maxX - minX + 1, length: maxZ - minZ + 1 };
-}
-
-// ── معادلة الانتخاب الموجَّه بالهدف ──────────────────────────────────
-// تجمع بين puzzle_efficiency (جودة اللغز) وقرب الصعوبة من الهدف.
-//
-//   proximity = exp(-(score - target)² / (2 × sigma²))
-//   selection = fitness × (FLOOR + (1 - FLOOR) × proximity)
-//
-// FLOOR = 0.25 → حتى لو لا يوجد مرشح قريب، نختار الأفضل fitness.
-// FLOOR = 0    → نرفض أي مرشح بعيد عن الهدف تماماً.
-const SELECTION_FLOOR = 0.25;
-
-function selectionScore(fitness, computedDifficulty, targetDifficulty, sigma) {
-  const d         = computedDifficulty - targetDifficulty;
-  const proximity = Math.exp(-(d * d) / (2 * sigma * sigma));
-  return fitness * (SELECTION_FLOOR + (1 - SELECTION_FLOOR) * proximity);
-}
-
-// ── قوالب المراحل ─────────────────────────────────────────────────────
-// كل قالب يصف ميكانيكيات مرحلة. الدالة fn() تُنتج إعدادات بناءً على
-// موضع المرحلة (phaseT) وعدد مراحلها الفعلي (count).
-// يُبنى PHASES ديناميكياً من هذه القوالب حسب LEVEL_COUNT.
-
-const PHASE_TEMPLATES = [
-
-  // ── Hard Start ──────────────────────────────────────────────────
-  {
-    label: 'hard_start', weight: 25,
-    constraints: { minMoves: 20, maxMoves: 50, minBFSMoves: 12 },
-    maxAttempts: 40,
-    fn(i, count, seed, dirDeg, crossW) {
-      const ti = phaseT(i, count);
-      return {
-        seed,
-        difficulty:  lerpRound(4, 6, ti),
-        gridSize:    evenGrid(lerpRound(16, 22, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: false, portal: false,
-          fragileRate:    +lerp(0.42, 0.55, ti).toFixed(3),
-          crumblingRate:  +lerp(0.18, 0.30, ti).toFixed(3),
-          constraintMode: true,
-        },
-        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      90,
-          deviationPct:   0.18,
-          crossAxisLimit: Math.max(2, crossW - 1),
-        },
-      };
-    },
-  },
-
-  // ── Precision ───────────────────────────────────────────────────
-  {
-    label: 'precision', weight: 25,
-    constraints: { minMoves: 28, maxMoves: 58, minBFSMoves: 16 },
-    maxAttempts: 45,
-    fn(i, count, seed, dirDeg, crossW) {
-      const ti = phaseT(i, count);
-      return {
-        seed,
-        difficulty:  lerpRound(5, 7, ti),
-        gridSize:    evenGrid(lerpRound(20, 28, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: false, portal: false,
-          fragileRate:    +lerp(0.48, 0.58, ti).toFixed(3),
-          crumblingRate:  +lerp(0.25, 0.38, ti).toFixed(3),
-          constraintMode: true,
-        },
-        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH', 'PRECISION_CORRIDOR'],
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      80,
-          deviationPct:   0.12,
-          crossAxisLimit: Math.max(2, crossW - 1),
-        },
-      };
-    },
-  },
-
-  // ── Moving ──────────────────────────────────────────────────────
-  {
-    label: 'moving', weight: 25,
-    constraints: { minMoves: 38, maxMoves: 68, minBFSMoves: 22 },
-    maxAttempts: 160,
-    fn(i, count, seed, dirDeg, crossW) {
-      const ti = phaseT(i, count);
-      return {
-        seed,
-        difficulty:  lerpRound(6, 9, ti),
-        gridSize:    evenGrid(lerpRound(26, 34, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: true, portal: false,
-          fragileRate:    0.48,
-          crumblingRate:  0.30,
-          constraintMode: true,
-        },
-        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH', 'PRECISION_CORRIDOR'],
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      95,
-          deviationPct:   0.20,
-          crossAxisLimit: crossW,
-        },
-      };
-    },
-  },
-
-  // ── Islands ─────────────────────────────────────────────────────
-  {
-    label: 'islands', weight: 15,
-    constraints: { minMoves: 30, maxMoves: 68, minBFSMoves: 24 },
-    maxAttempts: 35,
-    fn(i, count, seed, dirDeg, crossW) {
-      const ti = phaseT(i, count);
-      return {
-        seed,
-        difficulty:  lerpRound(7, 9, ti),
-        gridSize:    evenGrid(lerpRound(28, 36, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: false, portal: true,
-          fragileRate:    +lerp(0.30, 0.42, ti).toFixed(3),
-          crumblingRate:  +lerp(0.12, 0.22, ti).toFixed(3),
-          constraintMode: true,
-        },
-        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH'],
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      70,
-          deviationPct:   0.15,
-          crossAxisLimit: crossW,
-        },
-      };
-    },
-  },
-
-  // ── ABYSS ───────────────────────────────────────────────────────
-  {
-    label: 'abyss', weight: 10,
-    constraints: { minMoves: 45, maxMoves: 85, minBFSMoves: 30 },
-    maxAttempts: 32,
-    fn(i, count, seed, dirDeg, crossW) {
-      const ti = phaseT(i, count);
-      return {
-        seed,
-        difficulty:  lerpRound(9, 10, ti),
-        gridSize:    evenGrid(lerpRound(34, 40, ti)),
-        mechanics: {
-          fragile: true, crumbling: true, moving: true, portal: true,
-          fragileRate:    0.52,
-          crumblingRate:  0.36,
-          constraintMode: true,
-        },
-        patterns:  ['FRAGILE_BRIDGE', 'ONE_TIME_PATH', 'PRECISION_CORRIDOR'],
-        expansionOpts: {
-          dirAngleDeg:    dirDeg,
-          spreadDeg:      115,
-          deviationPct:   0.25,
-          crossAxisLimit: crossW + 2,
-        },
-      };
-    },
-  },
-];
-
-// ── بناء PHASES ديناميكياً من LEVEL_COUNT ─────────────────────────────
-function buildPhases(levelCount) {
-  const weights = PHASE_TEMPLATES.map(t => t.weight);
-  const counts  = distributeWeighted(levelCount, weights);
-
-  let fromSlot = 1;
-  return PHASE_TEMPLATES
-    .map((tmpl, i) => {
-      const count = counts[i];
-      const from  = fromSlot;
-      fromSlot   += count;
-      return { ...tmpl, from, count };
-    })
-    .filter(p => p.count > 0);
-}
-
-// ── حساب الصعوبات المستهدفة ───────────────────────────────────────────
-// تسلسل خطي تصاعدي صارم من diffMin إلى diffMax على levelCount مرحلة.
-function computeTargets(levelCount, diffMin, diffMax) {
-  return Array.from({ length: levelCount }, (_, i) =>
-    +lerp(diffMin, diffMax, levelCount <= 1 ? 1 : i / (levelCount - 1)).toFixed(3)
-  );
-}
-
-// ── التحقق المزدوج ────────────────────────────────────────────────────
-function doubleCheck(clean) {
-  const required = ['level_metadata', 'start_state', 'hole_pos', 'tiles', 'solution_data'];
-  for (const k of required) {
-    if (!(k in clean)) return { ok: false, reason: `missing field: ${k}` };
-  }
-  if (!Array.isArray(clean.tiles) || clean.tiles.length === 0)
-    return { ok: false, reason: 'empty tiles array' };
-  if (!Array.isArray(clean.solution_data) || clean.solution_data.length === 0)
-    return { ok: false, reason: 'empty solution_data' };
-
-  const sim = simulateLevel(clean);
-  if (!sim.ok) return { ok: false, reason: `sim fail step=${sim.step} ${sim.reason}` };
-
-  // تحقق من عدم وجود بلاطات ثابتة خارج الحدود المُعلنة
-  const mb = clean.level_metadata?.map_bounds;
-  if (mb) {
-    for (const t of clean.tiles) {
-      if (t.type === 'moving') continue;
-      if (t.x < mb.minX || t.x > mb.maxX || t.z < mb.minZ || t.z > mb.maxZ)
-        return { ok: false, reason: `tile (${t.x},${t.z}) outside map_bounds` };
-    }
-  }
-  return { ok: true };
-}
-
-// ── خط أنابيب مرشح واحد ──────────────────────────────────────────────
-const PAT_XOR = 0xbeef_cafe;
-
-function buildScoredCandidate(slot, evoSeed, phase, phaseIdx, dirDeg, crossW) {
-  const args = phase.fn(phaseIdx, phase.count, evoSeed, dirDeg, crossW);
-  const { lvl, attempts, verified } = buildLevelVerified(
-    args, phase.constraints, phase.maxAttempts
-  );
-  if (!lvl) return null;
-
-  // للـ fallback: طبّق BFS يدوياً وتحقق من minBFSMoves
-  let workLvl = lvl;
-  if (!verified) {
-    const pruned = pruneUnreachableTiles(lvl);
-    const bfs    = optimizeSolution(pruned);
-    if (!simulateLevel(bfs).ok) return null;
-    if (bfs.solution_data.length < (phase.constraints.minBFSMoves ?? 0)) return null;
-    workLvl = bfs;
-  }
-
-  // طبّق الأنماط
-  let finalLvl = workLvl;
-  const patternsToApply = args.patterns ?? [];
-  if (patternsToApply.length > 0 && workLvl._internal?.pathStates) {
-    const patRng = makeRNG(hashSeed(PAT_XOR ^ evoSeed, slot));
-    const candidate = applyPatterns(workLvl, patternsToApply, patRng);
-    if (simulateLevel(candidate).ok) finalLvl = candidate;
-  }
-
-  const { _internal, ...optimized } = finalLvl;
-
-  // صحّح الحدود لتشمل نطاق moving tiles
-  const correctedBounds = recomputeMapBounds(optimized);
-  if (correctedBounds) {
-    optimized.level_metadata = { ...optimized.level_metadata, map_bounds: correctedBounds };
-  }
-
-  const movesAfterOpt = optimized.solution_data.length;
-  const stats         = tileStats(optimized);
-  const criticalTiles = computeCriticalTiles(optimized);
-  const metrics       = computeBehavioralMetrics(optimized, criticalTiles);
-  const score         = metrics.behavioral_difficulty;
-  const fitness       = computeEvolutionFitness(optimized, criticalTiles, metrics);
-
-  return {
-    finalLvl, _internal, optimized, args,
-    metrics, stats, criticalTiles,
-    attempts, verified, score, fitness, movesAfterOpt,
-  };
-}
 
 // ── Main ─────────────────────────────────────────────────────────────
 async function main() {
@@ -389,8 +54,8 @@ async function main() {
     : 20;
   if (!Number.isFinite(levelCount)) { console.error("LEVEL_COUNT must be a number"); process.exit(1); }
 
-  const diffMin = process.env.DIFF_MIN !== undefined ? Number(process.env.DIFF_MIN) : 3.5;
-  const diffMax = process.env.DIFF_MAX !== undefined ? Number(process.env.DIFF_MAX) : 9.5;
+  const diffMin = process.env.DIFF_MIN !== undefined ? Number(process.env.DIFF_MIN) : 2.5;
+  const diffMax = process.env.DIFF_MAX !== undefined ? Number(process.env.DIFF_MAX) : 7.5;
   if (!Number.isFinite(diffMin) || !Number.isFinite(diffMax) || diffMin >= diffMax)
     { console.error("DIFF_MIN must be < DIFF_MAX"); process.exit(1); }
 
@@ -418,7 +83,6 @@ async function main() {
     `→ ${outDir}/`,
   ].join('  ') + '\n');
 
-  // تفصيل الأهداف لكل مرحلة
   console.log("── Difficulty targets");
   for (const ph of PHASES) {
     const slotTargets = Array.from({ length: ph.count }, (_, i) => targets[ph.from - 1 + i]);
@@ -438,8 +102,6 @@ async function main() {
       const slot   = phase.from + i;
       const target = targets[slot - 1];
 
-      // ── الانتخاب الموجَّه بالهدف ──────────────────────────────────
-      // ei=0 يستخدم البذرة الكلاسيكية → EVOLUTION_N=1 = سلوك قديم تاماً.
       let bestResult      = null;
       let bestSelScore    = -Infinity;
       let firstScore      = null;
@@ -457,7 +119,6 @@ async function main() {
         if (firstFitness === null) firstFitness = result.fitness;
 
         const sel = selectionScore(result.fitness, result.score, target, diffSigma);
-
         if (sel > bestSelScore) {
           bestSelScore = sel;
           bestResult   = { ...result, evoSeed, evoIdx: ei, selScore: sel };
@@ -481,7 +142,6 @@ async function main() {
       const deltaStr   = delta >= 0 ? `+${delta}` : `${delta}`;
       const fitnessGain = firstFitness !== null ? +(fitness - firstFitness).toFixed(3) : 0;
 
-      // ─ ختم الـ metadata ──────────────────────────────────────────
       optimized.level_metadata = {
         ...optimized.level_metadata,
         id:               `lvl_${slot}`,
@@ -534,16 +194,14 @@ async function main() {
         fitness, fitnessGain,
       });
 
-      // ─ تحقق مزدوج قبل الكتابة ────────────────────────────────────
       const dc = doubleCheck(optimized);
       if (!dc.ok) {
         console.error(`  ✗ ${slot} double-check FAIL: ${dc.reason}`);
         totalFallback++;
-      } else {
-        totalOk++;
+        continue;
       }
+      totalOk++;
 
-      // ─ طباعة السطر ───────────────────────────────────────────────
       const islandTag   = optimized.level_metadata.island_count
         ? `  isl=${optimized.level_metadata.island_count}` : "";
       const verifyTag   = verified ? "✓" : "⚠";
@@ -612,7 +270,6 @@ async function main() {
       + `\n  💡 جرّب: زيادة EVOLUTION_N أو تضييق DIFF_SIGMA`
   );
 
-  // ─ تقرير الانتخاب ─────────────────────────────────────────────────
   if (evolutionN > 1) {
     const improved   = difficultyLog.filter(e => e.fitnessGain > 0).length;
     const avgFitGain = (difficultyLog.reduce((s, e) => s + e.fitnessGain, 0) / levelCount).toFixed(3);

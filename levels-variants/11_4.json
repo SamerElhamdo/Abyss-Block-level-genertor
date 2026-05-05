@@ -1,0 +1,268 @@
+{
+  "level_metadata": {
+    "id": "lvl_11_v4",
+    "difficulty": 6,
+    "seed": 908992458,
+    "steps_to_solve": 24,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 13,
+      "minZ": -3,
+      "maxZ": 3,
+      "width": 14,
+      "length": 7
+    },
+    "layout_dir": "20deg",
+    "slot": 11,
+    "variant_rank": 4,
+    "phase": "moving",
+    "target_difficulty": 7.263,
+    "evolution": {
+      "n_candidates": 20,
+      "winner_index": 6,
+      "selection_score": 4.3271,
+      "fitness_best": 6.1946,
+      "score_best": 7.77,
+      "delta_from_target": 0.51
+    },
+    "computed_difficulty": 7.77,
+    "behavioral_analysis": {
+      "precision_moves": 8,
+      "crumbling_moves": 6,
+      "orientation_changes": 16,
+      "portal_traversals": 0,
+      "critical_hazard_count": 20,
+      "behavioral_difficulty": 7.77,
+      "critical_tile_count": 37,
+      "puzzle_efficiency": 6.1946
+    }
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 10,
+      "z": -1
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 10,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 11,
+      "z": -2,
+      "type": "crumbling"
+    },
+    {
+      "x": 12,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 12,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 13,
+      "z": -3,
+      "type": "fragile"
+    },
+    {
+      "x": 13,
+      "z": -2,
+      "type": "fragile"
+    },
+    {
+      "x": 13,
+      "z": -1,
+      "type": "crumbling"
+    },
+    {
+      "x": 13,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 13,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 13,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 11,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 12,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 10,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 10,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 10,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "up",
+    "right",
+    "right",
+    "right",
+    "down",
+    "down",
+    "down",
+    "left",
+    "left",
+    "left",
+    "down",
+    "right",
+    "up",
+    "left",
+    "down",
+    "left",
+    "left",
+    "left",
+    "up",
+    "up",
+    "left",
+    "left",
+    "up",
+    "left"
+  ]
+}

@@ -728,7 +728,40 @@ export function pruneUnreachableTiles(data) {
 
   // Moving tiles are always kept — they are dynamic platforms whose base position
   // may not be visited, but they are essential game objects.
-  return { ...data, tiles: data.tiles.filter(t => t.type === 'moving' || reachable.has(t.x + ',' + t.z)) };
+  let tiles = data.tiles.filter(t => t.type === 'moving' || reachable.has(t.x + ',' + t.z));
+
+  // Isolation pass: remove tiles with no adjacent neighbor (iterative until stable).
+  // Prevents orphan tiles that were reachable via a crumbling footprint partner that
+  // no longer exists after crumbling removal, leaving them visually disconnected.
+  const goalKey = `${data.hole_pos.x},${data.hole_pos.z}`;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    // Include all positions a moving tile can occupy (its full oscillation range)
+    const tileSet = new Set();
+    for (const t of tiles) {
+      if (t.type === 'moving' && t.params) {
+        const { axis, range } = t.params;
+        for (let pos = range[0]; pos <= range[1]; pos++) {
+          if (axis === 'x') tileSet.add(`${pos},${t.z}`);
+          else tileSet.add(`${t.x},${pos}`);
+        }
+      } else {
+        tileSet.add(`${t.x},${t.z}`);
+      }
+    }
+    tiles = tiles.filter(t => {
+      if (t.type === 'moving') return true;
+      if (`${t.x},${t.z}` === goalKey) return true;
+      const hasNeighbor =
+        tileSet.has(`${t.x + 1},${t.z}`) || tileSet.has(`${t.x - 1},${t.z}`) ||
+        tileSet.has(`${t.x},${t.z + 1}`) || tileSet.has(`${t.x},${t.z - 1}`);
+      if (!hasNeighbor) { changed = true; return false; }
+      return true;
+    });
+  }
+
+  return { ...data, tiles };
 }
 
 // ---- Verified builder with retry -----------------------------------
@@ -765,21 +798,24 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
     // Find the shortest valid solution via step-aware BFS, then re-prune tiles.
     const pruned  = pruneUnreachableTiles(lvl);
     const optimal = optimizeSolution(pruned);
+    // Second prune with the final solution removes any orphan tiles that were
+    // reachable via the random walk but not via the BFS-optimal path.
+    const clean   = pruneUnreachableTiles(optimal);
 
     // BFS is the authoritative verifier — it must produce a valid simulation.
-    if (!simulateLevel(optimal).ok) continue;
+    if (!simulateLevel(clean).ok) continue;
 
     // Gate on BFS-optimal solution length: reject levels where shortcuts make the
     // puzzle trivially short even though the random walk was complex enough.
-    if (optimal.solution_data.length < minBFSMoves) continue;
+    if (clean.solution_data.length < minBFSMoves) continue;
 
     // Every moving tile center must actually be visited by the optimal path.
     // If the BFS found a route that bypasses a moving tile, reject this attempt.
     // If mechanics require a moving tile but none was placed, try to inject one
     // directly from the BFS path states (cells on the BFS path with ≤2 neighbours).
     if (hasMoving) {
-      const ps = optimal._internal?.pathStates ?? [];
-      const placedMoving = optimal.tiles.filter(t => t.type === 'moving');
+      const ps = clean._internal?.pathStates ?? [];
+      const placedMoving = clean.tiles.filter(t => t.type === 'moving');
 
       const allUsed = placedMoving.length > 0 && placedMoving.every(mt =>
         ps.some(s => {
@@ -791,13 +827,10 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
       );
 
       if (!allUsed) {
-        // Try to inject a moving tile onto the BFS path.
-        // Pick the first state in the middle region of the path that sits in a
-        // narrow corridor (≤2 tile neighbours) with both ±1 void endpoint cells.
-        const tilesByKeyOpt = new Map(optimal.tiles.map(t => [`${t.x},${t.z}`, t]));
+        const tilesByKeyOpt = new Map(clean.tiles.map(t => [`${t.x},${t.z}`, t]));
         const occupied = new Set(tilesByKeyOpt.keys());
         const startCellsOpt = cellsOf(ps[0]).map(([x,z]) => `${x},${z}`);
-        const goalKey = `${optimal.hole_pos.x},${optimal.hole_pos.z}`;
+        const goalKeyMov = `${clean.hole_pos.x},${clean.hole_pos.z}`;
         const stepsPerPhase = 1 + Math.floor(makeRNG(attemptOpts.seed)() * 2);
 
         let injected = null;
@@ -806,35 +839,30 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
           const si = mid + (di % 2 === 0 ? di / 2 : -Math.ceil(di / 2));
           if (si <= 0 || si >= ps.length - 1) continue;
           const s = ps[si];
-          // Use the primary (anchor) cell of each state as the candidate center.
           const ck = `${s.x},${s.z}`;
-          if (ck === goalKey || startCellsOpt.includes(ck)) continue;
+          if (ck === goalKeyMov || startCellsOpt.includes(ck)) continue;
           const t = tilesByKeyOpt.get(ck);
           if (!t || t.type !== 'normal') continue;
-          // skip start/goal
-          // try both axes
           for (const axis of ['x', 'z']) {
             const center = axis === 'x' ? s.x : s.z;
             const lo = center - 1, hi = center + 1;
             const kLo = axis === 'x' ? `${lo},${s.z}` : `${s.x},${lo}`;
             const kHi = axis === 'x' ? `${hi},${s.z}` : `${s.x},${hi}`;
             if (occupied.has(kLo) || occupied.has(kHi)) continue;
-            // within bounds guard
             const tileXArr = [...tilesByKeyOpt.values()].map(t2 => t2.x);
             const tileZArr = [...tilesByKeyOpt.values()].map(t2 => t2.z);
             const tMinX = Math.min(...tileXArr), tMaxX = Math.max(...tileXArr);
             const tMinZ = Math.min(...tileZArr), tMaxZ = Math.max(...tileZArr);
             if (axis === 'x' && (lo < tMinX - 1 || hi > tMaxX + 1)) continue;
             if (axis === 'z' && (lo < tMinZ - 1 || hi > tMaxZ + 1)) continue;
-            // Inject the moving tile; revert any old (bypassed) moving tiles to normal.
-            const newTiles = optimal.tiles.map(tile => {
+            const newTiles = clean.tiles.map(tile => {
               if (`${tile.x},${tile.z}` === ck)
                 return { ...tile, type: 'moving', params: { axis, range: [lo, hi], stepsPerPhase, startPhase: 0 } };
               if (tile.type === 'moving')
                 return { x: tile.x, z: tile.z, type: 'normal' };
               return tile;
             });
-            const candidate = { ...optimal, tiles: newTiles };
+            const candidate = { ...clean, tiles: newTiles };
             const simResult = simulateLevel(candidate);
             if (!simResult.ok) continue;
             const newOpt = optimizeSolution(candidate);
@@ -845,7 +873,13 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
               (ns.o === 'HX' && ns.z === s.z && (ns.x === s.x || ns.x + 1 === s.x)) ||
               (ns.o === 'HZ' && ns.x === s.x && (ns.z === s.z || ns.z + 1 === s.z))
             );
-            if (tileUsed) { injected = newOpt; break; }
+            if (tileUsed) {
+              // Prune once more to remove any tiles orphaned by the injection
+              const pInjected = pruneUnreachableTiles(newOpt);
+              if (!simulateLevel(pInjected).ok) continue;
+              injected = pInjected;
+              break;
+            }
           }
         }
         if (!injected) continue;
@@ -853,7 +887,7 @@ export function buildLevelVerified(opts, constraints = {}, maxAttempts = 15) {
       }
     }
 
-    return { lvl: optimal, attempts: attempt + 1, verified: true };
+    return { lvl: clean, attempts: attempt + 1, verified: true };
   }
 
   // Fallback: return last generated without BFS if all retries exhausted
@@ -875,21 +909,35 @@ export function optimizeSolution(data) {
   const staticSet     = new Set(staticTiles.map(t => `${t.x},${t.z}`));
   const staticTypeMap = new Map(staticTiles.map(t => [`${t.x},${t.z}`, t.type]));
 
+  // Crumbling tile index: key → bit index (for bitmask state tracking).
+  // Tracking consumed crumbling tiles prevents BFS from finding "shortcuts"
+  // that step on an already-crumbled tile, which simulateLevel would reject.
+  const crumblingTiles = staticTiles.filter(t => t.type === 'crumbling');
+  const crumblingIndex = new Map(crumblingTiles.map((t, i) => [`${t.x},${t.z}`, i]));
+
   // Portal map: exit cell → target {x,z}
   const portalExit = new Map(
     data.tiles.filter(t => t.type === 'portal' && t.target)
               .map(t => [`${t.x},${t.z}`, t.target])
   );
 
-  // Build tile set + type map for a specific player step
-  function tileInfoAtStep(step) {
-    if (movingTilesArr.length === 0) return { set: staticSet, typeMap: staticTypeMap };
-    const set     = new Set(staticSet);
-    const typeMap = new Map(staticTypeMap);
-    for (const t of movingTilesArr) {
-      const pos = getTilePositionAtStep(t, step);
-      set.add(`${pos.x},${pos.z}`);
-      typeMap.set(`${pos.x},${pos.z}`, 'moving');
+  // Build tile set + type map for a specific player step (excluding consumed crumbling tiles)
+  function tileInfoAtStep(step, crumbleMask) {
+    const set     = new Set();
+    const typeMap = new Map();
+    for (const t of staticTiles) {
+      const k = `${t.x},${t.z}`;
+      const ci = crumblingIndex.get(k);
+      if (ci !== undefined && (crumbleMask & (1 << ci))) continue; // already crumbled
+      set.add(k);
+      typeMap.set(k, t.type);
+    }
+    if (movingTilesArr.length > 0) {
+      for (const t of movingTilesArr) {
+        const pos = getTilePositionAtStep(t, step);
+        set.add(`${pos.x},${pos.z}`);
+        typeMap.set(`${pos.x},${pos.z}`, 'moving');
+      }
     }
     return { set, typeMap };
   }
@@ -900,10 +948,12 @@ export function optimizeSolution(data) {
            : s.orientation === 'horizontal-x' ? 'HX' : 'HZ';
   const goal = data.hole_pos;
 
-  // State key: x,z,o,stepMod  — stepMod collapses to 0 for non-moving levels (period=1)
-  const startKey = `${sx},${sz},${so},0`;
+  // State key: x,z,o,stepMod,crumbleMask
+  // crumbleMask tracks which crumbling tiles have been consumed (bitmask).
+  // With max ~3 crumbling tiles this adds only 8 extra states per position.
+  const startKey = `${sx},${sz},${so},0,0`;
   const prev = new Map([[startKey, null]]);
-  const queue = [{ x: sx, z: sz, o: so, step: 0 }];
+  const queue = [{ x: sx, z: sz, o: so, step: 0, crumbleMask: 0 }];
   let foundKey = null;
 
   const MAX_NODES = 600_000;
@@ -913,7 +963,7 @@ export function optimizeSolution(data) {
     const cur = queue.shift();
     visited++;
     const nextStep = cur.step + 1;
-    const { set: tileSet, typeMap: tileTypeMap } = tileInfoAtStep(cur.step);  // check current visible state
+    const { set: tileSet, typeMap: tileTypeMap } = tileInfoAtStep(cur.step, cur.crumbleMask);
 
     for (const dir of DIRS) {
       const next = rollForward(cur, dir);
@@ -921,9 +971,14 @@ export function optimizeSolution(data) {
 
       // All footprint cells must be present; V on fragile = instant fall
       let ok = true;
+      let nextMask = cur.crumbleMask;
       for (const [fx, fz] of foot) {
-        if (!tileSet.has(`${fx},${fz}`)) { ok = false; break; }
-        if (next.o === 'V' && tileTypeMap.get(`${fx},${fz}`) === 'fragile') { ok = false; break; }
+        const fk = `${fx},${fz}`;
+        if (!tileSet.has(fk)) { ok = false; break; }
+        if (next.o === 'V' && tileTypeMap.get(fk) === 'fragile') { ok = false; break; }
+        // Mark crumbling tiles as consumed upon landing
+        const ci = crumblingIndex.get(fk);
+        if (ci !== undefined) nextMask |= (1 << ci);
       }
       if (!ok) continue;
 
@@ -934,10 +989,10 @@ export function optimizeSolution(data) {
         land = { x: tg.x, z: tg.z, o: 'V' };
       }
 
-      const nk = `${land.x},${land.z},${land.o},${nextStep % period}`;
+      const nk = `${land.x},${land.z},${land.o},${nextStep % period},${nextMask}`;
       if (prev.has(nk)) continue;
-      prev.set(nk, { fromKey: `${cur.x},${cur.z},${cur.o},${cur.step % period}`, dir });
-      queue.push({ ...land, step: nextStep });
+      prev.set(nk, { fromKey: `${cur.x},${cur.z},${cur.o},${cur.step % period},${cur.crumbleMask}`, dir });
+      queue.push({ ...land, step: nextStep, crumbleMask: nextMask });
 
       if (land.o === 'V' && land.x === goal.x && land.z === goal.z) {
         foundKey = nk; break outer;
@@ -1147,12 +1202,14 @@ export function computeBehavioralMetrics(data, criticalTiles = null) {
   }
 
   // Weighted behavioral metrics — max raw = 10.0
-  const precisionPts      = Math.min(precision_moves    /  8, 1) * 3.0;
-  const crumblingPts      = Math.min(crumbling_moves    /  6, 1) * 1.5;
+  // Path length is the dominant factor (4 pts): few tiles + few traps + many steps = hard puzzle.
+  // Trap interactions are secondary: normalised to the ≤3 cap so even 1 trap registers.
+  const precisionPts      = Math.min(precision_moves     / 3, 1) * 2.0;
+  const crumblingPts      = Math.min(crumbling_moves     / 2, 1) * 1.0;
   const orientationPts    = Math.min(orientation_changes / 20, 1) * 1.5;
-  const pathLengthPts     = Math.min(steps              / 45, 1) * 2.0;
-  const portalPts         = Math.min(portal_traversals  /  3, 1) * 1.0;
-  const criticalHazardPts = Math.min(critical_hazard_count / 4, 1) * 1.0;
+  const pathLengthPts     = Math.min(steps               / 40, 1) * 4.0;
+  const portalPts         = Math.min(portal_traversals   /  3, 1) * 1.0;
+  const criticalHazardPts = Math.min(critical_hazard_count / 3, 1) * 0.5;
 
   const raw = precisionPts + crumblingPts + orientationPts + pathLengthPts + portalPts + criticalHazardPts;
   const behavioral_difficulty = Math.max(1, Math.min(10, +raw.toFixed(2)));

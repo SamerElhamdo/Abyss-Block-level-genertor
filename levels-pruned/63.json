@@ -1,0 +1,310 @@
+{
+  "level_metadata": {
+    "id": "lvl_63",
+    "difficulty": 8,
+    "seed": 3139730103,
+    "steps_to_solve": 41,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 9,
+      "minZ": -2,
+      "maxZ": 3,
+      "width": 10,
+      "length": 6
+    },
+    "layout_dir": "20deg",
+    "slot": 63,
+    "variant_rank": 3,
+    "phase": "moving",
+    "target_difficulty": 8.263,
+    "evolution": {
+      "n_candidates": 20,
+      "winner_index": 8,
+      "selection_score": 5.0389,
+      "fitness_best": 5.51,
+      "score_best": 8.07,
+      "delta_from_target": -0.25
+    },
+    "computed_difficulty": 8.07,
+    "behavioral_analysis": {
+      "precision_moves": 10,
+      "crumbling_moves": 4,
+      "orientation_changes": 26,
+      "portal_traversals": 0,
+      "critical_hazard_count": 3,
+      "behavioral_difficulty": 8.07,
+      "critical_tile_count": 13,
+      "puzzle_efficiency": 5.51
+    },
+    "original_source": {
+      "slot": 13,
+      "rank": 3,
+      "file": "13_3.json"
+    }
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 8,
+      "z": 1
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 8,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 9,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 8,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 9,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 7,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": 5,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": -2,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 5,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 3,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 3,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": -1,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "crumbling"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "left",
+    "up",
+    "up",
+    "up",
+    "left",
+    "down",
+    "left",
+    "down",
+    "right",
+    "right",
+    "right",
+    "up",
+    "left",
+    "down",
+    "down",
+    "left",
+    "left",
+    "up",
+    "up",
+    "up",
+    "right",
+    "right",
+    "down",
+    "left",
+    "up",
+    "up",
+    "right",
+    "down",
+    "down",
+    "down",
+    "left",
+    "left",
+    "left",
+    "left",
+    "up",
+    "up",
+    "right",
+    "down",
+    "left",
+    "up",
+    "left"
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "level_metadata": {
+    "id": "lvl_7",
+    "difficulty": 5,
+    "seed": 3997345637,
+    "steps_to_solve": 14,
+    "map_bounds": {
+      "minX": 0,
+      "maxX": 7,
+      "minZ": 0,
+      "maxZ": 2,
+      "width": 8,
+      "length": 3
+    },
+    "layout_dir": "20deg",
+    "slot": 7,
+    "variant_rank": 2,
+    "phase": "hard_start",
+    "target_difficulty": 2.606,
+    "evolution": {
+      "n_candidates": 20,
+      "winner_index": 12,
+      "selection_score": 1.8825,
+      "fitness_best": 7.4714,
+      "score_best": 4.25,
+      "delta_from_target": 1.72
+    },
+    "computed_difficulty": 4.25,
+    "behavioral_analysis": {
+      "precision_moves": 5,
+      "crumbling_moves": 0,
+      "orientation_changes": 10,
+      "portal_traversals": 0,
+      "critical_hazard_count": 5,
+      "behavioral_difficulty": 4.25,
+      "critical_tile_count": 16,
+      "puzzle_efficiency": 7.4714
+    },
+    "original_source": {
+      "slot": 2,
+      "rank": 2,
+      "file": "2_2.json"
+    }
+  },
+  "world_settings": {
+    "environment": "abyss_default",
+    "gravity": 1
+  },
+  "start_state": {
+    "pos": {
+      "x": 1,
+      "z": 1
+    },
+    "orientation": "vertical"
+  },
+  "hole_pos": {
+    "x": 0,
+    "z": 0
+  },
+  "tiles": [
+    {
+      "x": 1,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 1,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 7,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 5,
+      "z": 2,
+      "type": "fragile"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "type": "normal"
+    }
+  ],
+  "solution_data": [
+    "right",
+    "right",
+    "right",
+    "down",
+    "right",
+    "up",
+    "left",
+    "down",
+    "left",
+    "up",
+    "left",
+    "left",
+    "up",
+    "left"
+  ]
+}
