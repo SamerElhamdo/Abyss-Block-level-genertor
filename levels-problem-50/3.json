@@ -1,19 +1,19 @@
 {
   "level_metadata": {
-    "id": "prob_d660",
-    "seed": 54880,
+    "id": "prob_77b863",
+    "seed": 7845987,
     "generator_mode": "problem_first_carving",
     "iterations": 1240,
     "grid_size": 7,
-    "computed_difficulty": 7.8,
+    "computed_difficulty": 6.1,
     "behavioral_analysis": {
-      "precision_moves": 4,
+      "precision_moves": 5,
       "crumbling_moves": 3,
-      "orientation_changes": 20,
+      "orientation_changes": 12,
       "portal_traversals": 0,
       "critical_hazard_count": 6,
-      "behavioral_difficulty": 7.8,
-      "puzzle_efficiency": 0.88
+      "behavioral_difficulty": 6.1,
+      "puzzle_efficiency": 0.63
     },
     "slot": 3,
     "phase": "hard_start"
@@ -31,7 +31,7 @@
   },
   "hole_pos": {
     "x": 4,
-    "z": 4
+    "z": 5
   },
   "tiles": [
     {
@@ -41,82 +41,77 @@
     },
     {
       "x": 4,
-      "z": 4,
+      "z": 5,
       "type": "normal"
     },
     {
       "x": 5,
+      "z": 2,
+      "type": "crumbling"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 0,
+      "type": "fragile"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 4,
       "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 3,
+      "z": 3,
+      "type": "crumbling"
+    },
+    {
+      "x": 5,
+      "z": 1,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 3,
       "type": "fragile"
     },
     {
       "x": 4,
       "z": 1,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 2,
-      "type": "normal"
+      "type": "crumbling"
     },
     {
       "x": 2,
       "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 3,
       "type": "normal"
     },
     {
       "x": 4,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 1,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": 1,
-      "type": "crumbling"
-    },
-    {
-      "x": 6,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 6,
       "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 3,
-      "z": 1,
-      "type": "crumbling"
-    },
-    {
-      "x": 2,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 1,
       "type": "normal"
     },
     {
@@ -125,72 +120,52 @@
       "type": "normal"
     },
     {
+      "x": 1,
+      "z": 2,
+      "type": "normal"
+    },
+    {
+      "x": 4,
+      "z": 6,
+      "type": "normal"
+    },
+    {
       "x": 5,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": 1,
       "z": 1,
-      "type": "crumbling"
-    },
-    {
-      "x": 2,
-      "z": 5,
       "type": "normal"
     },
     {
-      "x": 2,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 5,
+      "x": 1,
+      "z": 4,
       "type": "normal"
     },
     {
       "x": 0,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 1,
-      "z": 0,
+      "z": 1,
       "type": "normal"
     },
     {
       "x": 6,
-      "z": 0,
+      "z": 4,
       "type": "normal"
     },
     {
-      "x": 4,
+      "x": 1,
       "z": 0,
       "type": "normal"
     }
@@ -202,26 +177,15 @@
     "down",
     "left",
     "up",
-    "right",
-    "down",
-    "right",
     "up",
     "right",
-    "up",
-    "up",
-    "left",
-    "left",
-    "left",
-    "down",
-    "down",
     "right",
-    "down",
-    "left",
-    "up",
     "up",
     "left",
     "down",
-    "right",
+    "left",
+    "down",
+    "down",
     "down",
     "right"
   ]

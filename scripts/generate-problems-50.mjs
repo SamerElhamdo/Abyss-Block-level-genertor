@@ -7,7 +7,15 @@ if (!fs.existsSync(OUT_DIR)) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 }
 
+const seedArg = process.argv[2];
+const baseSeed = seedArg === undefined ? 54877 : Number(seedArg);
+if (!Number.isInteger(baseSeed)) {
+  console.error('❌ قيمة seed غير صالحة. استخدم رقماً صحيحاً مثل: node scripts/generate-problems-50.mjs 12345');
+  process.exit(1);
+}
+
 console.log("=== بدء التوليد بأسلوب اللغز أولاً (50 مرحلة متدرجة بجميع الميكانيكيات) ===");
+console.log(`Base seed: ${baseSeed}`);
 
 // الأطوار الخمسة مع الميكانيكيات المطلوبة (تشبه تماماً هيكل المحرك القديم)
 const PHASES = [
@@ -24,7 +32,7 @@ for (const phase of PHASES) {
   console.log(`\n── طور: ${phase.name.toUpperCase()} (${phase.count} مراحل) ──`);
   
   for (let i = 0; i < phase.count; i++) {
-    const seed = 54877 + slot;
+    const seed = baseSeed + slot;
     
     // التدرج في الصعوبة داخل الطور نفسه وعلى مستوى اللعبة كاملة
     // كلما تقدمت اللعبة (slot يزيد)، تزداد مساحة الشبكة وتعقيد عملية النحت
