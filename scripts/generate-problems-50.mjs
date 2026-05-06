@@ -24,7 +24,7 @@ for (const phase of PHASES) {
   console.log(`\n── طور: ${phase.name.toUpperCase()} (${phase.count} مراحل) ──`);
   
   for (let i = 0; i < phase.count; i++) {
-    const seed = 90000 + slot;
+    const seed = 54877 + slot;
     
     // التدرج في الصعوبة داخل الطور نفسه وعلى مستوى اللعبة كاملة
     // كلما تقدمت اللعبة (slot يزيد)، تزداد مساحة الشبكة وتعقيد عملية النحت

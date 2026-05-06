@@ -1,19 +1,19 @@
 {
   "level_metadata": {
-    "id": "prob_15fa9",
-    "seed": 90025,
+    "id": "prob_18238",
+    "seed": 98872,
     "generator_mode": "problem_first_carving",
     "iterations": 3000,
     "grid_size": 12,
-    "computed_difficulty": 5.8,
+    "computed_difficulty": 6.25,
     "behavioral_analysis": {
-      "precision_moves": 5,
-      "crumbling_moves": 2,
-      "orientation_changes": 12,
+      "precision_moves": 4,
+      "crumbling_moves": 4,
+      "orientation_changes": 14,
       "portal_traversals": 0,
-      "critical_hazard_count": 9,
-      "behavioral_difficulty": 5.8,
-      "puzzle_efficiency": 0.34
+      "critical_hazard_count": 8,
+      "behavioral_difficulty": 6.25,
+      "puzzle_efficiency": 0.37
     },
     "slot": 25,
     "phase": "moving"
@@ -30,7 +30,7 @@
     "orientation": "vertical"
   },
   "hole_pos": {
-    "x": 10,
+    "x": 9,
     "z": 10
   },
   "tiles": [
@@ -40,47 +40,172 @@
       "type": "normal"
     },
     {
-      "x": 10,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 3,
-      "type": "moving",
-      "params": {
-        "axis": "x",
-        "range": [
-          3,
-          5
-        ],
-        "stepsPerPhase": 2,
-        "startPhase": 0
-      }
-    },
-    {
       "x": 9,
       "z": 10,
       "type": "normal"
     },
     {
+      "x": 2,
+      "z": 5,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 11,
+      "type": "crumbling"
+    },
+    {
+      "x": 2,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 9,
+      "type": "crumbling"
+    },
+    {
+      "x": 2,
+      "z": 4,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 10,
+      "type": "normal"
+    },
+    {
       "x": 4,
+      "z": 10,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 10,
+      "type": "normal"
+    },
+    {
+      "x": 1,
       "z": 4,
       "type": "normal"
     },
     {
-      "x": 8,
+      "x": 7,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 9,
+      "type": "moving",
+      "params": {
+        "axis": "x",
+        "range": [
+          8,
+          10
+        ],
+        "stepsPerPhase": 1,
+        "startPhase": 0
+      }
+    },
+    {
+      "x": 6,
       "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 6,
       "type": "fragile"
     },
     {
-      "x": 7,
+      "x": 2,
+      "z": 10,
+      "type": "fragile"
+    },
+    {
+      "x": 6,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 1,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 3,
+      "z": 10,
+      "type": "normal"
+    },
+    {
+      "x": 8,
+      "z": 7,
+      "type": "normal"
+    },
+    {
+      "x": 2,
+      "z": 3,
+      "type": "normal"
+    },
+    {
+      "x": 9,
+      "z": 7,
+      "type": "crumbling"
+    },
+    {
+      "x": 9,
+      "z": 8,
+      "type": "normal"
+    },
+    {
+      "x": 5,
+      "z": 11,
+      "type": "crumbling"
+    },
+    {
+      "x": 4,
+      "z": 11,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 6,
+      "type": "normal"
+    },
+    {
+      "x": 0,
+      "z": 4,
+      "type": "normal"
+    },
+    {
+      "x": 0,
       "z": 5,
       "type": "normal"
     },
     {
-      "x": 10,
-      "z": 5,
+      "x": 5,
+      "z": 9,
+      "type": "normal"
+    },
+    {
+      "x": 6,
+      "z": 11,
       "type": "normal"
     },
     {
@@ -89,180 +214,83 @@
       "type": "normal"
     },
     {
-      "x": 4,
-      "z": 5,
-      "type": "normal"
-    },
-    {
-      "x": 10,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 9,
-      "z": 9,
-      "type": "normal"
-    },
-    {
-      "x": 8,
+      "x": 1,
       "z": 10,
-      "type": "fragile"
+      "type": "normal"
     },
     {
-      "x": 8,
-      "z": 5,
-      "type": "fragile"
+      "x": 7,
+      "z": 10,
+      "type": "normal"
     },
     {
-      "x": 4,
+      "x": 7,
+      "z": 11,
+      "type": "normal"
+    },
+    {
+      "x": 2,
       "z": 2,
       "type": "normal"
     },
     {
-      "x": 9,
-      "z": 5,
+      "x": 8,
+      "z": 8,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": 5,
-      "type": "fragile"
-    },
-    {
-      "x": 8,
+      "x": 7,
       "z": 9,
-      "type": "fragile"
+      "type": "normal"
     },
     {
-      "x": 10,
+      "x": 0,
+      "z": 10,
+      "type": "normal"
+    },
+    {
+      "x": 7,
       "z": 8,
       "type": "normal"
     },
     {
       "x": 3,
-      "z": 2,
-      "type": "crumbling"
+      "z": 6,
+      "type": "normal"
     },
     {
-      "x": 9,
-      "z": 8,
-      "type": "crumbling"
-    },
-    {
-      "x": 2,
-      "z": 2,
-      "type": "crumbling"
-    },
-    {
-      "x": 10,
+      "x": 1,
       "z": 7,
       "type": "normal"
     },
     {
-      "x": 5,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 9,
-      "z": 7,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 1,
-      "type": "normal"
-    },
-    {
-      "x": 0,
-      "z": 0,
-      "type": "normal"
-    },
-    {
-      "x": 2,
-      "z": 3,
-      "type": "normal"
-    },
-    {
-      "x": 4,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 9,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 4,
-      "type": "normal"
-    },
-    {
-      "x": 11,
-      "z": 10,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 6,
-      "type": "normal"
-    },
-    {
-      "x": 7,
-      "z": 8,
-      "type": "normal"
-    },
-    {
-      "x": 5,
-      "z": 2,
-      "type": "normal"
-    },
-    {
-      "x": 8,
-      "z": 11,
-      "type": "normal"
-    },
-    {
-      "x": 7,
+      "x": 1,
       "z": 9,
       "type": "normal"
     },
     {
-      "x": 4,
+      "x": 3,
       "z": 7,
-      "type": "normal"
-    },
-    {
-      "x": 6,
-      "z": 4,
       "type": "normal"
     }
   ],
   "solution_data": [
-    "right",
+    "down",
     "right",
     "down",
     "down",
+    "down",
+    "down",
     "right",
+    "down",
     "right",
+    "up",
+    "right",
+    "up",
+    "up",
     "right",
     "right",
     "down",
-    "down",
-    "left",
-    "down",
-    "down",
-    "right"
+    "down"
   ]
 }
