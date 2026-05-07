@@ -71,6 +71,11 @@ function rollForward(state, dir) {
 
 function buildStates(level) {
   if (!level?.start_state) return [];
+  const portalMap = new Map(
+    (level.tiles || [])
+      .filter((t) => t.type === "portal" && t.target)
+      .map((t) => [`${t.x},${t.z}`, t.target])
+  );
   let cur = {
     x: level.start_state.pos.x,
     z: level.start_state.pos.z,
@@ -79,6 +84,12 @@ function buildStates(level) {
   const states = [cur];
   for (const dir of level.solution_data || []) {
     cur = rollForward(cur, dir);
+    if (cur.o === "V") {
+      const tg = portalMap.get(`${cur.x},${cur.z}`);
+      if (tg) {
+        cur = { x: tg.x, z: tg.z, o: "V" };
+      }
+    }
     states.push(cur);
   }
   return states;
