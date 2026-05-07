@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abyss Block · Problem Workbench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/level-workbench.css" />
+</head>
+<body>
+  <div class="wb-app">
+    <aside class="wb-side">
+      <div class="wb-brand">
+        <div class="wb-brand-mark">▦</div>
+        <div>
+          <div class="wb-brand-name">ABYSS BLOCK</div>
+          <div class="wb-brand-sub">problem engine workbench · v1</div>
+        </div>
+      </div>
+
+      <section class="wb-section">
+        <div class="wb-section-title">01 · CLOUD LEVELS</div>
+        <div class="wb-row">
+          <label class="wb-field">FROM <input id="range-start" type="number" min="1" value="1" /></label>
+          <label class="wb-field">TO <input id="range-end" type="number" min="1" value="80" /></label>
+        </div>
+        <button id="load-levels-btn" class="wb-btn">LOAD LIST</button>
+        <div id="levels-list" class="wb-list"></div>
+      </section>
+
+      <section class="wb-section">
+        <div class="wb-section-title">02 · REGENERATE SLOT</div>
+        <div class="wb-grid">
+          <label class="wb-field">SLOT <input id="slot-input" type="number" min="1" value="33" /></label>
+          <label class="wb-field">SEED <input id="seed-input" type="number" min="1" value="90033" /></label>
+          <label class="wb-field">GRID SIZE <input id="grid-input" type="number" min="7" max="25" value="12" /></label>
+          <label class="wb-field">ITERATIONS <input id="iter-input" type="number" min="600" max="7000" step="100" value="2200" /></label>
+        </div>
+        <div class="wb-checks">
+          <label><input id="mech-fragile" type="checkbox" checked /> Fragile</label>
+          <label><input id="mech-crumbling" type="checkbox" checked /> Crumbling</label>
+          <label><input id="mech-moving" type="checkbox" checked /> Moving</label>
+          <label><input id="mech-portal" type="checkbox" /> Portal</label>
+        </div>
+        <button id="load-slot-btn" class="wb-btn">LOAD SLOT FROM CLOUD</button>
+        <button id="generate-btn" class="wb-btn wb-btn-primary">GENERATE REPLACEMENT</button>
+        <button id="simulate-btn" class="wb-btn">SIMULATE SOLUTION</button>
+        <button id="publish-btn" class="wb-btn">PUBLISH CURRENT TO SLOT</button>
+      </section>
+    </aside>
+
+    <main class="wb-main">
+      <div class="wb-topbar">
+        <span>project / abyss_block / problem_workbench</span>
+      </div>
+      <div class="wb-canvas-wrap">
+        <canvas id="level-canvas"></canvas>
+      </div>
+      <div class="wb-footer">
+        <pre id="status-box">Ready</pre>
+      </div>
+    </main>
+
+    <aside class="wb-right">
+      <section class="wb-section wb-section-full">
+        <div class="wb-section-title">JSON PREVIEW</div>
+        <pre id="json-preview"></pre>
+      </section>
+    </aside>
+  </div>
+  <script type="module" src="/level-workbench.js"></script>
+</body>
+</html>

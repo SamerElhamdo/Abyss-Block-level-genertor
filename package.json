@@ -15,6 +15,7 @@
     "publish:levels": "node scripts/publish-levels.mjs",
     "publish:levels:prod": "BASE_URL=https://abyss-levels.encryptosystem.com API_TOKEN=abyss-upsert-2026 node scripts/publish-levels.mjs",
     "delete:cloud:levels": "node scripts/delete-cloud-levels.mjs",
-    "delete:cloud:levels:prod": "BASE_URL=https://abyss-levels.encryptosystem.com API_TOKEN=abyss-upsert-2026 START_SLOT=1 END_SLOT=500 node scripts/delete-cloud-levels.mjs"
+    "delete:cloud:levels:prod": "BASE_URL=https://abyss-levels.encryptosystem.com API_TOKEN=abyss-upsert-2026 START_SLOT=1 END_SLOT=500 node scripts/delete-cloud-levels.mjs",
+    "workbench": "node scripts/level-workbench-server.mjs"
   }
 }
